@@ -26,6 +26,7 @@ $totalRows_history = mysql_num_rows($history);
 <title><?php if($title_text) { echo $title_text; } else { echo $pagetitle; } ?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <script src="includes/lib/prototype.js" type="text/javascript"></script>
+<script src="includes/lib/tablekit.js" type="text/javascript"></script>
 <script src="includes/src/effects.js" type="text/javascript"></script>
 <script src="includes/validation.js" type="text/javascript"></script>
 <script src="includes/src/scriptaculous.js" type="text/javascript"></script>
@@ -40,9 +41,10 @@ $totalRows_history = mysql_num_rows($history);
 <body>
 <div class="headercontainer"> 
   <div class="header">
-    <h1>Simple Customer</h1>
+    <h1>Donor Track</h1>
     <a href="index.php" class="menubuttons <?php if ($pagetitle==Dashboard) { echo menubuttonsactive; } ?>">Dashboard</a>
     <a href="contacts.php" class="menubuttons <?php if ($pagetitle==Contact || $pagetitle==ContactDetails) { echo menubuttonsactive; } ?>">Contacts</a>
+    <a href="donations.php" class="menubuttons <?php if ($pagetitle=="Donations") { echo menubuttonsactive; } ?>">Donations</a>
     <a href="admin.php" class="menubuttons <?php if ($pagetitle=="Admin") { echo menubuttonsactive; } ?>">Admin</a>
 
     <span class="headerright">Logged in as <?php echo $row_userinfo['user_email']; ?> | <a href="logout.php">Log Out</a> | <a href="profile.php">Update Profile</a> </span><br clear="all" />

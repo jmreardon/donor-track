@@ -62,12 +62,8 @@ if($_POST['year'] && is_numeric($_POST['year'])) {
   header('Location: admin.php'); die;
 }
 
-$query_config = "SELECT * FROM config WHERE name = 'fiscal_year'";
-$config = mysql_query($query_config, $contacts) or die(mysql_error());
-$row_config = mysql_fetch_assoc($config);
-$totalRows_config = mysql_num_rows($config);
-
 ?>
+
 <?php include('includes/header.php'); ?>
   
   <div class="container">
@@ -80,7 +76,7 @@ $totalRows_config = mysql_num_rows($config);
         <fieldset>
         <label class="first width1">
           Fiscal Year 
-          <input name="year" id="year" class="validate-digits" type="text" value="<?php echo $row_config['value']; ?>" />
+          <input name="year" id="year" class="validate-digits" type="text" value="<?php echo get_fiscal_year(); ?>" />
         </label>
         </fieldset>
         <fieldset>

@@ -53,6 +53,14 @@ $dis = block;
 }
 //
 
+function get_fiscal_year() {
+  $query_config = "SELECT * FROM config WHERE name = 'fiscal_year'";
+  $config = mysql_query($query_config) or die(mysql_error());
+  $row_config = mysql_fetch_assoc($config);
+  return $row_config['value'];
+}
+
+
 $contactcount = mysql_query("SELECT * FROM contacts") or die(mysql_error());
 $contactcount = mysql_num_rows($contactcount);
 

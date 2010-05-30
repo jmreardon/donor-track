@@ -1,4 +1,4 @@
-<?php require_once('includes/config.php'); ?><?php require_once('includes/config.php'); 
+<?php require_once('includes/config.php'); 
 
 //   Copyright 2008 johnboyproductions.com
 //   Copyright 2010 Justin Reardon
@@ -16,6 +16,7 @@
 //   limitations under the License.
 
 include('includes/sc-includes.php');
+include('includes/donation.inc.php');
 $pagetitle = Dashboard;
 
 if (empty($_GET['s']) && isset($_GET['s'])) {
@@ -46,6 +47,8 @@ $contacts = mysql_query($query_contacts, $contacts) or die(mysql_error());
 $row_contacts = mysql_fetch_assoc($contacts);
 $totalRows_contacts = mysql_num_rows($contacts);
 
+$stats = donation_stats(get_fiscal_year());
+
 if ($totalRows_contacts < 1 && !isset($_GET['s'])) { header('Location: contact.php'); }
 ?>
 <?php include('includes/header.php'); ?>
@@ -75,6 +78,17 @@ Search results for <em><?php echo $_GET['s']; ?></em>.<br />
           <?php if ($totalRows_notes!=$i) { ?><hr /><?php } ?>
               <?php $i++;  } while ($row_notes = mysql_fetch_assoc($notes)); ?>
 <?php } ?>
+    <h2>Donations - <?php echo get_fiscal_year() ?></h2>
+    <div class="unitx2">
+      <div class="unitx1 column first">Expected</div>
+      <div class="unitx1 column align-right">$<?php echo $stats->expected ?></div>
+      <div class="unitx1 column first">Pledged</div>
+      <div class="unitx1 column align-right">$<?php echo $stats->pledged ?></div>
+      <div class="unitx1 column first">Received</div>
+      <div class="unitx1 column align-right">$<?php echo $stats->received ?></div>
+      <div class="unitx1 column first">Total</div>
+      <div class="unitx1 column align-right">$<?php echo $stats->total ?></div>
+    </div>
   </div>
   <?php include('includes/right-column.php'); ?>
   <br clear="all" />

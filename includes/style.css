@@ -53,3 +53,15 @@ label {
 .field-widget {
 
 }
+
+.sortcol {
+	cursor: pointer;
+	background-repeat: no-repeat;
+	background-position: 90% center;
+}
+.sortasc {
+	background-image: url(up.gif);
+}
+.sortdesc {
+	background-image: url(down.gif);
+}
