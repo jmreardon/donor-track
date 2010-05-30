@@ -1,4 +1,5 @@
 <?php require_once('includes/config.php'); 
+require_once('includes/user.inc.php'); 
 
 //   Copyright 2008 johnboyproductions.com
 //
@@ -47,30 +48,20 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 }
 
+//UPDATE PROFILE
+if ($_POST['email']) {
+update_profile($_POST['email'], $_POST['password'], $_POST['home']);
+set_msg('Profile Updated');
+$_SESSION['user'] = $_POST['email'];
+header('Location: profile.php'); die;
+}
+
 mysql_select_db($database_contacts, $contacts);
 $query_profile = "SELECT * FROM users";
 $profile = mysql_query($query_profile, $contacts) or die(mysql_error());
 $row_profile = mysql_fetch_assoc($profile);
 $totalRows_profile = mysql_num_rows($profile);
 
-//UPDATE PROFILE
-if ($_POST['email']) {
-
-$password = $row_profile['user_password'];
-
-if ($_POST['password']) {
-$password = $_POST['password'];
-}
-
-mysql_query("UPDATE users SET 
-	user_email = '".trim($_POST['email'])."', 
-	user_password = '".trim($password)."', 
-	user_home = '".trim($_POST['home'])."'");
-set_msg('Profile Updated');
-$_SESSION['user'] = $_POST['email'];
-header('Location: profile.php'); die;
-}
-//
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

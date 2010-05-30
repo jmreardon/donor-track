@@ -42,16 +42,20 @@ $passwordcheck = mysql_query($query_passwordcheck, $contacts) or die(mysql_error
 $row_passwordcheck = mysql_fetch_assoc($passwordcheck);
 $totalRows_passwordcheck = mysql_num_rows($passwordcheck);
 
+$new_password = gen_password(8);
+
+update_profile($_POST['email'], $new_password);
+
 if ($totalRows_passwordcheck==1) { 
 	$redirect = "login.php";
-	set_msg('Your password has been sent.');
+	set_msg('A new password has been sent.');
 
 //SEND EMAIL WITH PASSWORD
 $password = $row_passwordcheck['user_password'];
 $emailfrom = $row_passwordcheck['user_email'];
-$name = "Simple Customer";
-$subject = "Your Password";
-$message = "Your password is $password.";
+$name = "Donor Track";
+$subject = "Your New Password";
+$message = "Your password is $new_password.";
 $emailto = $row_passwordcheck['user_email'];
 
 $smail=mail($emailto, $subject, $message, 
@@ -63,7 +67,7 @@ $smail=mail($emailto, $subject, $message,
 }
 
 if ($totalRows_passwordcheck < 1) {
-set_msg('That email address was not found in the database.');
+set_msg('Could not send the password.');
 header('Location: password.php'); die;
 }
 }
