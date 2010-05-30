@@ -58,10 +58,14 @@ label {
 	cursor: pointer;
 	background-repeat: no-repeat;
 	background-position: 90% center;
+	color: #009999;
 }
 .sortasc {
 	background-image: url(up.gif);
 }
 .sortdesc {
 	background-image: url(down.gif);
+}
+.right-cell {
+	text-align: right;
 }

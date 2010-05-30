@@ -9,10 +9,11 @@ version 0.5
 table								{ border-collapse: collapse; border-top: solid 3px #000; position: relative; margin-top: 18px; width: 100%;}
 
 th, td								{ line-height: 18px; padding: 9px 18px 8px 0; }
-thead th, thead td					{ padding-top: 7px; }
+thead th, thead td					{ padding-top: 7px; border-bottom: solid 1px #000; }
+tfoot							{ border-top: solid 2px #000; }
 tfoot th, tfoot td					{ padding-bottom: 8px; }
-tbody th, tbody td,
-tfoot th, tfoot td					{ border-top: solid 1px #000; }
+tbody th,
+tfoot th 						{ border-top: solid 1px #000; }
  
 th:first-child, td:first-child		{ padding-left: 0; }
 th:last-child, td:last-child		{ padding-right: 0; }

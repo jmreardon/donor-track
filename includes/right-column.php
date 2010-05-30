@@ -16,7 +16,7 @@
 
 ?>
 
-<script type="text/JavaScript">
+<script type="text/javascript">
 <!--
 function MM_findObj(n, d) { //v4.01
   var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {

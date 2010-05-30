@@ -24,31 +24,6 @@ $year = get_fiscal_year();
 if(is_numeric($_GET['year'])) {
   $year = $_GET['year'];
 }
-//SORTING
-$name = "name_up";
-if (isset($_GET['name_up'])) {
-$sorder = "ORDER BY contact_last ASC";
-$name = "name_down";
-} elseif (isset($_GET['name_down'])) {
-$sorder = "ORDER BY contact_last DESC";
-}
-
-$email = "email_up";
-if (isset($_GET['email_up'])) {
-$sorder = "ORDER BY contact_email ASC";
-$email = "email_down";
-} elseif (isset($_GET['email_down'])) {
-$sorder = "ORDER BY contact_email DESC";
-}
-
-$phone = "phone_up";
-if (isset($_GET['phone_up'])) {
-$sorder = "ORDER BY contact_phone ASC";
-$phone = "phone_down";
-} elseif (isset($_GET['email_phone'])) {
-$sorder = "ORDER BY contact_phone DESC";
-}
-//END SORTING
 
 $query_donations = "SELECT 
     donation_id, 
@@ -109,6 +84,24 @@ $stats = donation_stats($year);
           <th class="nosort"></th>
         </tr>
         </thead>
+        <tfoot>
+        <tr>
+          <td colspan="6" class="right-cell">Expected</td>
+          <td class="right-cell">$<?php echo $stats->expected ?></td>
+        </tr>
+        <tr>
+          <td colspan="6" class="right-cell">Pledged</td>
+          <td class="right-cell">$<?php echo $stats->pledged ?></td>
+        </tr>
+        <tr>
+          <td colspan="6" class="right-cell">Received</td>
+          <td class="right-cell">$<?php echo $stats->received ?></td>
+        </tr>
+        <tr>
+          <td colspan="6" class="right-cell">Total</td>
+          <td class="right-cell">$<?php echo $stats->total ?></td>
+        </tr>
+        </tfoot>
         <tbody>
 <?php if ($totalRows_donations > 0) { ?>
   <?php do { $row_count++; ?>
@@ -156,17 +149,6 @@ $stats = donation_stats($year);
         </tbody>
       </table>
       <br />
-      <h2>Statistics</h2>
-      <div class="unitx2">
-        <div class="unitx1 column first">Expected</div>
-        <div class="unitx1 column align-right">$<?php echo $stats->expected ?></div>
-        <div class="unitx1 column first">Pledged</div>
-        <div class="unitx1 column align-right">$<?php echo $stats->pledged ?></div>
-        <div class="unitx1 column first">Received</div>
-        <div class="unitx1 column align-right">$<?php echo $stats->received ?></div>
-        <div class="unitx1 column first">Total</div>
-        <div class="unitx1 column align-right">$<?php echo $stats->total ?></div>
-      </div>
   </div>
   <?php include('includes/right-column.php'); ?>
   <br clear="all" />
