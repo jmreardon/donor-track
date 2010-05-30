@@ -20,6 +20,14 @@ if (!isset($_SESSION['user'])) {
 header('Location: login.php');
 }
 
+function generate_password($password, $salt) {
+  return hash_hmac("sha256", $password, $password_salt);
+}
+
+function check_password($password, $hash, $salt) {
+  return $hash== hash_hmac("sha256", $password, $salt);
+}
+
 //GET USER INFORMATION
 mysql_select_db($database_contacts, $contacts);
 $query_userinfo = "SELECT * FROM users WHERE user_email = '".$_SESSION['user']."'";

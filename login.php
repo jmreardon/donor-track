@@ -42,12 +42,13 @@ $dis = block;
 
 if ($_POST['email']  && $_POST['password']) {
 mysql_select_db($database_contacts, $contacts);
-$query_logincheck = "SELECT * FROM users WHERE user_email = '".mysql_real_escape_string($_POST['email'])."' AND user_password = '".mysql_real_escape_string($_POST['password'])."'";
+$query_logincheck = "SELECT * FROM users WHERE user_email = '".mysql_real_escape_string($_POST['email'])."'";
 $logincheck = mysql_query($query_logincheck, $contacts) or die(mysql_error());
 $row_logincheck = mysql_fetch_assoc($logincheck);
 $totalRows_logincheck = mysql_num_rows($logincheck);
 
-if ($totalRows_logincheck==1) { 
+if ($totalRows_logincheck==1 && 
+    check_password($_POST['password'], $row_logincheck['user_password'], $row_logincheck['user_salt']) { 
 	$_SESSION['user'] = mysql_real_escape_string($_POST['email']);
 	$redirect = $row_logincheck['user_home'];
 	header(sprintf('Location: %s', $redirect)); die;	

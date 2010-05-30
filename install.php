@@ -69,7 +69,7 @@ mysql_query("CREATE TABLE `contacts` (
   `contact_updated` int(11) default NULL,
   `contact_user` int(11) default NULL,
   PRIMARY KEY  (`contact_id`)
-) TYPE=MyISAM");
+)");
 
 
 mysql_query("CREATE TABLE `users` (
@@ -77,12 +77,16 @@ mysql_query("CREATE TABLE `users` (
   `user_level` int(11) default NULL,
   `user_email` varchar(255) default NULL,
   `user_password` varchar(255) default NULL,
+  `user_salt` varchar(255) default NULL,
   `user_date` int(10) default NULL,
   `user_home` varchar(255) default NULL,
   PRIMARY KEY  (`user_id`)
-) TYPE=MyISAM");
+)");
 
-mysql_query("INSERT INTO `users` (`user_id`, `user_level`, `user_email`, `user_password`, `user_date`, `user_home`) VALUES (1, 1, '".mysql_real_escape_string(trim($_POST['email']))."', '".mysql_real_escape_string(trim($_POST['password']))."', NULL, 'index.php')");
+
+$password_salt = time();
+
+mysql_query("INSERT INTO `users` (`user_id`, `user_level`, `user_email`, `user_password`, `user_salt`, `user_date`, `user_home`) VALUES (1, 1, '".mysql_real_escape_string(trim($_POST['email']))."', '".mysql_real_escape_string(generate_password(trim($_POST['password']), $password_salt))."', " . mysql_real_escape_string($password_salt) . "NULL, 'index.php')");
 
 mysql_query("CREATE TABLE `history` (
   `history_id` int(11) NOT NULL auto_increment,
@@ -92,7 +96,7 @@ mysql_query("CREATE TABLE `history` (
   `history_status` int(11) default NULL,
   `history_user` int(11) default NULL,
   PRIMARY KEY  (`history_id`)
-) TYPE=MyISAM");
+)");
 
 
 
@@ -104,14 +108,14 @@ mysql_query("CREATE TABLE `notes` (
   `note_status` int(11) default NULL,
   `note_user` int(11) default NULL,
   PRIMARY KEY  (`note_id`)
-) TYPE=MyISAM");
+)");
 
 
 mysql_query("CREATE TABLE `tags` (
   `tag_id` int(11) NOT NULL auto_increment,
   `tag_description` varchar(255) character set utf8 default NULL,
   PRIMARY KEY  (`tag_id`)
-) TYPE=MyISAM");
+)");
 
 
 mysql_query("CREATE TABLE `tags_assoc` (
@@ -119,7 +123,7 @@ mysql_query("CREATE TABLE `tags_assoc` (
   `itag_contact` int(11) default NULL,
   `itag_tag` int(11) default NULL,
   PRIMARY KEY  (`itag_id`)
-) TYPE=MyISAM");
+)");
 
 
 $_SESSION['user'] = $_POST['email'];
