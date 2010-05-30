@@ -48,7 +48,7 @@ $row_logincheck = mysql_fetch_assoc($logincheck);
 $totalRows_logincheck = mysql_num_rows($logincheck);
 
 if ($totalRows_logincheck==1 && 
-    check_password($_POST['password'], $row_logincheck['user_password'], $row_logincheck['user_salt']) { 
+    check_password($_POST['password'], $row_logincheck['user_password'], $row_logincheck['user_salt'])) { 
 	$_SESSION['user'] = mysql_real_escape_string($_POST['email']);
 	$redirect = $row_logincheck['user_home'];
 	header(sprintf('Location: %s', $redirect)); die;	
