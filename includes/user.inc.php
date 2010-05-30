@@ -23,9 +23,8 @@ function check_password($password, $hash, $salt) {
 }
 
 function update_profile($email, $password = NULL, $home = NULL) {
-  mysql_select_db($database_contacts, $contacts);
   $query_profile = "SELECT * FROM users";
-  $profile = mysql_query($query_profile, $contacts) or die(mysql_error());
+  $profile = mysql_query($query_profile) or die(mysql_error());
   $row_profile = mysql_fetch_assoc($profile);
 
   $password = $row_profile['user_password'];
