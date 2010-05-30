@@ -1,0 +1,175 @@
+<?php require_once('includes/config.php'); 
+ob_start();
+
+include('includes/sc-includes.php');
+$pagetitle = Contact;
+
+if (!function_exists("GetSQLValueString")) {
+function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
+{
+  $theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
+
+  $theValue = function_exists("mysql_real_escape_string") ? mysql_real_escape_string($theValue) : mysql_escape_string($theValue);
+
+  switch ($theType) {
+    case "text":
+      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+      break;    
+    case "long":
+    case "int":
+      $theValue = ($theValue != "") ? intval($theValue) : "NULL";
+      break;
+    case "double":
+      $theValue = ($theValue != "") ? "'" . doubleval($theValue) . "'" : "NULL";
+      break;
+    case "date":
+      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+      break;
+    case "defined":
+      $theValue = ($theValue != "") ? $theDefinedValue : $theNotDefinedValue;
+      break;
+  }
+  return $theValue;
+}
+}
+
+$editFormAction = $_SERVER['PHP_SELF'];
+if (isset($_SERVER['QUERY_STRING'])) {
+  $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
+}
+
+?>
+<?php if ($_GET['csv']=="import") { ?>
+<?php
+$row = 1;
+$handle = fopen ($_FILES['csv']['tmp_name'],"r");
+
+while ($data = fgetcsv ($handle, 1000, ",")) {
+
+
+$checkc = mysql_num_rows(mysql_query("SELECT * FROM contacts WHERE contact_id = ".$data[0].""));
+
+	if ($checkc > 0) {
+
+//UPDATE CURRENT RECORDS
+  $updateSQL = sprintf("UPDATE contacts SET `contact_first`=%s, contact_last=%s, contact_title=%s, contact_company=%s, contact_street=%s, contact_city=%s, contact_state=%s, contact_zip=%s, contact_email=%s, contact_phone=%s, contact_fax=%s, contact_web=%s, contact_profile=%s WHERE contact_id=".$data['0']."",
+                       GetSQLValueString($data['1'], "text"),
+                       GetSQLValueString($data['2'], "text"),
+                       GetSQLValueString($data['3'], "text"),
+                       GetSQLValueString($data['4'], "text"),
+                       GetSQLValueString($data['5'], "text"),
+                       GetSQLValueString($data['6'], "text"),
+                       GetSQLValueString($data['7'], "text"),
+                       GetSQLValueString($data['8'], "text"),
+                       GetSQLValueString($data['9'], "text"),
+                       GetSQLValueString($data['10'], "text"),
+                       GetSQLValueString($data['11'], "text"),
+                       GetSQLValueString($data['12'], "text"),
+                       GetSQLValueString($data['13'], "text"));
+
+  mysql_select_db($database_contacts);
+  $Result1 = mysql_query($updateSQL) or die(mysql_error());
+
+}
+//
+
+
+else { 
+
+if ($row > 1) {
+
+//INSERT NEW RECORDS
+  $insertSQL = sprintf("INSERT INTO contacts (`contact_first`, contact_last, contact_title, contact_company, contact_street, contact_city, contact_state, contact_zip, contact_email, contact_phone, contact_fax, contact_web, contact_profile) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                       GetSQLValueString($data['1'], "text"),
+                       GetSQLValueString($data['2'], "text"),
+                       GetSQLValueString($data['3'], "text"),
+                       GetSQLValueString($data['4'], "text"),
+                       GetSQLValueString($data['5'], "text"),
+                       GetSQLValueString($data['6'], "text"),
+                       GetSQLValueString($data['7'], "text"),
+                       GetSQLValueString($data['8'], "text"),
+                       GetSQLValueString($data['9'], "text"),
+                       GetSQLValueString($data['10'], "text"),
+                       GetSQLValueString($data['11'], "text"),
+                       GetSQLValueString($data['12'], "text"),
+                       GetSQLValueString($data['13'], "text"));
+    
+
+
+  mysql_select_db($database_contacts);
+  $Result1 = mysql_query($insertSQL) or die(mysql_error());
+	$cid = mysql_insert_id();
+
+
+mysql_query("INSERT INTO history (history_contact, history_date, history_status) VALUES
+(
+	".$cid.",
+	".time().",
+	1
+)
+");
+
+
+//
+}
+$row++;
+}
+
+}
+
+header('Location: contacts.php');
+}
+
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title><?php echo $pagetitle; ?>s</title>
+<script src="includes/lib/prototype.js" type="text/javascript"></script>
+<script src="includes/src/effects.js" type="text/javascript"></script>
+<script src="includes/validation.js" type="text/javascript"></script>
+<script src="includes/src/scriptaculous.js" type="text/javascript"></script>
+
+<link href="includes/style.css" rel="stylesheet" type="text/css" />
+<link href="includes/simplecustomer.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<?php include('includes/header.php'); ?>
+  
+  <div class="container">
+  <div class="leftcolumn">
+    <h2>Batch Import </h2>
+    <table width="540" border="0" cellpadding="0" cellspacing="0">
+      
+      <tr>
+        <td colspan="2">Click on &quot;Export Contacts&quot; below to see how to set up your CSV file for importing.</td>
+      </tr>
+      <tr>
+        <td colspan="2"><form name="form1" id="form1" enctype="multipart/form-data" method="post" action="?csv=import">
+            <input name="csv" type="file" id="csv" size="40" />
+            <br />
+            <input name="submit" type="submit" value="Import File" />
+            <a href="csv.php"></a> 
+        </form></td>
+      </tr>
+      <tr>
+        <td colspan="2">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="2"><a href="csv.php"><strong>+ Export Contacts</strong></a></td>
+      </tr>
+    </table>    
+    <p>&nbsp; </p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+  </div>
+  <?php include('includes/right-column.php'); ?>
+  <br clear="all" />
+</div>
+
+<?php include('includes/footer.php'); ?>
+
+</body>
+</html>
