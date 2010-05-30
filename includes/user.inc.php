@@ -15,11 +15,11 @@
 //   limitations under the License.
 
 function generate_password($password, $salt) {
-  return hash_hmac("sha256", $password, $password_salt);
+  return hash_hmac("sha256", $password, $salt);
 }
 
 function check_password($password, $hash, $salt) {
-  return $hash== hash_hmac("sha256", $password, $salt);
+  return $hash == hash_hmac("sha256", $password, $salt);
 }
 
 ?>
