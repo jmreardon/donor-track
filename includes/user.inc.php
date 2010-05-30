@@ -27,9 +27,6 @@ function update_profile($email, $password = NULL, $home = NULL) {
   $profile = mysql_query($query_profile) or die(mysql_error());
   $row_profile = mysql_fetch_assoc($profile);
 
-  $password = $row_profile['user_password'];
-  $password_salt = $row_profile['user_salt'];
-
   if ($home == NULL) {
     $home = $row_profile['user_home'];
   }
@@ -37,14 +34,20 @@ function update_profile($email, $password = NULL, $home = NULL) {
   if ($password) {
     $password_salt = time();
     $password = generate_password($password, $password_salt);
+  } else {
+    $password = $row_profile['user_password'];
+    $password_salt = $row_profile['user_salt'];
   }
 
   $result= mysql_query("UPDATE users SET 
     user_email = '".mysql_real_escape_string(trim($email))."', 
     user_password = '".mysql_real_escape_string(trim($password))."', 
     user_salt = '".mysql_real_escape_string(trim($password_salt))."', 
-    user_home = '".mysql_real_escape_string(trim($home))."',
-    WHERE user_email = '" . mysql_real_escape_string(trim($email)));
+    user_home = '".mysql_real_escape_string(trim($home))."' 
+    WHERE user_email = '" . mysql_real_escape_string(trim($email)) . "'");
+  if(mysql_error()) {
+    die(mysql_error());
+  }
   return mysql_num_rows($result);
 }
 
