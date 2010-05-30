@@ -77,6 +77,7 @@ Search results for <em><?php echo $_GET['s']; ?></em>.<br />
 </div>
           <?php if ($totalRows_notes!=$i) { ?><hr /><?php } ?>
               <?php $i++;  } while ($row_notes = mysql_fetch_assoc($notes)); ?>
+    <hr />
 <?php } ?>
     <h2>Donations - <?php echo get_fiscal_year() ?></h2>
     <div class="unitx2">
