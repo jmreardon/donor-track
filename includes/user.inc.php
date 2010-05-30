@@ -32,7 +32,7 @@ function update_profile($email, $password = NULL, $home = NULL) {
   $password_salt = $row_profile['user_salt'];
 
   if ($home == NULL) {
-    $home = row_profile['user_home'];
+    $home = $row_profile['user_home'];
   }
 
   if ($password) {
