@@ -16,7 +16,6 @@
 
 ?>
 
-<link href="../includes/simplecustomer.css" rel="stylesheet" type="text/css" />
 <script type="text/JavaScript">
 <!--
 function MM_findObj(n, d) { //v4.01

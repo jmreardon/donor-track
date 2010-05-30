@@ -220,44 +220,13 @@ $value = trim($value);
 	header('Location: '.$redirect); die;
 }
 }
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title><?php if ($update==0) { echo "Add Contact"; } ?><?php echo $row_contact['contact_first']; ?> <?php echo $row_contact['contact_last']; ?></title>
-<script src="includes/lib/prototype.js" type="text/javascript"></script>
-<script src="includes/src/effects.js" type="text/javascript"></script>
-<script src="includes/validation.js" type="text/javascript"></script>
-<script src="includes/src/scriptaculous.js" type="text/javascript"></script>
-<script language="javascript">
-function toggleLayer(whichLayer)
-{
-if (document.getElementById)
-{
-// this is the way the standards work
-var style2 = document.getElementById(whichLayer).style;
-style2.display = style2.display? "":"block";
-}
-else if (document.all)
-{
-// this is the way old msie versions work
-var style2 = document.all[whichLayer].style;
-style2.display = style2.display? "":"block";
-}
-else if (document.layers)
-{
-// this is the way nn4 works
-var style2 = document.layers[whichLayer].style;
-style2.display = style2.display? "":"block";
-}
-}
-</script>
-<link href="includes/style.css" rel="stylesheet" type="text/css" />
-<link href="includes/simplecustomer.css" rel="stylesheet" type="text/css" />
-</head>
 
-<body>
+if ($update==0) { 
+  $title_text = "Add Contact"; 
+} else {
+  $title_text = $row_contact['contact_first'] . " " . $row_contact['contact_last'];
+}
+?>
 <?php include('includes/header.php'); ?>
 <div class="container">
   <div class="leftcolumn">
@@ -288,71 +257,24 @@ style2.display = style2.display? "":"block";
 <div <?php if ($update!=1) { ?>id="morecontact" style="display:none"<?php } ?>>
             <table  width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
-                <td>Street<br />
+                <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr><td>Street<br />
                     <input name="contact_street" type="text" id="contact_street" value="<?php echo $row_contact['contact_street']; ?>" size="35" /></td>
+                    <td width="61%">City<br />
+                      <input name="contact_city" type="text" id="contact_city" value="<?php echo $row_contact['contact_city']; ?>" size="35" /></td>
+                </table></td>
               </tr>
               <tr>
                 <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
-                      <td width="39%">City<br />
-                          <input name="contact_city" type="text" id="contact_city" value="<?php echo $row_contact['contact_city']; ?>" size="35" /></td>
-                      <td width="27%" valign="top">State<br />
-                          <select name="contact_state" id="contact_state">
-<option value="">Select a state...</option>
-                            <option value="AL" <?php if (!(strcmp("AL", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Alabama</option>
-                            <option value="AK" <?php if (!(strcmp("AK", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Alaska</option>
-                            <option value="AZ" <?php if (!(strcmp("AZ", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Arizona</option>
-                            <option value="AR" <?php if (!(strcmp("AR", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Arkansas</option>
-                            <option value="CA" <?php if (!(strcmp("CA", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>California</option>
-                            <option value="CO" <?php if (!(strcmp("CO", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Colorado</option>
-                            <option value="CT" <?php if (!(strcmp("CT", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Connecticut</option>
-                            <option value="DE" <?php if (!(strcmp("DE", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Delaware</option>
-                            <option value="DC" <?php if (!(strcmp("DC", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>District of Columbia</option>
-                            <option value="FL" <?php if (!(strcmp("FL", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Florida</option>
-                            <option value="GA" <?php if (!(strcmp("GA", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Georgia</option>
-                            <option value="HI" <?php if (!(strcmp("HI", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Hawaii</option>
-                            <option value="ID" <?php if (!(strcmp("ID", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Idaho</option>
-                            <option value="IL" <?php if (!(strcmp("IL", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Illinois</option>
-                            <option value="IN" <?php if (!(strcmp("IN", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Indiana</option>
-                            <option value="IA" <?php if (!(strcmp("IA", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Iowa</option>
-                            <option value="KS" <?php if (!(strcmp("KS", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Kansas</option>
-                            <option value="KY" <?php if (!(strcmp("KY", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Kentucky</option>
-                            <option value="LA" <?php if (!(strcmp("LA", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Louisiana</option>
-                            <option value="ME" <?php if (!(strcmp("ME", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Maine</option>
-                            <option value="MD" <?php if (!(strcmp("MD", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Maryland</option>
-                            <option value="MA" <?php if (!(strcmp("MA", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Massachusetts</option>
-                            <option value="MI" <?php if (!(strcmp("MI", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Michigan</option>
-                            <option value="MN" <?php if (!(strcmp("MN", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Minnesota</option>
-                            <option value="MS" <?php if (!(strcmp("MS", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Mississippi</option>
-                            <option value="MO" <?php if (!(strcmp("MO", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Missouri</option>
-                            <option value="MT" <?php if (!(strcmp("MT", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Montana</option>
-                            <option value="NE" <?php if (!(strcmp("NE", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Nebraska</option>
-                            <option value="NV" <?php if (!(strcmp("NV", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Nevada</option>
-                            <option value="NH" <?php if (!(strcmp("NH", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>New Hampshire</option>
-                            <option value="NJ" <?php if (!(strcmp("NJ", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>New Jersey</option>
-                            <option value="NM" <?php if (!(strcmp("NM", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>New Mexico</option>
-                            <option value="NY" <?php if (!(strcmp("NY", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>New York</option>
-                            <option value="NC" <?php if (!(strcmp("NC", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>North Carolina</option>
-                            <option value="ND" <?php if (!(strcmp("ND", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>North Dakota</option>
-                            <option value="OH" <?php if (!(strcmp("OH", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Ohio</option>
-                            <option value="OK" <?php if (!(strcmp("OK", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Oklahoma</option>
-                            <option value="OR" <?php if (!(strcmp("OR", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Oregon</option>
-                            <option value="PA" <?php if (!(strcmp("PA", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Pennsylvania</option>
-                            <option value="RI" <?php if (!(strcmp("RI", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Rhode Island</option>
-                            <option value="SC" <?php if (!(strcmp("SC", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>South Carolina</option>
-                            <option value="SD" <?php if (!(strcmp("SD", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>South Dakota</option>
-                            <option value="TN" <?php if (!(strcmp("TN", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Tennessee</option>
-                            <option value="TX" <?php if (!(strcmp("TX", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Texas</option>
-                            <option value="UT" <?php if (!(strcmp("UT", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Utah</option>
-                            <option value="VT" <?php if (!(strcmp("VT", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Vermont</option>
-                            <option value="VA" <?php if (!(strcmp("VA", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Virginia</option>
-                            <option value="WA" <?php if (!(strcmp("WA", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Washington</option>
-                            <option value="WV" <?php if (!(strcmp("WV", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>West Virginia</option>
-                            <option value="WI" <?php if (!(strcmp("WI", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Wisconsin</option>
-                            <option value="WY" <?php if (!(strcmp("WY", $row_contact['contact_state']))) {echo "selected=\"selected\"";} ?>>Wyoming</option>
-                        </select></td>
-                      <td width="34%">Zip<br />
+                      <td width="27%" valign="top">Province/State<br />
+			  <input name="contact_state" type="text" id="contact_state" value="<?php echo $row_contact['contact_state']; ?>" size="35" />
+                      </td>
+                      <td>Postal Code<br />
                           <input name="contact_zip" type="text" id="contact_zip" value="<?php echo $row_contact['contact_zip']; ?>" size="10" /></td>
+                      <td>Country<br />
+                          <input name="contact_country" type="text" id="contact_country" value="<?php echo $row_contact['contact_country']; ?>" size="10" /></td>
+                    </tr>
                     </tr>
                 </table></td>
               </tr>

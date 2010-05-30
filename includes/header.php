@@ -20,7 +20,20 @@ $row_history = mysql_fetch_assoc($history);
 $totalRows_history = mysql_num_rows($history);
 
 ?>
-<link href="simplecustomer.css" rel="stylesheet" type="text/css" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title><?php if($title_text) { echo $title_text; } else { echo $pagetitle; } ?></title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<script src="includes/lib/prototype.js" type="text/javascript"></script>
+<script src="includes/src/effects.js" type="text/javascript"></script>
+<script src="includes/validation.js" type="text/javascript"></script>
+<script src="includes/src/scriptaculous.js" type="text/javascript"></script>
+
+<link href="includes/style.css" rel="stylesheet" type="text/css" />
+<link href="includes/simplecustomer.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
 <div class="headercontainer"> 
   <div class="header">
     <h1>Simple Customer</h1>
