@@ -21,7 +21,7 @@ if (isset($_SESSION['user'])) {
 header('Location: index.php');
 }
 mysql_select_db($database_contacts, $contacts);
-$pagetitle = Login;
+$pagetitle = "Login";
 
 //SET SUCCESS NOTICES
 function set_msg($msg) 
@@ -34,9 +34,9 @@ function display_msg() {
 	unset($_SESSION['msg']);
 }
 
-$dis = none;
+$dis = "none";
 if (isset($_SESSION['msg'])) {
-$dis = block;
+$dis = "block";
 }
 //
 

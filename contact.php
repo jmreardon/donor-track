@@ -16,7 +16,7 @@
 //   limitations under the License.
 
 include('includes/sc-includes.php');
-$pagetitle = Contact;
+$pagetitle = "Contact";
 
 $update = 0;
 if (isset($_GET['id'])) {
@@ -230,7 +230,7 @@ if ($update==0) {
 <?php include('includes/header.php'); ?>
 <div class="container">
   <div class="leftcolumn">
-    <h2><?php if ($update==1) { echo Update; } else { echo Add; } ?> Contact </h2>
+    <h2><?php if ($update==1) { echo 'Update'; } else { echo 'Add'; } ?> Contact </h2>
     <p>&nbsp;</p>
     <form action="<?php echo $editFormAction; ?>" method="POST" enctype="multipart/form-data" name="form1" id="form1">
     <fieldset class="first unitx4">

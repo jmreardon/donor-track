@@ -15,7 +15,7 @@
 //   limitations under the License.
 
 include('includes/sc-includes.php');
-$pagetitle = Contact;
+$pagetitle = "Contact";
 
 mysql_select_db($database_contacts, $contacts);
 $query_contacts = "SELECT 
@@ -78,7 +78,7 @@ header('Location: contacts.php'); die;
           <td><a href="contact-details.php?id=<?php echo $row_contacts['contact_id']; ?>">
             <?php printf("%s, %s", $row_contacts['contact_last'], $row_contacts['contact_first']); ?>
           </a></td>
-          <td><?php echo $row_contacts[contact_phone] ? $row_contacts['contact_phone'] : $na; ?></td>
+          <td><?php echo $row_contacts['contact_phone'] ? $row_contacts['contact_phone'] : $na; ?></td>
           <td><a href="mailto:<?php echo $row_contacts['contact_email']; ?>"><?php echo $row_contacts['contact_email']; ?></a></td>
           <td><?php echo $row_contacts['last_donation'] ? $row_contacts['last_donation'] : $na; ?></td>
           <td>

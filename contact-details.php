@@ -17,7 +17,7 @@
 //   limitations under the License.
 
 include('includes/sc-includes.php');
-$pagetitle = ContactDetails;
+$pagetitle = "ContactDetails";
 
 $update = 0;
 if (isset($_GET['note'])) {
@@ -159,7 +159,7 @@ $title_text = $row_contact['contact_first'] . " " . $row_contact['contact_last']
 <?php if ($update==0) { echo "Add a new note <br>"; } ?>
 <textarea name="note_text" style="width:95% "rows="3" id="note_text" class="required"><?php echo $row_note['note_text']; ?></textarea>
         <br />
-        <input type="submit" name="Submit2" value="<?php if ($update==1) { echo Update; } else { echo Add; } ?> note" />
+        <input type="submit" name="Submit2" value="<?php if ($update==1) { echo 'Update'; } else { echo 'Add'; } ?> note" />
       <?php if ($update==1) { ?>  <a href="delete.php?note=<?php echo $row_note['note_id']; ?>&amp;id=<?php echo $row_note['note_contact']; ?>" onclick="javascript:return confirm('Are you sure you want to delete this note?')">Delete Note</a><?php } ?>
 <?php if ($totalRows_notes > 0) { ?>
         <hr />

@@ -17,7 +17,7 @@
 ob_start();
 
 include('includes/sc-includes.php');
-$pagetitle = Contact;
+$pagetitle = "Contact";
 
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 

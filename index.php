@@ -17,7 +17,7 @@
 
 include('includes/sc-includes.php');
 include('includes/donation.inc.php');
-$pagetitle = Dashboard;
+$pagetitle = "Dashboard";
 
 if (empty($_GET['s']) && isset($_GET['s'])) {
 header('Location: '.$_SERVER['HTTP_REFERER']); die;

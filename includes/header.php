@@ -42,10 +42,10 @@ $totalRows_history = mysql_num_rows($history);
 <div class="headercontainer"> 
   <div class="header">
     <h1>Donor Track</h1>
-    <a href="index.php" class="menubuttons <?php if ($pagetitle==Dashboard) { echo menubuttonsactive; } ?>">Dashboard</a>
-    <a href="contacts.php" class="menubuttons <?php if ($pagetitle==Contact || $pagetitle==ContactDetails) { echo menubuttonsactive; } ?>">Contacts</a>
-    <a href="donations.php" class="menubuttons <?php if ($pagetitle=="Donations") { echo menubuttonsactive; } ?>">Donations</a>
-    <a href="admin.php" class="menubuttons <?php if ($pagetitle=="Admin") { echo menubuttonsactive; } ?>">Admin</a>
+    <a href="index.php" class="menubuttons <?php if ($pagetitle=="Dashboard") { echo "menubuttonsactive"; } ?>">Dashboard</a>
+    <a href="contacts.php" class="menubuttons <?php if ($pagetitle=="Contact" || $pagetitle=="ContactDetails") { echo "menubuttonsactive"; } ?>">Contacts</a>
+    <a href="donations.php" class="menubuttons <?php if ($pagetitle=="Donations") { echo "menubuttonsactive"; } ?>">Donations</a>
+    <a href="admin.php" class="menubuttons <?php if ($pagetitle=="Admin") { echo "menubuttonsactive"; } ?>">Admin</a>
 
     <span class="headerright">Logged in as <?php echo $row_userinfo['user_email']; ?> | <a href="logout.php">Log Out</a> | <a href="profile.php">Update Profile</a> </span><br clear="all" />
   </div>

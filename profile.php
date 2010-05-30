@@ -16,7 +16,7 @@ require_once('includes/user.inc.php');
 //   limitations under the License.
 
 include('includes/sc-includes.php');
-$pagetitle = Profile;
+$pagetitle = "Profile";
 ?>
 <?php
 if (!function_exists("GetSQLValueString")) {
