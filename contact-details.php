@@ -134,7 +134,7 @@ $title_text = $row_contact['contact_first'] . " " . $row_contact['contact_last']
         <hr />
         <?php do { ?>
 <div <?php if ($row_notes['note_date'] > time()-1) { ?>id="newnote"<?php } ?>>
-        <span class="datedisplay"><a href="?id=<?php echo $row_contact['contact_id']; ?>&note=<?php echo $row_notes['note_id']; ?>"><?php echo date('F d, Y', $row_notes['note_date']); ?></a></span><br />
+        <span class="datedisplay"><a href="?id=<?php echo $row_contact['contact_id']; ?>&note=<?php echo $row_notes['note_id']; ?>"><?php echo date('F d, Y g:mA', $row_notes['note_date']); ?></a></span><br />
           <?php echo $row_notes['note_text']; ?>
 </div>
           <hr />

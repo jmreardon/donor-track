@@ -72,7 +72,7 @@ Search results for <em><?php echo $_GET['s']; ?></em>.<br />
 
     <?php $i = 1; do { ?>
 <div <?php if ($row_notes['note_date'] > time()-1) { ?>id="newnote"<?php } ?>>
-        <span class="datedisplay"><a href="contact-details.php?id=<?php echo $row_notes['note_contact']; ?>&note=<?php echo $row_notes['note_id']; ?>"><?php echo date('F d, Y', $row_notes['note_date']); ?></a></span> for <a href="contact-details.php?id=<?php echo $row_notes['note_contact']; ?>"><?php echo $row_notes['contact_first']; ?> <?php echo $row_notes['contact_last']; ?></a><br />
+        <span class="datedisplay"><a href="contact-details.php?id=<?php echo $row_notes['note_contact']; ?>&note=<?php echo $row_notes['note_id']; ?>"><?php echo date('F d, Y g:mA', $row_notes['note_date']); ?></a></span> for <a href="contact-details.php?id=<?php echo $row_notes['note_contact']; ?>"><?php echo $row_notes['contact_first']; ?> <?php echo $row_notes['contact_last']; ?></a><br />
           <?php echo $row_notes['note_text']; ?>
 </div>
           <?php if ($totalRows_notes!=$i) { ?><hr /><?php } ?>
