@@ -87,7 +87,7 @@ mysql_query("CREATE TABLE `users` (
 
 $password_salt = time();
 
-mysql_query("INSERT INTO `users` (`user_id`, `user_level`, `user_email`, `user_password`, `user_salt`, `user_date`, `user_home`) VALUES (1, 1, '".mysql_real_escape_string(trim($_POST['email']))."', '".mysql_real_escape_string(generate_password(trim($_POST['password']), $password_salt))."', " . mysql_real_escape_string($password_salt) . "NULL, 'index.php')");
+mysql_query("INSERT INTO `users` (`user_id`, `user_level`, `user_email`, `user_password`, `user_salt`, `user_date`, `user_home`) VALUES (1, 1, '".mysql_real_escape_string(trim($_POST['email']))."', '".mysql_real_escape_string(generate_password(trim($_POST['password']), $password_salt)). "', '" . mysql_real_escape_string($password_salt) . "', NULL, 'index.php')");
 
 mysql_query("CREATE TABLE `history` (
   `history_id` int(11) NOT NULL auto_increment,
