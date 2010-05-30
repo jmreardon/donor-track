@@ -33,6 +33,7 @@ $totalRows_history = mysql_num_rows($history);
 <link href="includes/baseline.reset.css" rel="stylesheet" type="text/css" />
 <link href="includes/baseline.grid.css" rel="stylesheet" type="text/css" />
 <link href="includes/baseline.form.css" rel="stylesheet" type="text/css" />
+<link href="includes/baseline.table.css" rel="stylesheet" type="text/css" />
 <link href="includes/style.css" rel="stylesheet" type="text/css" />
 <link href="includes/simplecustomer.css" rel="stylesheet" type="text/css" />
 </head>
