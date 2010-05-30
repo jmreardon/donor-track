@@ -53,9 +53,7 @@ if ($totalRows_logincheck==1 &&
 	$_SESSION['user'] = mysql_real_escape_string($_POST['email']);
 	$redirect = $row_logincheck['user_home'];
 	header(sprintf('Location: %s', $redirect)); die;	
-}
-
-if ($totalRows_logincheck < 1) { 
+} else {
 set_msg('Incorrect Username or Password');
 header('Location: login.php'); die;
 }
