@@ -8,13 +8,13 @@ header('Location: '.$_SERVER['HTTP_REFERER']); die;
 
 $cwhere = "WHERE history_status = 1";
 if (isset($_GET['s'])) {
-$cwhere = "WHERE history_status = 1 AND (contact_tags LIKE '%".$_GET['s']."%' OR contact_first LIKE '%".addslashes($_GET['s'])."%' OR contact_last LIKE '%".addslashes($_GET['s'])."%' OR contact_email LIKE '%".addslashes($_GET['s'])."%' OR contact_company LIKE '%".addslashes($_GET['s'])."%')";
+$cwhere = "WHERE history_status = 1 AND (contact_tags LIKE '%".$_GET['s']."%' OR contact_first LIKE '%".mysql_real_escape_string($_GET['s'])."%' OR contact_last LIKE '%".mysql_real_escape_string($_GET['s'])."%' OR contact_email LIKE '%".mysql_real_escape_string($_GET['s'])."%' OR contact_company LIKE '%".mysql_real_escape_string($_GET['s'])."%')";
 }
 
 $nwhere = "";
 if (isset($_GET['s'])) {
 $search = 1;
-$nwhere = "WHERE note_text LIKE '%".addslashes($_GET['s'])."%' ";
+$nwhere = "WHERE note_text LIKE '%".mysql_real_escape_string($_GET['s'])."%' ";
 }
 
 

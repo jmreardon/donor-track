@@ -66,7 +66,7 @@ mysql_query("CREATE TABLE `users` (
   PRIMARY KEY  (`user_id`)
 ) TYPE=MyISAM");
 
-mysql_query("INSERT INTO `users` (`user_id`, `user_level`, `user_email`, `user_password`, `user_date`, `user_home`) VALUES (1, 1, '".trim($_POST['email'])."', '".trim($_POST['password'])."', NULL, 'index.php')");
+mysql_query("INSERT INTO `users` (`user_id`, `user_level`, `user_email`, `user_password`, `user_date`, `user_home`) VALUES (1, 1, '".mysql_real_escape_string(trim($_POST['email']))."', '".mysql_real_escape_string(trim($_POST['password']))."', NULL, 'index.php')");
 
 mysql_query("CREATE TABLE `history` (
   `history_id` int(11) NOT NULL auto_increment,

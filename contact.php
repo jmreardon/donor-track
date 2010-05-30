@@ -79,21 +79,21 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   mysql_query("INSERT INTO contacts (contact_tags, contact_first, contact_last, contact_title, contact_image, contact_profile, contact_company, contact_street, contact_city, contact_state, contact_zip, contact_phone, contact_cell, contact_email, contact_web, contact_updated) VALUES 
 
 	(
-		'".trim(addslashes($_POST['contact_tags']))."',
-		'".trim(addslashes($_POST['contact_first']))."',
-		'".trim(addslashes($_POST['contact_last']))."',
-		'".trim(addslashes($_POST['contact_title']))."',
-		'".addslashes($picture)."',
-		'".trim(addslashes($_POST['contact_profile']))."',
-		'".trim(addslashes($_POST['contact_company']))."',
-		'".trim(addslashes($_POST['contact_street']))."',
-		'".trim(addslashes($_POST['contact_city']))."',
-		'".trim(addslashes($_POST['contact_state']))."',
-		'".trim(addslashes($_POST['contact_zip']))."',
-		'".trim(addslashes($_POST['contact_phone']))."',
-		'".trim(addslashes($_POST['contact_cell']))."',
-		'".trim(addslashes($_POST['contact_email']))."',
-		'".trim(addslashes($_POST['contact_web']))."',
+		'".mysql_real_escape_string(trim($_POST['contact_tags']))."',
+		'".mysql_real_escape_string(trim($_POST['contact_first']))."',
+		'".mysql_real_escape_string(trim($_POST['contact_last']))."',
+		'".mysql_real_escape_string(trim($_POST['contact_title']))."',
+		'".mysql_real_escape_string($picture)."',
+		'".mysql_real_escape_string(trim($_POST['contact_profile']))."',
+		'".mysql_real_escape_string(trim($_POST['contact_company']))."',
+		'".mysql_real_escape_string(trim($_POST['contact_street']))."',
+		'".mysql_real_escape_string(trim($_POST['contact_city']))."',
+		'".mysql_real_escape_string(trim($_POST['contact_state']))."',
+		'".mysql_real_escape_string(trim($_POST['contact_zip']))."',
+		'".mysql_real_escape_string(trim($_POST['contact_phone']))."',
+		'".mysql_real_escape_string(trim($_POST['contact_cell']))."',
+		'".mysql_real_escape_string(trim($_POST['contact_email']))."',
+		'".mysql_real_escape_string(trim($_POST['contact_web']))."',
 		'".time()."'
 	)
 
@@ -102,7 +102,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 $cid = mysql_insert_id();
 
 //insert tags
-$tags = str_replace("","",addslashes($_POST['contact_tags']));
+$tags = str_replace("","",$_POST['contact_tags']);
 $tags = explode(",",$tags);
 
 foreach ($tags as $key => $value) {
@@ -110,11 +110,11 @@ foreach ($tags as $key => $value) {
 $value = trim($value);
 
 	if ($value) {
-		mysql_query("DELETE FROM tags WHERE tag_description = '".addslashes($value)."'");
+		mysql_query("DELETE FROM tags WHERE tag_description = '".mysql_real_escape_string($value)."'");
 		mysql_query("INSERT INTO tags (tag_description) VALUES
 		
 		(
-			'".addslashes($value)."'
+			'".mysql_real_escape_string($value)."'
 		)
 		
 		");
@@ -142,21 +142,21 @@ if ($update==1) {
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE contacts SET contact_tags=%s, contact_first=%s, contact_last=%s, contact_title=%s, contact_image=%s, contact_profile=%s, contact_company=%s, contact_street=%s, contact_city=%s, contact_state=%s, contact_zip=%s, contact_phone=%s, contact_cell=%s, contact_email=%s, contact_web=%s, contact_updated=%s WHERE contact_id=%s",
 
-                       GetSQLValueString(trim(addslashes($_POST['contact_tags'])), "text"),
-                       GetSQLValueString(trim(addslashes($_POST['contact_first'])), "text"),
-                       GetSQLValueString(trim(addslashes($_POST['contact_last'])), "text"),
-                       GetSQLValueString(trim(addslashes($_POST['contact_title'])), "text"),
-                       GetSQLValueString(addslashes($picture), "text"),
-                       GetSQLValueString(trim(addslashes($_POST['contact_profile'])), "text"),
-                       GetSQLValueString(trim(addslashes($_POST['contact_company'])), "text"),
-                       GetSQLValueString(trim(addslashes($_POST['contact_street'])), "text"),
-                       GetSQLValueString(trim(addslashes($_POST['contact_city'])), "text"),
-                       GetSQLValueString(trim(addslashes($_POST['contact_state'])), "text"),
-                       GetSQLValueString(trim(addslashes($_POST['contact_zip'])), "text"),
-                       GetSQLValueString(trim(addslashes($_POST['contact_phone'])), "text"),
-                       GetSQLValueString(trim(addslashes($_POST['contact_cell'])), "text"),
-                       GetSQLValueString(trim(addslashes($_POST['contact_email'])), "text"),
-                       GetSQLValueString(trim(addslashes($_POST['contact_web'])), "text"),
+                       GetSQLValueString(mysql_real_escape_string(trim($_POST['contact_tags'])), "text"),
+                       GetSQLValueString(mysql_real_escape_string(trim($_POST['contact_first'])), "text"),
+                       GetSQLValueString(mysql_real_escape_string(trim($_POST['contact_last'])), "text"),
+                       GetSQLValueString(mysql_real_escape_string(trim($_POST['contact_title'])), "text"),
+                       GetSQLValueString(mysql_real_escape_string($picture), "text"),
+                       GetSQLValueString(mysql_real_escape_string(trim($_POST['contact_profile'])), "text"),
+                       GetSQLValueString(mysql_real_escape_string(trim($_POST['contact_company'])), "text"),
+                       GetSQLValueString(mysql_real_escape_string(trim($_POST['contact_street'])), "text"),
+                       GetSQLValueString(mysql_real_escape_string(trim($_POST['contact_city'])), "text"),
+                       GetSQLValueString(mysql_real_escape_string(trim($_POST['contact_state'])), "text"),
+                       GetSQLValueString(mysql_real_escape_string(trim($_POST['contact_zip'])), "text"),
+                       GetSQLValueString(mysql_real_escape_string(trim($_POST['contact_phone'])), "text"),
+                       GetSQLValueString(mysql_real_escape_string(trim($_POST['contact_cell'])), "text"),
+                       GetSQLValueString(mysql_real_escape_string(trim($_POST['contact_email'])), "text"),
+                       GetSQLValueString(mysql_real_escape_string(trim($_POST['contact_web'])), "text"),
                        GetSQLValueString(trim($_POST['contact_updated']), "int"),
                        GetSQLValueString(trim($_POST['contact_id']), "int"));
 
@@ -165,7 +165,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 	$pid = $_GET['id'];
 
 //insert tags
-$tags = str_replace("","",addslashes($_POST['contact_tags']));
+$tags = str_replace("","",$_POST['contact_tags']);
 $tags = explode(",",$tags);
 
 foreach ($tags as $key => $value) {
@@ -173,11 +173,11 @@ foreach ($tags as $key => $value) {
 $value = trim($value);
 
 	if ($value) {
-		mysql_query("DELETE FROM tags WHERE tag_description = '".addslashes($value)."'");
+		mysql_query("DELETE FROM tags WHERE tag_description = '".mysql_real_escape_string($value)."'");
 		mysql_query("INSERT INTO tags (tag_description) VALUES
 		
 		(
-			'".addslashes($value)."'
+			'".mysql_real_escape_string($value)."'
 		)
 		
 		");

@@ -65,7 +65,7 @@ if ($_POST['note_text']) {
 mysql_query("INSERT INTO notes (note_contact, note_text, note_date, note_status) VALUES 
 	(
 	".$row_contact['contact_id'].",
-	'".addslashes($_POST['note_text'])."',
+	'".mysql_real_escape_string($_POST['note_text'])."',
 	".time().",
 	1
 	)
@@ -81,7 +81,7 @@ header(sprintf('Location: %s', $goto)); die;
 //UPDATE NOTE
 if ($update==1) {
 if ($_POST['note_text']) {
-mysql_query("UPDATE notes SET note_text = '".addslashes($_POST['note_text'])."' WHERE note_id = ".$_GET['note']."");
+mysql_query("UPDATE notes SET note_text = '".mysql_real_escape_string($_POST['note_text'])."' WHERE note_id = ".$_GET['note']."");
 $cid = $_GET['id'];
 $goto = "contact-details.php?id=$cid";
 set_msg('Note Updated');
