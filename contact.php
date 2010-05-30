@@ -233,95 +233,92 @@ if ($update==0) {
     <h2><?php if ($update==1) { echo Update; } else { echo Add; } ?> Contact </h2>
     <p>&nbsp;</p>
     <form action="<?php echo $editFormAction; ?>" method="POST" enctype="multipart/form-data" name="form1" id="form1">
-      <table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-          <td width="28%">First Name<br />
-            <input name="contact_first" type="text" class="required" id="contact_first" value="<?php echo $row_contact['contact_first']; ?>" size="25" /></td>
-          <td width="72%">Last Name<br />
-                <input name="contact_last" type="text" class="required" id="contact_last" value="<?php echo $row_contact['contact_last']; ?>" size="25" />
-            </p></td>
-        </tr>
-        <tr>
-          <td>Title<br />            <input name="contact_title" type="text" id="contact_title" value="<?php echo $row_contact['contact_title']; ?>" size="25" />          </td>
-          <td>Company<br />
-            <input name="contact_company" type="text" id="contact_company" value="<?php echo $row_contact['contact_company']; ?>" size="35" /></td>
-        </tr>
-        <tr>
-          <td colspan="2">Email <br />
-            <input name="contact_email" type="text" class="required validate-email" id="contact_email" value="<?php echo $row_contact['contact_email']; ?>" size="35" /></td>
-        </tr>
-        <tr>
-          <td colspan="2"><hr />
-         <?php if ($update!=1) { ?>   <p><a href="#" onclick="new Effect.toggle('morecontact', 'slide'); return false;">+Add more contact information </a></p><?php } ?>
+    <fieldset class="first unitx4">
+      <label class="first unitx2">
+      First Name
+      <input name="contact_first" type="text" class="required" id="contact_first" value="<?php echo $row_contact['contact_first']; ?>" />
+      </label>
+      <label class="unitx2">
+      Last Name
+      <input name="contact_last" type="text" class="required" id="contact_last" value="<?php echo $row_contact['contact_last']; ?>" />
+      </label>
+      <label class="first unitx2">
+      Title
+      <input name="contact_title" type="text" id="contact_title" value="<?php echo $row_contact['contact_title']; ?>"  />
+      </label>
+      <label class="unitx2">
+      Company
+      <input name="contact_company" type="text" id="contact_company" value="<?php echo $row_contact['contact_company']; ?>" />
+      </label>
+      <label class="first unitx4">
+      Email
+      <input name="contact_email" type="text" class="validate-email" id="contact_email" value="<?php echo $row_contact['contact_email']; ?>" />
+      </label>
+    </fieldset>
+      <hr />
+     <?php if ($update!=1) { ?>   <p><a href="#" onclick="new Effect.toggle('morecontact', 'slide'); return false;">+Add more contact information </a></p><?php } ?>
 
 <div <?php if ($update!=1) { ?>id="morecontact" style="display:none"<?php } ?>>
-            <table  width="100%" border="0" cellspacing="0" cellpadding="0">
-              <tr>
-                <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
-                  <tr><td>Street<br />
-                    <input name="contact_street" type="text" id="contact_street" value="<?php echo $row_contact['contact_street']; ?>" size="35" /></td>
-                    <td width="61%">City<br />
-                      <input name="contact_city" type="text" id="contact_city" value="<?php echo $row_contact['contact_city']; ?>" size="35" /></td>
-                </table></td>
-              </tr>
-              <tr>
-                <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
-                    <tr>
-                      <td width="27%" valign="top">Province/State<br />
-			  <input name="contact_state" type="text" id="contact_state" value="<?php echo $row_contact['contact_state']; ?>" size="35" />
-                      </td>
-                      <td>Postal Code<br />
-                          <input name="contact_zip" type="text" id="contact_zip" value="<?php echo $row_contact['contact_zip']; ?>" size="10" /></td>
-                      <td>Country<br />
-                          <input name="contact_country" type="text" id="contact_country" value="<?php echo $row_contact['contact_country']; ?>" size="10" /></td>
-                    </tr>
-                    </tr>
-                </table></td>
-              </tr>
-              <tr>
-                <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
-                    <tr>
-                      <td width="39%">Phone<br />
-                          <input name="contact_phone" type="text" id="contact_phone" value="<?php echo $row_contact['contact_phone']; ?>" size="35" /></td>
-                      <td width="61%">Cell<br />
-                          <input name="contact_cell" type="text" id="contact_cell" value="<?php echo $row_contact['contact_cell']; ?>" size="35" /></td>
-                    </tr>
-                </table></td>
-              </tr>
-              <tr>
-                <td>Image<br />
-                    <input name="image" type="file" id="image" /><?php if ($row_contact['contact_image']) { ?>
-                <br />
-                <img src="images/<?php echo $row_contact['contact_image']; ?>" width="95" />
-<?php } ?></td>
-              </tr>
-              <tr>
-                <td>Website<br />
-                    <input name="contact_web" type="text" id="contact_web" value="<?php echo $row_contact['contact_web']; ?>" size="45" /></td>
-              </tr>
-              <tr>
-                <td>Background/Profile<br />
-                    <textarea name="contact_profile" cols="60" rows="3" id="contact_profile"><?php echo $row_contact['contact_profile']; ?></textarea></td>
-              </tr>
-            </table>  
-</div>          
-          <p>&nbsp;</p></td>
-        </tr>
-
-        <tr>
-          <td colspan="2">Tags<br />
-          <input name="contact_tags" type="text" id="contact_tags" value="<?php echo $row_contact['contact_tags']; ?>" size="45" /></td>
-        </tr>
-        <tr>
-          <td colspan="2"><p>
-            <input type="submit" name="Submit2" value="<?php echo $update==1 ? 'Update' : 'Add'; ?> contact" />
-            <input type="hidden" name="MM_insert" value="form1" />
-            <input name="contact_id" type="hidden" id="contact_id" value="<?php echo $row_contact['contact_id']; ?>" />
-            <input name="image_location" type="hidden" id="image_location" value="<?php echo $row_contact['contact_image']; ?>" />
-          </p></td>
-        </tr>
-      </table>
-      <p>&nbsp;</p>
+    <fieldset class="first unitx4">
+      <label class="first unitx2">
+      Street
+      <input name="contact_street" type="text" id="contact_street" value="<?php echo $row_contact['contact_street']; ?>" />
+      </label>
+      <label class="unitx2">
+      City
+      <input name="contact_city" type="text" id="contact_city" value="<?php echo $row_contact['contact_city']; ?>" />
+      </label>
+      <label class="first unitx1">
+      Province/State
+      <input name="contact_state" type="text" id="contact_state" value="<?php echo $row_contact['contact_state']; ?>" />
+      </label>
+      <label class="unitx1">
+      Postal Code
+      <input name="contact_zip" type="text" id="contact_zip" value="<?php echo $row_contact['contact_zip']; ?>" />
+      </label>
+      <label class="unitx2">
+      Country
+      <input name="contact_country" type="text" id="contact_country" value="<?php echo $row_contact['contact_country']; ?>" />
+      </label>
+      <label class="first unitx2">
+      Phone
+      <input name="contact_phone" type="text" id="contact_phone" value="<?php echo $row_contact['contact_phone']; ?>" /></td>
+      </label>
+      <label class="unitx2">
+      Cell
+      <input name="contact_cell" type="text" id="contact_cell" value="<?php echo $row_contact['contact_cell']; ?>" />
+      </label>
+      <label class="first unitx4">
+      Image
+      <input name="image" type="file" id="image" /><?php if ($row_contact['contact_image']) { ?>
+            <br />
+            <img src="images/<?php echo $row_contact['contact_image']; ?>" width="95" />
+<?php } ?>
+      </label>
+      <label class="first unitx4">
+      Website
+      <input name="contact_web" type="text" id="contact_web" value="<?php echo $row_contact['contact_web']; ?>" />
+      </label>
+      <label class="first unitx4">
+      Background/Profile
+      <textarea name="contact_profile" cols="60" rows="3" id="contact_profile">
+        <?php echo $row_contact['contact_profile']; ?>
+      </textarea>
+      </label>
+    </fieldset>
+    </div>
+    <fieldset>
+      <label class="first unitx4">
+      Tags
+      <input name="contact_tags" type="text" id="contact_tags" value="<?php echo $row_contact['contact_tags']; ?>" />
+      </label>
+    </fieldset>
+    <fieldset>
+      <input type="submit" name="Submit2" value="<?php echo $update==1 ? 'Update' : 'Add'; ?> contact" />
+    </fieldset>
+      <input type="hidden" name="MM_insert" value="form1" />
+      <input name="contact_id" type="hidden" id="contact_id" value="<?php echo $row_contact['contact_id']; ?>" />
+      <input name="image_location" type="hidden" id="image_location" value="<?php echo $row_contact['contact_image']; ?>" />
       <input type="hidden" name="MM_update" value="form1">
     </form>
   </div>

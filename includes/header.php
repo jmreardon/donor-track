@@ -30,6 +30,9 @@ $totalRows_history = mysql_num_rows($history);
 <script src="includes/validation.js" type="text/javascript"></script>
 <script src="includes/src/scriptaculous.js" type="text/javascript"></script>
 
+<link href="includes/baseline.reset.css" rel="stylesheet" type="text/css" />
+<link href="includes/baseline.grid.css" rel="stylesheet" type="text/css" />
+<link href="includes/baseline.form.css" rel="stylesheet" type="text/css" />
 <link href="includes/style.css" rel="stylesheet" type="text/css" />
 <link href="includes/simplecustomer.css" rel="stylesheet" type="text/css" />
 </head>
@@ -37,7 +40,11 @@ $totalRows_history = mysql_num_rows($history);
 <div class="headercontainer"> 
   <div class="header">
     <h1>Simple Customer</h1>
-  <a href="index.php" class="menubuttons <?php if ($pagetitle==Dashboard) { echo menubuttonsactive; } ?>">Dashboard</a><a href="contacts.php" class="menubuttons <?php if ($pagetitle==Contact || $pagetitle==ContactDetails) { echo menubuttonsactive; } ?>">Contacts</a><span class="headerright">Logged in as <?php echo $row_userinfo['user_email']; ?> | <a href="logout.php">Log Out</a> | <a href="profile.php">Update Profile</a> </span><br clear="all" />
+    <a href="index.php" class="menubuttons <?php if ($pagetitle==Dashboard) { echo menubuttonsactive; } ?>">Dashboard</a>
+    <a href="contacts.php" class="menubuttons <?php if ($pagetitle==Contact || $pagetitle==ContactDetails) { echo menubuttonsactive; } ?>">Contacts</a>
+    <a href="admin.php" class="menubuttons <?php if ($pagetitle=="Admin") { echo menubuttonsactive; } ?>">Admin</a>
+
+    <span class="headerright">Logged in as <?php echo $row_userinfo['user_email']; ?> | <a href="logout.php">Log Out</a> | <a href="profile.php">Update Profile</a> </span><br clear="all" />
   </div>
   </div>
 

@@ -34,11 +34,6 @@ form {
 	padding: 0px;
 	margin: 0px;
 }
-input, textarea, select {
-	padding: 4px;
-	color: #666666;
-	font-family: Arial, Helvetica, sans-serif;
-}
 
 h1, h2, h3, h4, h5, p {
 	margin: 0px;

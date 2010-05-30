@@ -126,6 +126,15 @@ mysql_query("CREATE TABLE `tags_assoc` (
   PRIMARY KEY  (`itag_id`)
 )");
 
+mysql_query("CREATE TABLE `config` (
+  `config_id` int(11) NOT NULL auto_increment,
+  `name` varchar(255) NOT NULL,
+  `value` varchar(255) NOT NULL,
+  PRIMARY KEY  (`config_id`)
+)");
+
+mysql_query("INSERT INTO `config` (`name`, `value`) VALUES ('fiscal_year', '" . date("Y") . "')");
+
 
 $_SESSION['user'] = $_POST['email'];
 header('Location: install.php?s'); die;

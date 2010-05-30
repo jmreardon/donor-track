@@ -52,10 +52,16 @@ $i++;
 <br />
 <?php } ?>
 
-<form id="form3" name="form3" method="GET" action="index.php">
+<form id="form3" class="unitx2" name="form3" method="GET" action="index.php">
+  <fieldset>
+    <label class="first unitx2">
       <input name="s" type="text" id="s" onfocus="MM_setTextOfTextfield('s','','')" value="Search" size="15" />
-        <input type="submit" name="Submitf" value="Go" />
-  </form>
+    </label>
+  </fieldset>
+  <fieldset>
+    <input type="submit" name="Submitf" value="Go" />
+  </fieldset>
+</form>
 <?php } ?>
     <p>&nbsp;</p>
     <p><a class="addcontact" href="contact.php">+ Add Contact</a></p>
