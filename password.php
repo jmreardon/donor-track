@@ -1,4 +1,5 @@
 <?php require_once('includes/config.php'); 
+require_once('includes/user.inc.php'); 
 
 //   Copyright 2008 johnboyproductions.com
 //
