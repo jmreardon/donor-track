@@ -41,7 +41,7 @@ function update_profile($email, $password = NULL, $home = NULL) {
   }
 
   $result= mysql_query("UPDATE users SET 
-    user_email = '".mysql_real_escape_string(trim($email]))."', 
+    user_email = '".mysql_real_escape_string(trim($email))."', 
     user_password = '".mysql_real_escape_string(trim($password))."', 
     user_salt = '".mysql_real_escape_string(trim($password_salt))."', 
     user_home = '".mysql_real_escape_string(trim($home))."',
