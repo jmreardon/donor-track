@@ -22,56 +22,60 @@ $pagetitle = "Campaigns";
 
 mysql_select_db($database_contacts, $contacts);
 
-if($_POST["action"] == "delete" && is_numeric($_POST["donation"]) && is_numeric($_POST["campaign"])) {
-  mysql_query("DELETE FROM donations WHERE donation_id = " . $_POST["donation"], $contacts) or die(mysql_error());
-  if(mysql_affected_rows($contacts) == 1) {
-    set_msg('Donation Deleted.');
-    header("Location: campaign-details.php?campaign=" . $_POST["campaign"]); die;
-  } else {
-    set_msg('Failed to delete donation.');
-    header("Location: donation-details.php?id=" . $_POST["donation"]); die;
-  }
-} else if($_POST["action"] == "updatestatus" && is_numeric($_POST["donation"])) {
-  if (in_array($_POST['status'], array("Expected", "Pledged", "Received")) &&
-      preg_match("/(\d\d)\/(\d\d)\/(\d\d\d\d)/", trim($_POST['update_date']), $date)) {
-    $status = strtolower($_POST['status']);
-    $pledged_date = 'NULL';
-    $received_date = 'NULL';
-
-    if($status == 'pledged') {
-      $pledged_date = "'" . sprintf("%s-%s-%s", $date[3], $date[2], $date[1]) . "'";
+if(is_numeric($_POST["donation"])) {
+  if($_POST["action"] == "delete" && is_numeric($_POST["donation"]) && is_numeric($_POST["campaign"])) {
+    mysql_query("DELETE FROM donations WHERE donation_id = " . $_POST["donation"], $contacts) or die(mysql_error());
+    if(mysql_affected_rows($contacts) == 1) {
+      set_msg('Donation Deleted.');
+      header("Location: campaign-details.php?campaign=" . $_POST["campaign"]); die;
+    } else {
+      set_msg('Failed to delete donation.');
     }
-
-    if($status == 'received') {
-      $received_date = "'" . sprintf("%s-%s-%s", $date[3], $date[2], $date[1]) . "'";
-      $pledged_date = null;
+  } else if($_POST["action"] == "updatestatus" && is_numeric($_POST["donation"])) {
+    if (in_array($_POST['status'], array("Expected", "Pledged", "Received")) &&
+        preg_match("/(\d\d)\/(\d\d)\/(\d\d\d\d)/", trim($_POST['update_date']), $date)) {
+      $status = strtolower($_POST['status']);
+      $pledged_date = 'NULL';
+      $received_date = 'NULL';
+   
+      if($status == 'pledged') {
+        $pledged_date = "'" . sprintf("%s-%s-%s", $date[3], $date[2], $date[1]) . "'";
+      }
+   
+      if($status == 'received') {
+        $received_date = "'" . sprintf("%s-%s-%s", $date[3], $date[2], $date[1]) . "'";
+        $pledged_date = null;
+      }
+   
+      $update_query = "UPDATE donations SET 
+        donation_status = '$status', " . 
+        ($pledged_date ? "donation_pledge_date = $pledged_date, " : "") .
+       "donation_received_date = $received_date
+        WHERE donation_id = " . $_POST['donation'];
+      mysql_query($update_query, $contacts);
+      set_msg('Donation Updated.');
+    } else {
+      set_msg('Failed to update donation.');
     }
-
-    $update_query = "UPDATE donations SET 
-      donation_status = '$status', " . 
-      ($pledged_date ? "donation_pledge_date = $pledged_date, " : "") .
-     "donation_received_date = $received_date
-      WHERE donation_id = " . $_POST['donation'];
-    mysql_query($update_query, $contacts);
+  } else if($_POST["action"] == "updatedonation" && is_numeric($_POST["donation"])) {
+    if (in_array($_POST['type'], array("Cash", "In Kind")) && 
+        is_numeric($_POST['amount']) &&
+        ((float)$_POST['amount']) > 0) {
+      $value = (int)$_POST['amount']; 
+      $is_cash = $_POST['type'] == "Cash" ? 'true' : 'false';
+      $update_query = "UPDATE donations SET 
+        donation_is_cash = $is_cash, 
+        donation_value = " . $_POST['amount'] . "
+        WHERE donation_id = " . $_POST['donation'];
+      mysql_query($update_query, $contacts);
+      set_msg('Donation Updated.');
+    } else {
+      set_msg('Failed to update donation.');
+    }
+  } else if($_POST["action"] == "updatedescription") {
+    mysql_query(sprintf("UPDATE donations SET donation_description='%s' WHERE donation_id = %s", 
+      mysql_real_escape_string($_POST['description']), $_POST['donation']));
     set_msg('Donation Updated.');
-  } else {
-    set_msg('Failed to update donation.');
-  }
-  header("Location: donation-details.php?id=" . $_POST["donation"]); die;
-} else if($_POST["action"] == "updatedonation" && is_numeric($_POST["donation"])) {
-  if (in_array($_POST['type'], array("Cash", "In Kind")) && 
-      is_numeric($_POST['amount']) &&
-      ((float)$_POST['amount']) > 0) {
-    $value = (int)$_POST['amount']; 
-    $is_cash = $_POST['type'] == "Cash" ? 'true' : 'false';
-    $update_query = "UPDATE donations SET 
-      donation_is_cash = $is_cash, 
-      donation_value = " . $_POST['amount'] . "
-      WHERE donation_id = " . $_POST['donation'];
-    mysql_query($update_query, $contacts);
-    set_msg('Donation Updated.');
-  } else {
-    set_msg('Failed to update donation.');
   }
   header("Location: donation-details.php?id=" . $_POST["donation"]); die;
 }
@@ -135,7 +139,7 @@ $back_track = array('title' => "Campaign " . $row_donation['campaign_name'], 'ur
       <dt class="unitx1">Received</dt>
       <dd><?php echo $row_donation['donation_received_date'] ? date("M j, Y", strtotime($row_donation['donation_received_date'])) : $na; ?></dd>
       <dt class="unitx1">Description</dt>
-      <dd class="width1"><?php echo $row_donation['donation_description'] ? $row_donation['donation_description'] : $na; ?></dd>
+      <dd style="white-space: pre-wrap" class="width1"><?php echo $row_donation['donation_description'] ? $row_donation['donation_description'] : $na; ?></dd>
     </dl>
     <br class="first"/><br /><a href="#" onclick="new Effect.toggle('update_status', 'slide'); return false;">+Update Status</a>
     <br />
@@ -193,6 +197,7 @@ $back_track = array('title' => "Campaign " . $row_donation['campaign_name'], 'ur
     <div id="update_description" style="display:none">
       <form id="form4" name="form4" method="post" action="">
       <input type="hidden" name="donation" id="donation" value="<?php echo $row_donation['donation_id']; ?>" />
+      <input type="hidden" name="action" id="action" value="updatedescription" />
         <fieldset class="width2">
         <label class="column first width1">
           Description

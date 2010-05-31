@@ -92,21 +92,26 @@ $totalRows_campaigns = mysql_num_rows($campaigns);
         <?php } while ($row_campaigns = mysql_fetch_assoc($campaigns)); ?>
       </tbody>
       </table>
-      <form name="form1" id="form1" method="post" action="campaigns.php">
-        <fieldset>
-        <label class="first width1">
-          Name 
-          <input name="campaign_name" id="campaign_name" class="required" type="text" value="" />
-        </label>
-        <label class="unitx1">
-          Target 
-          <input name="campaign_target" id="campaign_target" class="validate-number" type="text" value="" />
-        </label>
-        <label class="unitx1 inlinebutton">
-          <input name="submit" type="submit" value="Add Campaign" />
-        </label>
-        </fieldset>
-      </form>
+      <br />
+      <a href="#" onclick="new Effect.toggle('add_campaign', 'slide'); return false;">+Add Campaign</a>
+      <br />
+      <div id="add_campaign" style="display:none">
+        <form name="form1" id="form1" method="post" action="campaigns.php">
+          <fieldset>
+          <label class="first width1">
+            Name 
+            <input name="campaign_name" id="campaign_name" class="required" type="text" value="" />
+          </label>
+          <label class="unitx1">
+            Target 
+            <input name="campaign_target" id="campaign_target" class="validate-number" type="text" value="" />
+          </label>
+          <label class="unitx1 inlinebutton">
+            <input name="submit" type="submit" value="Add Campaign" />
+          </label>
+          </fieldset>
+        </form>
+      </div>
   </div>
   <?php include('includes/right-column.php'); ?>
   <br clear="all" />
