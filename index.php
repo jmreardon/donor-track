@@ -47,7 +47,10 @@ $contacts = mysql_query($query_contacts, $contacts) or die(mysql_error());
 $row_contacts = mysql_fetch_assoc($contacts);
 $totalRows_contacts = mysql_num_rows($contacts);
 
-$stats = donation_stats(get_fiscal_year());
+$default_campaign = get_default_campaign();
+if($default_campaign) {
+  $stats = donation_stats($default_campaign['campaign_id']);
+}
 
 if ($totalRows_contacts < 1 && !isset($_GET['s'])) { header('Location: contact.php'); }
 ?>
@@ -79,7 +82,8 @@ Search results for <em><?php echo $_GET['s']; ?></em>.<br />
               <?php $i++;  } while ($row_notes = mysql_fetch_assoc($notes)); ?>
     <hr />
 <?php } ?>
-    <h2>Donations - <?php echo get_fiscal_year() ?></h2>
+<?php if($stats) { ?>
+    <h2>Donations - <?php echo $default_campaign['campaign_name'] ?></h2>
     <div class="unitx2">
       <div class="unitx1 column first">Expected</div>
       <div class="unitx1 column align-right">$<?php echo $stats->expected ?></div>
@@ -90,6 +94,7 @@ Search results for <em><?php echo $_GET['s']; ?></em>.<br />
       <div class="unitx1 column first">Total</div>
       <div class="unitx1 column align-right">$<?php echo $stats->total ?></div>
     </div>
+<?php } ?>
   </div>
   <?php include('includes/right-column.php'); ?>
   <br clear="all" />

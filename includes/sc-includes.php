@@ -19,6 +19,7 @@ session_start();
 if (!isset($_SESSION['user'])) {
 header('Location: login.php');
 }
+setlocale(LC_MONETARY, 'en_CA.UTF-8');
 
 //GET USER INFORMATION
 mysql_select_db($database_contacts, $contacts);
@@ -53,11 +54,10 @@ $dis = block;
 }
 //
 
-function get_fiscal_year() {
-  $query_config = "SELECT * FROM config WHERE name = 'fiscal_year'";
-  $config = mysql_query($query_config) or die(mysql_error());
-  $row_config = mysql_fetch_assoc($config);
-  return $row_config['value'];
+function get_default_campaign() {
+  $query_campaign = "SELECT * FROM campaigns ORDER BY campaign_id desc LIMIT 1";
+  $campaign = mysql_query($query_campaign) or die(mysql_error());
+  return mysql_fetch_assoc($config);
 }
 
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 

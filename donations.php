@@ -18,11 +18,26 @@ include('includes/sc-includes.php');
 include('includes/donation.inc.php');
 
 $pagetitle = "Donations";
-$year = get_fiscal_year();
+$campaign = get_default_campaign();
 
 //Set Year
-if(is_numeric($_GET['year'])) {
-  $year = $_GET['year'];
+if($_GET['campaign']) {
+  $campaign = $_GET['campaign'];
+}
+
+mysql_select_db($database_contacts, $contacts);
+$campaigns_result = mysql_query("SELECT * FROM campaigns ORDER BY campaign_id desc", $contacts) or die(mysql_error());
+$campaigns = array();
+$found_campaign = false;
+while($row_campaigns = mysql_fetch_assoc($campaigns_result)) {
+  array_push($campaigns, $row_campaigns);
+  if($row_campaigns['campaign_id'] == $campaign) {
+    $found_campaign = true;
+    $campaign = $row_campaigns;
+  }
+}
+if(!$found_campaign) {
+  $campaign = $campaigns[0];
 }
 
 $query_donations = "SELECT 
@@ -38,22 +53,14 @@ $query_donations = "SELECT
     contact_company 
   FROM donations 
   LEFT JOIN contacts USING (`contact_id`) 
-  WHERE donation_year = $year
+  WHERE campaign_id = " . $campaign['campaign_id'] . "
   ORDER BY contact_last, contact_first";
 
-mysql_select_db($database_contacts, $contacts);
 $donations = mysql_query($query_donations, $contacts) or die(mysql_error());
 $row_donations = mysql_fetch_assoc($donations);
 $totalRows_donations = mysql_num_rows($donations);
 
-$years_result = mysql_query("SELECT DISTINCT donation_year AS year FROM donations ORDER BY year", $contacts) or die(mysql_error());
-$years = array();
-while($row_years = mysql_fetch_row($years_result)) {
-  array_push($years, $row_years[0]);
-}
-array_push($years, $year);
-$years = array_unique($years, SORT_NUMERIC);
-$stats = donation_stats($year);
+$stats = donation_stats($campaign['campaign_id']);
 
 ?>
 <?php include('includes/header.php'); ?>
@@ -65,9 +72,11 @@ $stats = donation_stats($year);
       <?php display_msg(); ?>
     </span>
     <form class="width2" id="form1" name="form1" method="get" action="">
-        <select style="float: left" name="year" id="year">
-          <?php foreach ($years as $curr) { ?>
-            <option <?php echo ($curr == $year) ? "selected='selected'" : "" ?>><?php echo $curr; ?></option>
+        <select style="float: left" name="campaign" id="campaign">
+          <?php foreach ($campaigns as $curr) { ?>
+            <option value="<?php echo $curr['campaign_id']; ?>" <?php echo ($curr == $campaign) ? "selected='selected'" : "" ?>>
+              <?php echo $curr['campaign_name']; ?>
+            </option>
           <?php } ?>
         </select>
         <input style="top: 0px; margin: 0px 0px 0px 5px" type="submit" value="Show">
@@ -87,19 +96,19 @@ $stats = donation_stats($year);
         <tfoot>
         <tr>
           <td colspan="6" class="right-cell">Expected</td>
-          <td class="right-cell">$<?php echo $stats->expected ?></td>
+          <td class="right-cell"><?php echo money_format("%n", $stats->expected); ?></td>
         </tr>
         <tr>
           <td colspan="6" class="right-cell">Pledged</td>
-          <td class="right-cell">$<?php echo $stats->pledged ?></td>
+          <td class="right-cell"><?php echo money_format("%n", $stats->pledged); ?></td>
         </tr>
         <tr>
           <td colspan="6" class="right-cell">Received</td>
-          <td class="right-cell">$<?php echo $stats->received ?></td>
+          <td class="right-cell"><?php echo money_format("%n", $stats->received); ?></td>
         </tr>
         <tr>
           <td colspan="6" class="right-cell">Total</td>
-          <td class="right-cell">$<?php echo $stats->total ?></td>
+          <td class="right-cell"><?php echo money_format("%n", $stats->total); ?></td>
         </tr>
         </tfoot>
         <tbody>
@@ -144,7 +153,7 @@ $stats = donation_stats($year);
         </tr>
         <?php } while ($row_donations = mysql_fetch_assoc($donations)); ?>
     <?php } else { ?>
-        <tr><td style="text-align: center;" colspan="7">No Donations for <?php echo $year; ?></td></tr>
+        <tr><td style="text-align: center;" colspan="7">No Donations for <?php echo $campaign['campaign_name']; ?></td></tr>
     <?php } ?>
         </tbody>
       </table>

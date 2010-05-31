@@ -22,7 +22,7 @@ input[type="file"]				{ margin: 0px 6px 3px 6px; }
 
 input[type="submit"],
 input[type="reset"],
-input[type="button"]			{ position: relative; top: 5px; margin-bottom: 18px; }
+input[type="button"]			{ position: relative; top: 5px; margin-bottom: 18px; margin-left:1px; }
 
 select							{ display: block; margin: 0px; }
 textarea						{ width: 99%; line-height: 18px; margin-bottom: -2px; display: block; clear: left; overflow: auto; }

@@ -14,27 +14,27 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-function donation_stats($year) {
+function donation_stats($campaign_id) {
   $stat_results = mysql_query("SELECT 
     ifnull((SELECT sum(donation_value) 
          FROM donations 
-         WHERE donation_year = $year 
-         GROUP BY donation_year) , 0)
+         WHERE campaign_id = $campaign_id 
+         GROUP BY campaign_id), 0)
       AS total,
     ifnull((SELECT sum(donation_value) 
          FROM donations 
-         WHERE donation_year = $year AND donation_status = 'expected'
-         GROUP BY donation_year) , 0)
+         WHERE campaign_id = $campaign_id AND donation_status = 'expected'
+         GROUP BY campaign_id), 0)
      AS expected,
     ifnull((SELECT sum(donation_value) 
          FROM donations 
-         WHERE donation_year = $year AND donation_status = 'pledged'
-         GROUP BY donation_year), 0)
+         WHERE campaign_id = $campaign_id AND donation_status = 'pledged'
+         GROUP BY campaign_id), 0)
      AS pledged,
     ifnull((SELECT sum(donation_value) 
          FROM donations 
-         WHERE donation_year = $year AND donation_status = 'received'
-         GROUP BY donation_year), 0) 
+         WHERE campaign_id = $campaign_id AND donation_status = 'received'
+         GROUP BY campaign_id), 0) 
      AS received"
   ) or die(mysql_error());
   return mysql_fetch_object($stat_results);

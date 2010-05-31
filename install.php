@@ -129,6 +129,7 @@ mysql_query("CREATE TABLE `tags_assoc` (
 mysql_query("CREATE TABLE `donations` (
   `donation_id` int(11) NOT NULL auto_increment,
   `contact_id` int(11) default NULL,
+  `campaign_id` int(11) default NULL,
   `donation_year` YEAR(4) NOT NULL,
   `donation_is_cash` BOOL NOT NULL,
   `donation_value` DECIMAL(10,2) NOT NULL,
@@ -139,15 +140,12 @@ mysql_query("CREATE TABLE `donations` (
   PRIMARY KEY (`donation_id`)
 )");
 
-mysql_query("CREATE TABLE `config` (
-  `config_id` int(11) NOT NULL auto_increment,
-  `name` varchar(255) NOT NULL,
-  `value` varchar(255) NOT NULL,
-  PRIMARY KEY  (`config_id`)
+mysql_query("CREATE TABLE `campaigns` (
+  `campaign_id` int(11) NOT NULL auto_increment,
+  `campaign_name` varchar(255) NOT NULL,
+  `campaign_target` DECIMAL(10,2) NOT NULL,
+  PRIMARY KEY  (`campaign_id`)
 )");
-
-mysql_query("INSERT INTO `config` (`name`, `value`) VALUES ('fiscal_year', '" . date("Y") . "')");
-
 
 $_SESSION['user'] = $_POST['email'];
 header('Location: install.php?s'); die;
