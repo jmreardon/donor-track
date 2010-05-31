@@ -175,7 +175,7 @@ $back_track = array('title' => "Contacts", 'url' => "contacts.php");
 <?php if ($totalRows_donations > 0) { ?>
   <?php do { $row_count++; ?>
         <tr>
-          <td><a href="campaign-details.php?id=<?php echo $row_donations['campaign_id']; ?>">
+          <td><a href="campaign-details.php?campaign=<?php echo $row_donations['campaign_id']; ?>">
             <?php echo $row_donations['campaign_name']; ?>
           </a></td>
           <td><?php echo ucwords($row_donations['donation_status']) ?></td>
