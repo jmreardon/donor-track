@@ -87,7 +87,7 @@ header('Location: contacts.php'); die;
           <td><a href="mailto:<?php echo $row_contacts['contact_email']; ?>"><?php echo $row_contacts['contact_email']; ?></a></td>
           <td><?php if($row_contacts['last_donation']) {
             echo date("M j, Y", strtotime($row_contacts['last_donation'])) ?>
-            For <a href="donations.php?campaign=<?php echo $row_contacts['last_donation_campaign_id']; ?>"><?php echo $row_contacts['last_donation_campaign'] ?>
+            For <a href="campaign-details.php?campaign=<?php echo $row_contacts['last_donation_campaign_id']; ?>"><?php echo $row_contacts['last_donation_campaign'] ?>
           <?php } else { echo $na; } ?>
           <td>
             <input name="d[<?php echo $row_contacts['contact_id']; ?>]" type="checkbox" id="d[<?php echo $row_contacts['contact_id']; ?>]" value="<?php echo $row_contacts['contact_id']; ?>" />

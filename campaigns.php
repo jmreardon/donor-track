@@ -79,7 +79,9 @@ $totalRows_campaigns = mysql_num_rows($campaigns);
       <tbody>
         <?php do { ?>
 	  <tr>
-            <td><?php echo $row_campaigns['campaign_name']; ?></td>
+            <td>
+              <a href="campaign-details.php?campaign=<?php echo $row_campaigns['campaign_id']; ?>"><?php echo $row_campaigns['campaign_name']; ?></a>
+            </td>
             <td class="right-cell"><?php echo money_format("%n", $row_campaigns['campaign_target']); ?></td>
             <td class="right-cell"><?php echo money_format("%n", $row_campaigns['cash_received']); ?></td>
             <td class="right-cell"><?php echo money_format("%n", $row_campaigns['in_kind_received']); ?></td>

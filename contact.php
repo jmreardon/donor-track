@@ -194,8 +194,10 @@ $value = trim($value);
 
 if ($update==0) { 
   $title_text = "Add Contact"; 
+  $back_track = array('title' => "Contacts", 'url' => "contacts.php");
 } else {
   $title_text = $row_contact['contact_first'] . " " . $row_contact['contact_last'];
+  $back_track = array('title' => $title_text, 'url' => "contact-details.php?id=" . $row_contact['contact_id']);
 }
 ?>
 <?php include('includes/header.php'); ?>

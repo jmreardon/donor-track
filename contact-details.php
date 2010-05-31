@@ -115,6 +115,7 @@ mysql_query("INSERT INTO history (history_contact, history_date, history_status)
 
 //
 $title_text = $row_contact['contact_first'] . " " . $row_contact['contact_last']; 
+$back_track = array('title' => "Contacts", 'url' => "contacts.php");
 ?>
 <?php include('includes/header.php'); ?>
 <?php if ($row_notes['note_date'] > time()-1) { ?>

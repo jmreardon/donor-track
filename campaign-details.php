@@ -17,27 +17,20 @@
 include('includes/sc-includes.php');
 include('includes/donation.inc.php');
 
-$pagetitle = "Donations";
-$campaign = get_default_campaign();
-
-//Set Year
-if($_GET['campaign']) {
+$pagetitle = "Campaigns";
+//Set Campaign
+if($_GET['campaign'] && is_numeric($_GET['campaign'])) {
   $campaign = $_GET['campaign'];
+} else {
+  header("Location: campaigns.php"); die;
 }
 
 mysql_select_db($database_contacts, $contacts);
-$campaigns_result = mysql_query("SELECT * FROM campaigns ORDER BY campaign_id desc", $contacts) or die(mysql_error());
-$campaigns = array();
-$found_campaign = false;
-while($row_campaigns = mysql_fetch_assoc($campaigns_result)) {
-  array_push($campaigns, $row_campaigns);
-  if($row_campaigns['campaign_id'] == $campaign) {
-    $found_campaign = true;
-    $campaign = $row_campaigns;
-  }
-}
-if(!$found_campaign) {
-  $campaign = $campaigns[0];
+$campaigns_result = mysql_query("SELECT * FROM campaigns WHERE campaign_id = $campaign", $contacts) or die(mysql_error());
+$campaign = mysql_fetch_assoc($campaigns_result);
+$campaign_row_count = mysql_num_rows($campaigns_result);
+if($campaign_row_count == 0) {
+  header("Location: campaigns.php?"); die;
 }
 
 $query_donations = "SELECT 
@@ -60,26 +53,17 @@ $row_donations = mysql_fetch_assoc($donations);
 $totalRows_donations = mysql_num_rows($donations);
 
 $stats = donation_stats($campaign['campaign_id']);
-
+$title_text = "Campaign - ". $campaign['campaign_name'];
+$back_track = array('title' => "Campaigns", 'url' => "campaigns.php");
 ?>
 <?php include('includes/header.php'); ?>
   
   <div class="container">
   <div class="leftcolumn">
-    <h2>Donations</h2>
+    <h2>Campaign - <?php echo $campaign['campaign_name']; ?></h2>
     <span class="notices" id="notice" style="display:<?php echo $dis; ?>">
       <?php display_msg(); ?>
     </span>
-    <form class="width2" id="form1" name="form1" method="get" action="">
-        <select style="float: left" name="campaign" id="campaign">
-          <?php foreach ($campaigns as $curr) { ?>
-            <option value="<?php echo $curr['campaign_id']; ?>" <?php echo ($curr == $campaign) ? "selected='selected'" : "" ?>>
-              <?php echo $curr['campaign_name']; ?>
-            </option>
-          <?php } ?>
-        </select>
-        <input style="top: 0px; margin: 0px 0px 0px 5px" type="submit" value="Show">
-    </form>
       <table class="sortable">
         <thead>
         <tr>

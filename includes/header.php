@@ -44,15 +44,15 @@ $totalRows_history = mysql_num_rows($history);
     <h1>Donor Track</h1>
     <a href="index.php" class="menubuttons <?php if ($pagetitle=="Dashboard") { echo "menubuttonsactive"; } ?>">Dashboard</a>
     <a href="contacts.php" class="menubuttons <?php if ($pagetitle=="Contact" || $pagetitle=="ContactDetails") { echo "menubuttonsactive"; } ?>">Contacts</a>
-    <a href="donations.php" class="menubuttons <?php if ($pagetitle=="Donations") { echo "menubuttonsactive"; } ?>">Donations</a>
     <a href="campaigns.php" class="menubuttons <?php if ($pagetitle=="Campaigns") { echo "menubuttonsactive"; } ?>">Campaigns</a>
 
     <span class="headerright">Logged in as <?php echo $row_userinfo['user_email']; ?> | <a href="logout.php">Log Out</a> | <a href="profile.php">Update Profile</a> </span><br clear="all" />
   </div>
   </div>
 
+<div class="historycontainer">
 <?php if ($totalRows_history > 0) { ?>
-<div class="historycontainer">Recent: 
+Recent: 
     <?php $ih = 1; do { 
 //GET CONTACT INFO FROM HISTORY
 mysql_select_db($database_contacts);
@@ -62,5 +62,9 @@ $row_histcont = mysql_fetch_assoc($histcont);
 //
 ?>
     <a href="contact-details.php?id=<?php echo $row_histcont['contact_id']; ?>"><?php echo $row_histcont['contact_first']; ?> <?php echo $row_histcont['contact_last']; ?></a> <?php if ($totalRows_history!=$ih) {?> &middot; <?php } ?>
-      <?php $ih++; } while ($row_history = mysql_fetch_assoc($history)); ?></div>
+      <?php $ih++; } while ($row_history = mysql_fetch_assoc($history)); ?>
 <?php } ?>
+
+<?php if($back_track) { printf("<br /><a href='%s'>&laquo;%s</a>", $back_track['url'], $back_track['title']); } ?>
+
+</div>
