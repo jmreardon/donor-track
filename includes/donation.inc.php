@@ -39,4 +39,12 @@ function donation_stats($campaign_id) {
   ) or die(mysql_error());
   return mysql_fetch_object($stat_results);
 }
+
+function donation_kind_text($is_cash) {
+  if($is_cash) {
+    return "Cash";
+  } else {
+    return "In Kind";
+  }
+}
 ?>

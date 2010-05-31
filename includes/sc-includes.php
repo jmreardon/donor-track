@@ -19,7 +19,7 @@ session_start();
 if (!isset($_SESSION['user'])) {
 header('Location: login.php');
 }
-setlocale(LC_MONETARY, 'en_CA.UTF-8');
+setlocale(LC_ALL, 'en_CA.UTF-8');
 
 //GET USER INFORMATION
 mysql_select_db($database_contacts, $contacts);

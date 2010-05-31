@@ -102,8 +102,8 @@ $totalRows_campaigns = mysql_num_rows($campaigns);
           Target 
           <input name="campaign_target" id="campaign_target" class="validate-number" type="text" value="" />
         </label>
-        <label class="unitx1">
-          <input style="top: 18px" name="submit" type="submit" value="Add Campaign" />
+        <label class="unitx1 inlinebutton">
+          <input name="submit" type="submit" value="Add Campaign" />
         </label>
         </fieldset>
       </form>

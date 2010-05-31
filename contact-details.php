@@ -203,7 +203,7 @@ $back_track = array('title' => "Contacts", 'url' => "contacts.php");
             ?> 
           </td>
           <td>
-            Details
+            <a href="donation-details.php?id=<?php echo $row_donations['donation_id']; ?>">Details</a>
           </td>
         </tr>
         <?php } while ($row_donations = mysql_fetch_assoc($donations)); ?>

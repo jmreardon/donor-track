@@ -86,6 +86,15 @@ h2 {
 	line-height: 24px;
 }
 
+h3 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 18px;
+        clear: both;
+        padding-top: 10px;
+}
+
 .notices {
 	background-color: #FFFFD5;
 	display: block;

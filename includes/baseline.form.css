@@ -10,6 +10,7 @@ version 0.5
 form							{ overflow: auto; }
 legend							{ padding-bottom: 18px; }
 label							{ width: 100%; position: relative; top: 5px; margin-bottom: 18px; line-height: 18px; display: block; }
+label.inlinebutton					{ margin-top: 13px; }
 
 input[type="text"],
 input[type="password"],

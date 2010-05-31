@@ -72,8 +72,8 @@ $back_track = array('title' => "Campaigns", 'url' => "campaigns.php");
           <th class="text">Status</th>
           <th class="currency">Value</th>
           <th class="text">Type</th>
-          <th>Pledged</a></th>
-          <th>Received</a></th>
+          <th>Pledged</th>
+          <th>Received</th>
           <th class="nosort"></th>
         </tr>
         </thead>
@@ -111,13 +111,7 @@ $back_track = array('title' => "Campaigns", 'url' => "campaigns.php");
           <td><?php echo ucwords($row_donations['donation_status']) ?></td>
           <td><?php printf("$%.2f", $row_donations['donation_value']); ?></td>
           <td>
-            <?php
-              if($row_donations['donation_is_cash']) {
-                echo "Cash";
-              } else {
-                echo "In Kind";
-              }
-            ?>
+            <?php echo donation_kind_text($row_donations['donation_is_cash']); ?>
           </td>
           <td>
             <?php echo $row_donations['donation_pledge_date']
@@ -132,7 +126,7 @@ $back_track = array('title' => "Campaigns", 'url' => "campaigns.php");
             ?> 
           </td>
           <td>
-            Details
+            <a href="donation-details.php?id=<?php echo $row_donations['donation_id']; ?>">Details</a>
           </td>
         </tr>
         <?php } while ($row_donations = mysql_fetch_assoc($donations)); ?>
