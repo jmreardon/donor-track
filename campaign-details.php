@@ -37,6 +37,7 @@ $query_donations = "SELECT
     donation_id, 
     donation_value, 
     donation_status, 
+    donation_is_cash, 
     donation_pledge_date, 
     donation_received_date, 
     contact_id, 
