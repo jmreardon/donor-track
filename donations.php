@@ -42,7 +42,6 @@ if(!$found_campaign) {
 
 $query_donations = "SELECT 
     donation_id, 
-    donation_year, 
     donation_value, 
     donation_status, 
     donation_pledge_date, 

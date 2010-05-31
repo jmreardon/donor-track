@@ -24,10 +24,15 @@ $query_contacts = "SELECT
     contact_last,
     contact_phone,
     contact_email,
-    (SELECT MAX(donation_year) 
-     FROM donations 
-     WHERE donations.contact_id = contacts.contact_id AND
-           donations.donation_status = 'received') AS last_donation
+    (SELECT campaign_id 
+     FROM campaigns 
+     WHERE campaigns.campaign_id = (SELECT campaign_id FROM donations WHERE donations.contact_id = contacts.contact_id AND
+           donations.donation_status = 'received' 
+     ORDER BY donation_received_date DESC LIMIT 1)) AS last_donation_campaign_id,
+    (SELECT campaign_name FROM campaigns WHERE campaign_id = last_donation_campaign_id) AS last_donation_campaign,
+    (SELECT donation_received_date FROM donations WHERE donations.contact_id = contacts.contact_id AND
+           donations.donation_status = 'received' 
+     ORDER BY donation_received_date DESC LIMIT 1) AS last_donation
   FROM contacts 
   ORDER BY contact_last, contact_first";
 $contacts = mysql_query($query_contacts, $contacts) or die(mysql_error());
@@ -80,7 +85,10 @@ header('Location: contacts.php'); die;
           </a></td>
           <td><?php echo $row_contacts['contact_phone'] ? $row_contacts['contact_phone'] : $na; ?></td>
           <td><a href="mailto:<?php echo $row_contacts['contact_email']; ?>"><?php echo $row_contacts['contact_email']; ?></a></td>
-          <td><?php echo $row_contacts['last_donation'] ? $row_contacts['last_donation'] : $na; ?></td>
+          <td><?php if($row_contacts['last_donation']) {
+            echo date("M j, Y", strtotime($row_contacts['last_donation'])) ?>
+            For <a href="donations.php?campaign=<?php echo $row_contacts['last_donation_campaign_id']; ?>"><?php echo $row_contacts['last_donation_campaign'] ?>
+          <?php } else { echo $na; } ?>
           <td>
             <input name="d[<?php echo $row_contacts['contact_id']; ?>]" type="checkbox" id="d[<?php echo $row_contacts['contact_id']; ?>]" value="<?php echo $row_contacts['contact_id']; ?>" />
           </td>
