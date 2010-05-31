@@ -48,14 +48,17 @@ $donations = mysql_query($query_donations, $contacts) or die(mysql_error());
 $row_donations = mysql_fetch_assoc($donations);
 $totalRows_donations = mysql_num_rows($donations);
 
-mysql_select_db($database_contacts, $contacts);
+$query_campaigns = "SELECT campaign_id, campaign_name FROM campaigns ORDER BY campaign_id DESC";
+$campaigns = mysql_query($query_campaigns, $contacts) or die(mysql_error());
+$row_campaigns = mysql_fetch_assoc($campaigns);
+$totalRows_campaigns = mysql_num_rows($campaigns);
+
 $query_notes = "SELECT * FROM notes WHERE note_contact = ".$_GET['id']." ORDER BY note_date DESC";
 $notes = mysql_query($query_notes, $contacts) or die(mysql_error());
 $row_notes = mysql_fetch_assoc($notes);
 $totalRows_notes = mysql_num_rows($notes);
 
 if ($update==1) {
-mysql_select_db($database_contacts, $contacts);
 $query_note = "SELECT * FROM notes WHERE note_id = ".$_GET['note']."";
 $note = mysql_query($query_note, $contacts) or die(mysql_error());
 $row_note = mysql_fetch_assoc($note);
@@ -134,7 +137,7 @@ $back_track = array('title' => "Contacts", 'url' => "contacts.php");
     </span>
 <div style="display:block; margin-bottom:5px">
 <?php if ($row_contact['contact_image']) { ?><img src="images/<?php echo $row_contact['contact_image']; ?>" width="95" height="71" class="contactimage" /><?php } ?>
-<h2><?php echo $row_contact['contact_first']; ?> <?php echo $row_contact['contact_last']; ?><?php if ($row_contact['contact_company']) { ?><span style="color:#999999"> with <?php echo $row_contact['contact_company']; ?><?php } ?></span><a style="font-size:12px; font-weight:normal" href="contact.php?id=<?php echo $row_contact['contact_id']; ?>">&nbsp;&nbsp;+ Edit contact </a>    </h2>
+<h2><?php echo $row_contact['contact_first']; ?> <?php echo $row_contact['contact_last']; ?><?php if ($row_contact['contact_company']) { ?><span style="color:#999999"> with <?php echo $row_contact['contact_company']; ?></span><?php } ?><a style="font-size:12px; font-weight:normal" href="contact.php?id=<?php echo $row_contact['contact_id']; ?>">&nbsp;&nbsp;+ Edit contact </a>    </h2>
 <br clear="all" />
 </div>
 
@@ -157,9 +160,45 @@ $back_track = array('title' => "Contacts", 'url' => "contacts.php");
           <?php echo $row_notes['note_text']; ?>
 </div>
           <hr />
-              <?php } while ($row_notes = mysql_fetch_assoc($notes)); ?></form>
+              <?php } while ($row_notes = mysql_fetch_assoc($notes)); ?>
+<?php } ?></form>
+      <a href="#" onclick="new Effect.toggle('add_campaign', 'slide'); return false;">+Add Donation</a>
+      <br />
+      <div id="add_campaign" style="display:none">
+<?php if($totalRows_campaigns == 0) { ?>
+        <p>You must add a campaign before entering donations.</p>
+<?php } else { ?>
+        <form name="form1" id="form1" method="post" action="donation-details.php">
+          <input type="hidden" name="action" id="action" value="create" />
+          <input type="hidden" name="contact" id="contact" value="<?php echo $row_contact['contact_id']; ?>" />
+          <fieldset>
+          <label class="first unitx1">
+            Campaign 
+            <select id="campaign" name="campaign">
+            <?php do { ?>
+              <option value="<?php echo $row_campaigns['campaign_id']; ?>"><?php echo $row_campaigns['campaign_name']; ?></option>
+            <?php } while($row_campaigns = mysql_fetch_assoc($campaigns)); ?>
+            </select>
+          </label>
+          <label class="column unitx1">
+            Type
+            <select id="type" name="type">
+              <option>Cash</option>
+              <option>In Kind</option>
+            </select>
+          </label>
+          <label class="column unitx1">
+            Value
+            <input type="text" id="amount" name="amount" class="validate-number" value="<?php echo $row_donation['donation_value']; ?>" />
+          </label>
+          <label class="unitx1 inlinebutton">
+            <input name="submit" type="submit" value="Add" />
+          </label>
+          </fieldset>
+        </form>
 <?php } ?>
-
+      </div>
+ 
       <table class="sortable">
         <thead>
         <tr>
@@ -167,8 +206,8 @@ $back_track = array('title' => "Contacts", 'url' => "contacts.php");
           <th class="text">Status</th>
           <th class="currency">Value</th>
           <th class="text">Type</th>
-          <th>Pledged</a></th>
-          <th>Received</a></th>
+          <th>Pledged</th>
+          <th>Received</th>
           <th class="nosort"></th>
         </tr>
         </thead>

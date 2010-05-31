@@ -22,8 +22,42 @@ $pagetitle = "Campaigns";
 
 mysql_select_db($database_contacts, $contacts);
 
+if($_POST["action"] == "create" && is_numeric($_POST["campaign"])) {
+  if(is_numeric($_POST['contact']) &&
+     in_array($_POST['type'], array("Cash", "In Kind"))) {
+    if(!is_numeric($_POST['amount'])) {
+      $_POST['amount'] = 0;
+    }
+    $insert_query = "INSERT INTO donations (
+        contact_id,
+        campaign_id,
+        donation_is_cash,
+        donation_value,
+        donation_status
+      ) VALUES (
+        " . $_POST['contact'] . ",
+        " . $_POST['campaign'] . ",
+        " . ($_POST['type'] == "Cash" ? 'true' : 'false') . ",
+        " . $_POST['amount'] . ",
+        'expected' 
+      )";
+    mysql_query($insert_query, $contacts);
+    $target = mysql_insert_id($contacts);
+    if($target) {
+      set_msg('Donation Created.');
+      header("Location: donation-details.php?id=" . $target); die;
+    } else {
+      set_msg("Failed to add donation. $insert_query");
+      header("Location: contact-details.php?id=" . $_POST["contact"]); die;
+    }
+  } else {
+    set_msg('Failed to add donation.');
+    header("Location: contact-details.php?id=" . $_POST["contact"]); die;
+  }
+}
+ 
 if(is_numeric($_POST["donation"])) {
-  if($_POST["action"] == "delete" && is_numeric($_POST["donation"]) && is_numeric($_POST["campaign"])) {
+ if($_POST["action"] == "delete" && is_numeric($_POST["campaign"])) {
     mysql_query("DELETE FROM donations WHERE donation_id = " . $_POST["donation"], $contacts) or die(mysql_error());
     if(mysql_affected_rows($contacts) == 1) {
       set_msg('Donation Deleted.');
@@ -31,7 +65,7 @@ if(is_numeric($_POST["donation"])) {
     } else {
       set_msg('Failed to delete donation.');
     }
-  } else if($_POST["action"] == "updatestatus" && is_numeric($_POST["donation"])) {
+  } else if($_POST["action"] == "updatestatus") {
     if (in_array($_POST['status'], array("Expected", "Pledged", "Received")) &&
         preg_match("/(\d\d)\/(\d\d)\/(\d\d\d\d)/", trim($_POST['update_date']), $date)) {
       $status = strtolower($_POST['status']);
@@ -57,7 +91,7 @@ if(is_numeric($_POST["donation"])) {
     } else {
       set_msg('Failed to update donation.');
     }
-  } else if($_POST["action"] == "updatedonation" && is_numeric($_POST["donation"])) {
+  } else if($_POST["action"] == "updatedonation") {
     if (in_array($_POST['type'], array("Cash", "In Kind")) && 
         is_numeric($_POST['amount']) &&
         ((float)$_POST['amount']) > 0) {
