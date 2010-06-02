@@ -65,7 +65,8 @@ Search results for <em><?php echo $_GET['s']; ?></em>.<br />
 <?php if ($totalRows_contacts > 0) { ?>
     <h2>Contacts</h2>
     <?php $i = 1; do { ?>
-        <a href="contact-details.php?id=<?php echo $row_contacts['contact_id']; ?>"><?php echo $row_contacts['contact_first']; ?> <?php echo $row_contacts['contact_last']; ?></a>          <?php if ($totalRows_contacts!=$i) { ?>,<?php } ?> 
+        <a href="contact-details.php?id=<?php echo $row_contacts['contact_id']; ?>"><?php echo display_name($row_contacts); ?></a>
+          <?php if ($totalRows_contacts!=$i) { ?>,<?php } ?> 
       <?php $i++; } while ($row_contacts = mysql_fetch_assoc($contacts)); ?>
 <hr />
 <?php } ?>

@@ -196,7 +196,7 @@ if ($update==0) {
   $title_text = "Add Contact"; 
   $back_track = array('title' => "Contacts", 'url' => "contacts.php");
 } else {
-  $title_text = $row_contact['contact_first'] . " " . $row_contact['contact_last'];
+  $title_text = display_name($row_contact);
   $back_track = array('title' => $title_text, 'url' => "contact-details.php?id=" . $row_contact['contact_id']);
 }
 ?>
@@ -209,11 +209,11 @@ if ($update==0) {
     <fieldset class="first unitx4">
       <label class="first unitx2">
       First Name
-      <input name="contact_first" type="text" class="required" id="contact_first" value="<?php echo $row_contact['contact_first']; ?>" />
+      <input name="contact_first" type="text" class="" id="contact_first" value="<?php echo $row_contact['contact_first']; ?>" />
       </label>
       <label class="unitx2">
       Last Name
-      <input name="contact_last" type="text" class="required" id="contact_last" value="<?php echo $row_contact['contact_last']; ?>" />
+      <input name="contact_last" type="text" class="" id="contact_last" value="<?php echo $row_contact['contact_last']; ?>" />
       </label>
       <label class="first unitx2">
       Title

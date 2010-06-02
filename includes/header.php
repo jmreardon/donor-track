@@ -23,7 +23,7 @@ $totalRows_history = mysql_num_rows($history);
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title><?php if($title_text) { echo $title_text; } else { echo $pagetitle; } ?></title>
+<title>Donor Track &raquo; <?php if($title_text) { echo $title_text; } else { echo $pagetitle; } ?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <script src="includes/lib/prototype.js" type="text/javascript"></script>
 <script src="includes/lib/tablekit.js" type="text/javascript"></script>
@@ -61,7 +61,9 @@ $histcont = mysql_query($query_histcont) or die(mysql_error());
 $row_histcont = mysql_fetch_assoc($histcont);
 //
 ?>
-    <a href="contact-details.php?id=<?php echo $row_histcont['contact_id']; ?>"><?php echo $row_histcont['contact_first']; ?> <?php echo $row_histcont['contact_last']; ?></a> <?php if ($totalRows_history!=$ih) {?> &middot; <?php } ?>
+    <a href="contact-details.php?id=<?php echo $row_histcont['contact_id']; ?>">
+      <?php echo display_name($row_histcont); ?>
+    </a> <?php if ($totalRows_history!=$ih) {?> &middot; <?php } ?>
       <?php $ih++; } while ($row_history = mysql_fetch_assoc($history)); ?>
 <?php } ?>
 

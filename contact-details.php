@@ -38,11 +38,12 @@ $query_donations = "SELECT
     donation_status, 
     donation_is_cash, 
     donation_pledge_date, 
-    donation_received_date 
+    donation_received_date,
+    GREATEST(COALESCE(donation_pledge_date,0), COALESCE(donation_received_date,0)) as last_update 
   FROM donations 
   LEFT JOIN campaigns USING (`campaign_id`) 
   WHERE contact_id = " . $row_contact['contact_id'] . "
-  ORDER BY campaign_id, donation_received_date, donation_pledge_date";
+  ORDER BY last_update desc";
 
 $donations = mysql_query($query_donations, $contacts) or die(mysql_error());
 $row_donations = mysql_fetch_assoc($donations);
@@ -118,7 +119,7 @@ mysql_query("INSERT INTO history (history_contact, history_date, history_status)
 ");
 
 //
-$title_text = $row_contact['contact_first'] . " " . $row_contact['contact_last']; 
+$title_text = display_name($row_contact);
 $back_track = array('title' => "Contacts", 'url' => "contacts.php");
 ?>
 <?php include('includes/header.php'); ?>
@@ -137,7 +138,10 @@ $back_track = array('title' => "Contacts", 'url' => "contacts.php");
     </span>
 <div style="display:block; margin-bottom:5px">
 <?php if ($row_contact['contact_image']) { ?><img src="images/<?php echo $row_contact['contact_image']; ?>" width="95" height="71" class="contactimage" /><?php } ?>
-<h2><?php echo $row_contact['contact_first']; ?> <?php echo $row_contact['contact_last']; ?><?php if ($row_contact['contact_company']) { ?><span style="color:#999999"> with <?php echo $row_contact['contact_company']; ?></span><?php } ?><a style="font-size:12px; font-weight:normal" href="contact.php?id=<?php echo $row_contact['contact_id']; ?>">&nbsp;&nbsp;+ Edit contact </a>    </h2>
+<h2>
+  <?php echo display_name($row_contact); ?>
+  <a style="font-size:12px; font-weight:normal" href="contact.php?id=<?php echo $row_contact['contact_id']; ?>">&nbsp;&nbsp;+ Edit contact </a>
+</h2>
 <br clear="all" />
 </div>
 
@@ -202,19 +206,22 @@ $back_track = array('title' => "Contacts", 'url' => "contacts.php");
       <table class="sortable">
         <thead>
         <tr>
+          <th class="nosort"></th>
           <th class="text">Campaign</th>
           <th class="text">Status</th>
           <th class="currency">Value</th>
           <th class="text">Type</th>
           <th>Pledged</th>
-          <th>Received</th>
-          <th class="nosort"></th>
+          <th class="date">Received</th>
         </tr>
         </thead>
         <tbody>
 <?php if ($totalRows_donations > 0) { ?>
   <?php do { $row_count++; ?>
         <tr>
+          <td>
+            <a href="donation-details.php?id=<?php echo $row_donations['donation_id']; ?>">Details</a>
+          </td>
           <td><a href="campaign-details.php?campaign=<?php echo $row_donations['campaign_id']; ?>">
             <?php echo $row_donations['campaign_name']; ?>
           </a></td>
@@ -241,13 +248,10 @@ $back_track = array('title' => "Contacts", 'url' => "contacts.php");
                          : $na; 
             ?> 
           </td>
-          <td>
-            <a href="donation-details.php?id=<?php echo $row_donations['donation_id']; ?>">Details</a>
-          </td>
         </tr>
         <?php } while ($row_donations = mysql_fetch_assoc($donations)); ?>
     <?php } else { ?>
-        <tr><td style="text-align: center;" colspan="7">No Donations for <?php echo $campaign['campaign_name']; ?></td></tr>
+        <tr><td style="text-align: center;" colspan="7">No Donations</td></tr>
     <?php } ?>
         </tbody>
       </table>

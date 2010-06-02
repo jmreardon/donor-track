@@ -20,10 +20,13 @@ $pagetitle = "Contact";
 mysql_select_db($database_contacts, $contacts);
 $query_contacts = "SELECT 
     contact_id,
+    contact_company,
     contact_first,
     contact_last,
+    contact_title,
     contact_phone,
     contact_email,
+    contact_company IS NULL AS isnull,
     (SELECT campaign_id 
      FROM campaigns 
      WHERE campaigns.campaign_id = (SELECT campaign_id FROM donations WHERE donations.contact_id = contacts.contact_id AND
@@ -34,7 +37,7 @@ $query_contacts = "SELECT
            donations.donation_status = 'received' 
      ORDER BY donation_received_date DESC LIMIT 1) AS last_donation
   FROM contacts 
-  ORDER BY contact_last, contact_first";
+  ORDER BY isnull, contact_company, contact_first, contact_last";
 $contacts = mysql_query($query_contacts, $contacts) or die(mysql_error());
 $row_contacts = mysql_fetch_assoc($contacts);
 $totalRows_contacts = mysql_num_rows($contacts);
@@ -57,7 +60,6 @@ header('Location: contacts.php'); die;
 //
 ?>
 <?php include('includes/header.php'); ?>
-  
   <div class="container">
   <div class="leftcolumn">
     <h2>Contacts</h2>
@@ -65,38 +67,61 @@ header('Location: contacts.php'); die;
     <span class="notices" id="notice" style="display:<?php echo $dis; ?>">
       <?php display_msg(); ?>
     </span>
-    <a href="csv.php"><strong>Export</strong></a><strong> | </strong><a href="batch.php"><strong>Import</strong></a>
+    <a href="csv.php"><strong>Export</strong></a><strong> | </strong>
+    <a href="batch.php"><strong>Import</strong></a>
     <form id="form1" name="form1" method="post" action="">
-      <table class="sortable">
+      <fieldset>
+      <label style="margin-bottom: 0px" class="first column unitx1">
+        Action
+        <select id="action" name="action">
+          <option>Tag</option>
+        </select>
+      </label>
+      <label style="margin-bottom: 0px" class="column width1 inlinebutton">
+        <input type="submit" name="Submit" value="Submit" />
+      </label>
+      </fieldset>
+      <p style="text-align: right;">
+        Select <a href="#" onclick="$$('#form1 input.action_check').each(function(box){box.checked=true});return false;">All</a> | 
+               <a href="#" onclick="$$('#form1 input.action_check').each(function(box){box.checked=false});return false;">None</a>
+      </p>
+      <table class="sortable" style="width: 100%; margin-top: 0px">
         <thead>
         <tr>
+          <th class="nosort"></th>
+          <th>Company</th>
           <th>Name</th>
           <th class="nosort">Phone</th>
           <th class="nosort">Email</th>
-          <th>Last Donation</th>
-          <th class="nosort" width="7%">Delete</th>
+          <th class="date one-line">Last Gave</th>
+          <th class="nosort" width="7%" style="text-align: center">Select</th>
         </tr>
         </thead>
         <tbody>
   <?php do { $row_count++; ?>
         <tr>
-          <td><a href="contact-details.php?id=<?php echo $row_contacts['contact_id']; ?>">
-            <?php printf("%s, %s", $row_contacts['contact_last'], $row_contacts['contact_first']); ?>
+          <td style="padding-right: 10px"><a href="contact-details.php?id=<?php echo $row_contacts['contact_id']; ?>">
+            Details
           </a></td>
-          <td><?php echo $row_contacts['contact_phone'] ? $row_contacts['contact_phone'] : $na; ?></td>
-          <td><a href="mailto:<?php echo $row_contacts['contact_email']; ?>"><?php echo $row_contacts['contact_email']; ?></a></td>
-          <td><?php if($row_contacts['last_donation']) {
+          <td>
+            <?php echo $row_contacts['contact_company'] ? $row_contacts['contact_company'] : $na; ?>
+          </td>
+          <td class="one-line">
+            <?php printf("%s %s", $row_contacts['contact_first'] ? $row_contacts['contact_first'] : $row_contacts['contact_title'], 
+                                  $row_contacts['contact_last']); ?>
+          </td>
+          <td class="one-line"><?php echo $row_contacts['contact_phone'] ? $row_contacts['contact_phone'] : $na; ?></td>
+          <td class="one-line"><a href="mailto:<?php echo $row_contacts['contact_email']; ?>"><?php echo $row_contacts['contact_email']; ?></a></td>
+          <td class="one-line"><?php if($row_contacts['last_donation']) {
             echo date("M j, Y", strtotime($row_contacts['last_donation'])) ?>
-            For <a href="campaign-details.php?campaign=<?php echo $row_contacts['last_donation_campaign_id']; ?>"><?php echo $row_contacts['last_donation_campaign'] ?>
           <?php } else { echo $na; } ?>
           <td>
-            <input name="d[<?php echo $row_contacts['contact_id']; ?>]" type="checkbox" id="d[<?php echo $row_contacts['contact_id']; ?>]" value="<?php echo $row_contacts['contact_id']; ?>" />
+            <input name="d[<?php echo $row_contacts['contact_id']; ?>]" type="checkbox" class="action_check" id="d[<?php echo $row_contacts['contact_id']; ?>]" value="<?php echo $row_contacts['contact_id']; ?>" />
           </td>
         </tr>
         <?php } while ($row_contacts = mysql_fetch_assoc($contacts)); ?>
         </tbody>
       </table>
-      <input type="submit" name="Submit" value="Submit" />
     </form>
     <?php } ?>
 

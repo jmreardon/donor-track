@@ -43,6 +43,7 @@ $query_donations = "SELECT
     contact_id, 
     contact_first, 
     contact_last, 
+    contact_title, 
     contact_company 
   FROM donations 
   LEFT JOIN contacts USING (`contact_id`) 
@@ -68,13 +69,13 @@ $back_track = array('title' => "Campaigns", 'url' => "campaigns.php");
       <table class="sortable">
         <thead>
         <tr>
+          <th class="nosort"></th>
           <th class="text">Donor</th>
           <th class="text">Status</th>
           <th class="currency">Value</th>
           <th class="text">Type</th>
           <th>Pledged</th>
           <th>Received</th>
-          <th class="nosort"></th>
         </tr>
         </thead>
         <tfoot>
@@ -99,14 +100,11 @@ $back_track = array('title' => "Campaigns", 'url' => "campaigns.php");
 <?php if ($totalRows_donations > 0) { ?>
   <?php do { $row_count++; ?>
         <tr>
+          <td style="padding-right: 10px">
+            <a href="donation-details.php?id=<?php echo $row_donations['donation_id']; ?>">Details</a>
+          </td>
           <td><a href="contact-details.php?id=<?php echo $row_donations['contact_id']; ?>">
-            <?php 
-              if($row_donations['contact_company']) {
-	        printf("%s (%s %s)", $row_donations['contact_company'], $row_donations['contact_first'], $row_donations['contact_last']); 
-              } else {
-	        printf("%s, %s", $row_donations['contact_last'], $row_donations['contact_first']); 
-              }
-            ?>
+            <?php echo display_name($row_donations); ?>
           </a></td>
           <td><?php echo ucwords($row_donations['donation_status']) ?></td>
           <td><?php printf("$%.2f", $row_donations['donation_value']); ?></td>
@@ -124,9 +122,6 @@ $back_track = array('title' => "Campaigns", 'url' => "campaigns.php");
                          ? date("M j, Y", strtotime($row_donations['donation_received_date'])) 
                          : $na; 
             ?> 
-          </td>
-          <td>
-            <a href="donation-details.php?id=<?php echo $row_donations['donation_id']; ?>">Details</a>
           </td>
         </tr>
         <?php } while ($row_donations = mysql_fetch_assoc($donations)); ?>

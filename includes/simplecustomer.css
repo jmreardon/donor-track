@@ -57,13 +57,13 @@ h1, h2, h3, h4, h5, p {
 
 .container {
 	display: block;
-	width: 800px;
+	width: 990px;
 	padding: 5px;
 	margin-left: auto;
 	margin-right: auto;
 }
 .leftcolumn {
-	width: 575px;
+	width: 738px;
 	float: left;
 	padding: 6px;
 	padding-left: 0px;
@@ -114,13 +114,13 @@ h3 {
 }
 .rightcolumn {
 
-	width: 200px;
+	width: 234px;
 	float: left;
 	padding: 6px;
 }
 .header {
 	display: block;
-	width: 800px;
+	width: 990px;
 	padding: 5px;
 	margin-left: auto;
 	margin-right: auto;
@@ -186,7 +186,7 @@ hr {
 .historycontainer {
 
 	display: block;
-	width: 800px;
+	width: 990px;
 	padding: 5px;
 	margin-left: auto;
 	margin-right: auto;

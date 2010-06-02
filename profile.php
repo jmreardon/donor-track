@@ -42,25 +42,30 @@ $title_text = "Update Profile";
     <?php display_msg(); ?>
     </span>
     <form id="form1" name="form1" method="post" action="">
-      <p>Email
-        <br />
+    <fieldset class="width2">
+      <label class="first column width2">
+        Email
         <input name="email" type="text" id="email" value="<?php echo $row_profile['user_email']; ?>" class="required validate-email" size="35" />
-      </p>
-      <p><br />
+      </label>
+      <label class="first column width2">
         Password (leave blank to keep current password) <br />
         <input name="password" type="password" id="password" />
-          <br />
-      </p>
-      <p>Home Page<br />
+      </label>
+      <label class="first column unitx1">
+        Home Page<br />
+      </label>
+      <label class="column unitx1">
         <input name="home" type="radio" value="index.php" <?php if ($row_profile['user_home']=="index.php") { ?>checked="checked"<?php } ?> />
-          Dashboard
-      </p>
-      <p>
+        Dashboard<br />
+      </label>
+      <label class="column unitx1">
         <input name="home" type="radio" value="contacts.php" <?php if ($row_profile['user_home']=="contacts.php") { ?>checked="checked"<?php } ?> />
-      Contacts</p>
-      <p>
+        Contacts
+      </label>
+      <label class="first column unitx1">
         <input name="Submit2" type="submit" id="Submit2" value="Update" /> 
-        </p>
+      </label>
+    </fieldset>
     </form>
     
     <p>&nbsp;</p>

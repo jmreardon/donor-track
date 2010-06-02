@@ -54,6 +54,17 @@ $dis = block;
 }
 //
 
+function display_name($contact) {
+  if($contact['contact_company'] && $contact['contact_last']) {
+    return sprintf("%s (%s %s)", $contact['contact_company'], $contact['contact_first'], $contact['contact_last']); 
+  } else if ($contact['contact_company']) {
+    return $contact['contact_company']; 
+  } else if ($contact['contact_first']) {
+    return sprintf("%s %s", $contact['contact_first'], $contact['contact_last']); 
+  } else {
+    return sprintf("%s %s", $contact['contact_title'], $contact['contact_last']); 
+  }
+}
 function get_default_campaign() {
   $query_campaign = "SELECT * FROM campaigns ORDER BY campaign_id desc LIMIT 1";
   $campaign = mysql_query($query_campaign) or die(mysql_error());

@@ -155,12 +155,10 @@ $back_track = array('title' => "Campaign " . $row_donation['campaign_name'], 'ur
     </div>
     <dl>
       <dt class="unitx1">Donor</dt>
-      <dd><a href="contact-details.php?id=<?php echo $row_donation['contact_id']; ?>">
-        <?php if($row_donation['contact_company']) {
-            printf("%s (%s %s)", $row_donation['contact_company'], $row_donation['contact_first'], $row_donation['contact_last']); 
-          } else {
-            printf("%s %s", $row_donation['contact_first'], $row_donation['contact_last']); 
-          } ?></a>
+      <dd>
+        <a href="contact-details.php?id=<?php echo $row_donation['contact_id']; ?>">
+          <?php echo display_name($row_donation); ?>
+        </a>
       </dd>
       <dt class="unitx1">Status</dt>
       <dd><?php echo ucwords($row_donation['donation_status']); ?></dd>
