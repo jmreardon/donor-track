@@ -105,12 +105,4 @@ $contactcount = mysql_num_rows($contactcount);
 $na = '<span style="color:#CCCCCC">N/A</span>';
 //
 
-//get tags
-mysql_select_db($database_contacts, $contacts);
-$query_tags = "SELECT * FROM tags INNER JOIN tags_assoc ON itag_tag = tag_id INNER JOIN contacts ON contact_id = itag_contact ORDER BY tag_description ASC";
-$tags = mysql_query($query_tags, $contacts) or die(mysql_error());
-$row_tags = mysql_fetch_assoc($tags);
-$totalRows_tags = mysql_num_rows($tags);
-//
-
 ?>

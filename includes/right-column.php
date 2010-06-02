@@ -32,24 +32,6 @@ function MM_setTextOfTextfield(objName,x,newText) { //v3.0
 //-->
 </script>
 <div class="rightcolumn">
-<?php if ($contactcount > 0) { ?><br />
-
-<?php if ($totalRows_tags) { ?>
-<h3>Tags</h3>
-<?php 
-$i = 1;
-$comma = ",";
-do { 
-if ($i==$totalRows_tags) {
-$comma = "";
-}
-?>
-<a href="index.php?s=<?php echo $row_tags['tag_description']; ?>"><?php echo $row_tags['tag_description'].$comma; ?></a>
-<?php 
-$i++;
-} while ($row_tags = mysql_fetch_assoc($tags)); ?>
-<?php } ?>
-<?php } ?>
     <?php if ($row_contact) { ?>
     <h3>Contact Information</h3>
       <?php if ($row_contact['contact_company']) { echo $row_contact['contact_company'] ."<br>"; } ?>

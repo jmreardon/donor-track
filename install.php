@@ -56,7 +56,6 @@ mysql_query("CREATE TABLE `contacts` (
   `contact_title` varchar(255) default NULL,
   `contact_image` varchar(255) default NULL,
   `contact_profile` text,
-  `contact_tags` text,
   `contact_company` varchar(255) default NULL,
   `contact_street` varchar(255) default NULL,
   `contact_city` varchar(255) default NULL,
@@ -111,28 +110,13 @@ mysql_query("CREATE TABLE `notes` (
   PRIMARY KEY  (`note_id`)
 )");
 
-
-mysql_query("CREATE TABLE `tags` (
-  `tag_id` int(11) NOT NULL auto_increment,
-  `tag_description` varchar(255) character set utf8 default NULL,
-  PRIMARY KEY  (`tag_id`)
-)");
-
-
-mysql_query("CREATE TABLE `tags_assoc` (
-  `itag_id` int(11) NOT NULL auto_increment,
-  `itag_contact` int(11) default NULL,
-  `itag_tag` int(11) default NULL,
-  PRIMARY KEY  (`itag_id`)
-)");
-
 mysql_query("CREATE TABLE `donations` (
   `donation_id` int(11) NOT NULL auto_increment,
   `contact_id` int(11) default NULL,
   `campaign_id` int(11) default NULL,
   `donation_is_cash` BOOL NOT NULL,
   `donation_value` DECIMAL(10,2) NOT NULL,
-  `donation_status` ENUM('expected', 'pledged', 'received') default 'received',
+  `donation_status` ENUM('targeted', 'expected', 'pledged', 'received') default 'received',
   `donation_pledge_date` DATE default NULL,
   `donation_received_date` DATE default NULL,
   `donation_description` text,

@@ -80,7 +80,7 @@ header('Location: contacts.php'); die;
         </select>
       </label>
       <label id="tag_value_label" style="margin-bottom: 0px; display: none;" class="column unitx1">
-        Tag
+        Campaign
         <input type="text" id="tag_value" name="tag_value" value="" />
       </label>
       <script type="text/javascript">

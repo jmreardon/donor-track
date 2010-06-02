@@ -39,19 +39,19 @@ $checkc = mysql_num_rows(mysql_query("SELECT * FROM contacts WHERE contact_id = 
 
 //UPDATE CURRENT RECORDS
   $updateSQL = sprintf("UPDATE contacts SET `contact_first`=%s, contact_last=%s, contact_title=%s, contact_company=%s, contact_street=%s, contact_city=%s, contact_state=%s, contact_zip=%s, contact_email=%s, contact_phone=%s, contact_fax=%s, contact_web=%s, contact_profile=%s WHERE contact_id=".$data['0']."",
-                       GetSQLValueString($data['1'], "text"),
-                       GetSQLValueString($data['2'], "text"),
-                       GetSQLValueString($data['3'], "text"),
-                       GetSQLValueString($data['4'], "text"),
-                       GetSQLValueString($data['5'], "text"),
-                       GetSQLValueString($data['6'], "text"),
-                       GetSQLValueString($data['7'], "text"),
-                       GetSQLValueString($data['8'], "text"),
-                       GetSQLValueString($data['9'], "text"),
-                       GetSQLValueString($data['10'], "text"),
-                       GetSQLValueString($data['11'], "text"),
-                       GetSQLValueString($data['12'], "text"),
-                       GetSQLValueString($data['13'], "text"));
+                       GetSQLValueString(trim($data['1']), "text"),
+                       GetSQLValueString(trim($data['2']), "text"),
+                       GetSQLValueString(trim($data['3']), "text"),
+                       GetSQLValueString(trim($data['4']), "text"),
+                       GetSQLValueString(trim($data['5']), "text"),
+                       GetSQLValueString(trim($data['6']), "text"),
+                       GetSQLValueString(trim($data['7']), "text"),
+                       GetSQLValueString(trim($data['8']), "text"),
+                       GetSQLValueString(trim($data['9']), "text"),
+                       GetSQLValueString(trim($data['10']), "text"),
+                       GetSQLValueString(trim($data['11']), "text"),
+                       GetSQLValueString(trim($data['12']), "text"),
+                       GetSQLValueString(trim($data['13']), "text"));
 
   mysql_select_db($database_contacts);
   $Result1 = mysql_query($updateSQL) or die(mysql_error());
@@ -66,19 +66,19 @@ if ($row > 1) {
 
 //INSERT NEW RECORDS
   $insertSQL = sprintf("INSERT INTO contacts (`contact_first`, contact_last, contact_title, contact_company, contact_street, contact_city, contact_state, contact_zip, contact_email, contact_phone, contact_fax, contact_web, contact_profile) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                       GetSQLValueString($data['1'], "text"),
-                       GetSQLValueString($data['2'], "text"),
-                       GetSQLValueString($data['3'], "text"),
-                       GetSQLValueString($data['4'], "text"),
-                       GetSQLValueString($data['5'], "text"),
-                       GetSQLValueString($data['6'], "text"),
-                       GetSQLValueString($data['7'], "text"),
-                       GetSQLValueString($data['8'], "text"),
-                       GetSQLValueString($data['9'], "text"),
-                       GetSQLValueString($data['10'], "text"),
-                       GetSQLValueString($data['11'], "text"),
-                       GetSQLValueString($data['12'], "text"),
-                       GetSQLValueString($data['13'], "text"));
+                       GetSQLValueString(trim($data['1']), "text"),
+                       GetSQLValueString(trim($data['2']), "text"),
+                       GetSQLValueString(trim($data['3']), "text"),
+                       GetSQLValueString(trim($data['4']), "text"),
+                       GetSQLValueString(trim($data['5']), "text"),
+                       GetSQLValueString(trim($data['6']), "text"),
+                       GetSQLValueString(trim($data['7']), "text"),
+                       GetSQLValueString(trim($data['8']), "text"),
+                       GetSQLValueString(trim($data['9']), "text"),
+                       GetSQLValueString(trim($data['10']), "text"),
+                       GetSQLValueString(trim($data['11']), "text"),
+                       GetSQLValueString(trim($data['12']), "text"),
+                       GetSQLValueString(trim($data['13']), "text"));
     
 
 
