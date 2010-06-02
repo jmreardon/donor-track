@@ -14,11 +14,6 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-$query_history = "SELECT * FROM history WHERE history_status = 1 ORDER BY history_date DESC LIMIT 0, 4";
-$history = mysql_query($query_history) or die(mysql_error());
-$row_history = mysql_fetch_assoc($history);
-$totalRows_history = mysql_num_rows($history);
-
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -32,6 +27,8 @@ $totalRows_history = mysql_num_rows($history);
 <script src="includes/src/scriptaculous.js" type="text/javascript"></script>
 
 <link href="includes/baseline.reset.css" rel="stylesheet" type="text/css" />
+<link href="includes/baseline.base.css" rel="stylesheet" type="text/css" />
+<link href="includes/baseline.type.css" rel="stylesheet" type="text/css" />
 <link href="includes/baseline.grid.css" rel="stylesheet" type="text/css" />
 <link href="includes/baseline.form.css" rel="stylesheet" type="text/css" />
 <link href="includes/baseline.table.css" rel="stylesheet" type="text/css" />
@@ -51,22 +48,6 @@ $totalRows_history = mysql_num_rows($history);
   </div>
 
 <div class="historycontainer">
-<?php if ($totalRows_history > 0) { ?>
-Recent: 
-    <?php $ih = 1; do { 
-//GET CONTACT INFO FROM HISTORY
-mysql_select_db($database_contacts);
-$query_histcont = "SELECT * FROM contacts WHERE contact_id = ".$row_history['history_contact']."";
-$histcont = mysql_query($query_histcont) or die(mysql_error());
-$row_histcont = mysql_fetch_assoc($histcont);
-//
-?>
-    <a href="contact-details.php?id=<?php echo $row_histcont['contact_id']; ?>">
-      <?php echo display_name($row_histcont); ?>
-    </a> <?php if ($totalRows_history!=$ih) {?> &middot; <?php } ?>
-      <?php $ih++; } while ($row_history = mysql_fetch_assoc($history)); ?>
-<?php } ?>
-
-<?php if($back_track) { printf("<br /><a href='%s'>&laquo;%s</a>", $back_track['url'], $back_track['title']); } ?>
+<?php if($back_track) { printf("<a href='%s'>&laquo;%s</a>", $back_track['url'], $back_track['title']); } ?>
 
 </div>

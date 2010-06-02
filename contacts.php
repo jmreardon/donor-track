@@ -85,7 +85,7 @@ header('Location: contacts.php'); die;
         Select <a href="#" onclick="$$('#form1 input.action_check').each(function(box){box.checked=true});return false;">All</a> | 
                <a href="#" onclick="$$('#form1 input.action_check').each(function(box){box.checked=false});return false;">None</a>
       </p>
-      <table class="sortable" style="width: 100%; margin-top: 0px">
+      <table class="sortable" style="width: 100%; margin-top: 5px">
         <thead>
         <tr>
           <th class="nosort"></th>

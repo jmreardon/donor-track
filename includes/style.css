@@ -86,4 +86,13 @@ dd {
 }
 hr {
   clear: both;
+  margin: 10px 0px 6px 0px;
+}
+ul.blocklist {
+  margin: 0px;
+}  
+.blocklist li {
+  margin: 0px;
+  margin-bottom: 5px;
+  display: block;
 }

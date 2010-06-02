@@ -140,8 +140,8 @@ $back_track = array('title' => "Contacts", 'url' => "contacts.php");
 <?php if ($row_contact['contact_image']) { ?><img src="images/<?php echo $row_contact['contact_image']; ?>" width="95" height="71" class="contactimage" /><?php } ?>
 <h2>
   <?php echo display_name($row_contact); ?>
-  <a style="font-size:12px; font-weight:normal" href="contact.php?id=<?php echo $row_contact['contact_id']; ?>">&nbsp;&nbsp;+ Edit contact </a>
 </h2>
+<a href="contact.php?id=<?php echo $row_contact['contact_id']; ?>">Update contact</a>
 <br clear="all" />
 </div>
 

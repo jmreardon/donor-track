@@ -62,10 +62,10 @@ $back_track = array('title' => "Campaigns", 'url' => "campaigns.php");
   
   <div class="container">
   <div class="leftcolumn">
-    <h2>Campaign - <?php echo $campaign['campaign_name']; ?></h2>
     <span class="notices" id="notice" style="display:<?php echo $dis; ?>">
       <?php display_msg(); ?>
     </span>
+    <h2>Campaign - <?php echo $campaign['campaign_name']; ?></h2>
       <table class="sortable">
         <thead>
         <tr>

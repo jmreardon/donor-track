@@ -35,7 +35,7 @@ function MM_setTextOfTextfield(objName,x,newText) { //v3.0
 <?php if ($contactcount > 0) { ?><br />
 
 <?php if ($totalRows_tags) { ?>
-Tags:
+<h3>Tags</h3>
 <?php 
 $i = 1;
 $comma = ",";
@@ -48,32 +48,15 @@ $comma = "";
 <?php 
 $i++;
 } while ($row_tags = mysql_fetch_assoc($tags)); ?>
-<br />
-<br />
 <?php } ?>
-
-<form id="form3" class="unitx2" name="form3" method="GET" action="index.php">
-  <fieldset>
-    <label class="first unitx2">
-      <input name="s" type="text" id="s" onfocus="MM_setTextOfTextfield('s','','')" value="Search" size="15" />
-    </label>
-  </fieldset>
-  <fieldset>
-    <input type="submit" name="Submitf" value="Go" />
-  </fieldset>
-</form>
 <?php } ?>
-    <p>&nbsp;</p>
-    <p><a class="addcontact" href="contact.php">+ Add Contact</a></p>
-    <?php if ($pagetitle==ContactDetails) { ?>
-    <hr />
-    <p><strong>Contact Information</strong><br />
+    <?php if ($row_contact) { ?>
+    <h3>Contact Information</h3>
       <?php if ($row_contact['contact_company']) { echo $row_contact['contact_company'] ."<br>"; } ?>
       <?php if ($row_contact['contact_street']) { echo $row_contact['contact_street']  ."<br>"; } ?>
     <?php if ($row_contact['contact_city']) { echo $row_contact['contact_city'] .","; } ?> <?php if ($row_contact['contact_state']) { echo $row_contact['contact_state']; } ?> <?php if ($row_contact['contact_zip']) { echo $row_contact['contact_zip']; } ?></p>
-    <?php if ($row_contact['contact_street'] && $row_contact['contact_city'] && $row_contact['contact_state']) { ?><p><a href="http://maps.google.com/maps?f=q&amp;hl=en&amp;q=<?php echo $row_contact['contact_street']; ?>,+<?php echo $row_contact['contact_city']; ?>,+<?php echo $row_contact['contact_state']; ?>+<?php echo $row_contact['contact_zip']; ?>&gt;" target="_blank">+ View Map </a></p>
+    <?php if ($row_contact['contact_street'] && $row_contact['contact_city'] && $row_contact['contact_state']) { ?><a href="http://maps.google.com/maps?f=q&amp;hl=en&amp;q=<?php echo $row_contact['contact_street']; ?>,+<?php echo $row_contact['contact_city']; ?>,+<?php echo $row_contact['contact_state']; ?>+<?php echo $row_contact['contact_zip']; ?>" target="_blank">+ View Map </a>
     <?php } ?>
-    <hr />
     <p>      <?php if ($row_contact['contact_phone']) { ?>Phone: <?php echo $row_contact['contact_phone']; ?><br /><?php } ?>
 
 <?php if ($row_contact['contact_web']) { ?>
@@ -86,8 +69,40 @@ $i++;
 
 </p>
 <?php if ($row_contact['contact_profile']) { ?>   
- <hr />
   <strong>Background</strong><br />
   <?php echo $row_contact['contact_profile']; ?>
 <?php } ?>
-<?php } ?>  </div>
+<hr />
+<?php } ?>
+
+<?php
+$query_history = "SELECT 
+    contact_id, 
+    contact_first, 
+    contact_last, 
+    contact_company, 
+    contact_title 
+  FROM history 
+  LEFT JOIN contacts ON history_contact=contact_id 
+  WHERE history_status = 1 
+  ORDER BY history_date DESC 
+  LIMIT 0, 6";
+$history = mysql_query($query_history) or die(mysql_error());
+$row_history = mysql_fetch_assoc($history);
+$totalRows_history = mysql_num_rows($history);
+
+if ($totalRows_history > 0) { ?>
+<h3>Recent Contacts</h3>
+<ul class="blocklist">
+<?php do { 
+?>
+  <li>
+    <a href="contact-details.php?id=<?php echo $row_history['contact_id']; ?>">
+      <?php echo display_name($row_history); ?>
+    </a>
+  </li>
+<?php } while ($row_history = mysql_fetch_assoc($history)); ?>
+</ul>
+<?php } ?>
+
+  </div>
