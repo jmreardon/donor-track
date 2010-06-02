@@ -24,19 +24,9 @@ header('Location: '.$_SERVER['HTTP_REFERER']); die;
 }
 
 $cwhere = "WHERE history_status = 1";
-if (isset($_GET['s'])) {
-$cwhere = "WHERE history_status = 1 AND (contact_tags LIKE '%".$_GET['s']."%' OR contact_first LIKE '%".mysql_real_escape_string($_GET['s'])."%' OR contact_last LIKE '%".mysql_real_escape_string($_GET['s'])."%' OR contact_email LIKE '%".mysql_real_escape_string($_GET['s'])."%' OR contact_company LIKE '%".mysql_real_escape_string($_GET['s'])."%')";
-}
-
-$nwhere = "";
-if (isset($_GET['s'])) {
-$search = 1;
-$nwhere = "WHERE note_text LIKE '%".mysql_real_escape_string($_GET['s'])."%' ";
-}
-
 
 mysql_select_db($database_contacts, $contacts);
-$query_notes = "SELECT * FROM notes INNER JOIN contacts ON note_contact = contact_id $nwhere ORDER BY note_date DESC LIMIT 0, 20";
+$query_notes = "SELECT * FROM notes INNER JOIN contacts ON note_contact = contact_id ORDER BY note_date DESC LIMIT 0, 20";
 $notes = mysql_query($query_notes, $contacts) or die(mysql_error());
 $row_notes = mysql_fetch_assoc($notes);
 $totalRows_notes = mysql_num_rows($notes);
@@ -57,10 +47,6 @@ if ($totalRows_contacts < 1 && !isset($_GET['s'])) { header('Location: contact.p
 <?php include('includes/header.php'); ?>
 <div class="container">
   <div class="leftcolumn">
-<?php if ($search==1) { ?>
-Search results for <em><?php echo $_GET['s']; ?></em>.<br />
-<br />
-<?php } ?>
 
 <?php if ($totalRows_contacts > 0) { ?>
     <h2>Contacts</h2>

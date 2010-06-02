@@ -66,25 +66,25 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   mysql_query("INSERT INTO contacts (contact_tags, contact_first, contact_last, contact_title, contact_image, contact_profile, contact_company, contact_street, contact_city, contact_state, contact_zip, contact_phone, contact_cell, contact_email, contact_web, contact_updated) VALUES 
 
 	(
-		'".mysql_real_escape_string(trim($_POST['contact_tags']))."',
-		'".mysql_real_escape_string(trim($_POST['contact_first']))."',
-		'".mysql_real_escape_string(trim($_POST['contact_last']))."',
-		'".mysql_real_escape_string(trim($_POST['contact_title']))."',
-		'".mysql_real_escape_string($picture)."',
-		'".mysql_real_escape_string(trim($_POST['contact_profile']))."',
-		'".mysql_real_escape_string(trim($_POST['contact_company']))."',
-		'".mysql_real_escape_string(trim($_POST['contact_street']))."',
-		'".mysql_real_escape_string(trim($_POST['contact_city']))."',
-		'".mysql_real_escape_string(trim($_POST['contact_state']))."',
-		'".mysql_real_escape_string(trim($_POST['contact_zip']))."',
-		'".mysql_real_escape_string(trim($_POST['contact_phone']))."',
-		'".mysql_real_escape_string(trim($_POST['contact_cell']))."',
-		'".mysql_real_escape_string(trim($_POST['contact_email']))."',
-		'".mysql_real_escape_string(trim($_POST['contact_web']))."',
+		".GetSQLValueString(trim($_POST['contact_tags'])).",
+		".GetSQLValueString(trim($_POST['contact_first'])).",
+		".GetSQLValueString(trim($_POST['contact_last'])).",
+		".GetSQLValueString(trim($_POST['contact_title'])).",
+		".GetSQLValueString($picture).",
+		".GetSQLValueString(trim($_POST['contact_profile'])).",
+		".GetSQLValueString(trim($_POST['contact_company'])).",
+		".GetSQLValueString(trim($_POST['contact_street'])).",
+		".GetSQLValueString(trim($_POST['contact_city'])).",
+		".GetSQLValueString(trim($_POST['contact_state'])).",
+		".GetSQLValueString(trim($_POST['contact_zip'])).",
+		".GetSQLValueString(trim($_POST['contact_phone'])).",
+		".GetSQLValueString(trim($_POST['contact_cell'])).",
+		".GetSQLValueString(trim($_POST['contact_email'])).",
+		".GetSQLValueString(trim($_POST['contact_web'])).",
 		'".time()."'
 	)
 
-	");
+	") or die(mysql_error());
 
 $cid = mysql_insert_id();
 

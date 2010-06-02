@@ -68,15 +68,32 @@ header('Location: contacts.php'); die;
       <?php display_msg(); ?>
     </span>
     <a href="csv.php"><strong>Export</strong></a><strong> | </strong>
-    <a href="batch.php"><strong>Import</strong></a>
+    <a href="batch.php"><strong>Import</strong></a><strong> | </strong>
+    <a href="contact.php"><strong>Create</strong></a>
     <form id="form1" name="form1" method="post" action="">
       <fieldset>
       <label style="margin-bottom: 0px" class="first column unitx1">
         Action
         <select id="action" name="action">
+          <option>Delete</option>
           <option>Tag</option>
         </select>
       </label>
+      <label id="tag_value_label" style="margin-bottom: 0px; display: none;" class="column unitx1">
+        Tag
+        <input type="text" id="tag_value" name="tag_value" value="" />
+      </label>
+      <script type="text/javascript">
+        Event.observe(window,'load',function( ) {
+          Event.observe('action','change', function() {
+            if($("action").getValue() == "Tag") {
+              $("tag_value_label").show();
+            } else {
+              $("tag_value_label").hide();
+            }
+          });
+        });
+      </script>
       <label style="margin-bottom: 0px" class="column width1 inlinebutton">
         <input type="submit" name="Submit" value="Submit" />
       </label>
