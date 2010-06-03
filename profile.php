@@ -27,7 +27,7 @@ header('Location: profile.php'); die;
 }
 
 mysql_select_db($database_contacts, $contacts);
-$query_profile = "SELECT * FROM users";
+$query_profile = "SELECT * FROM users WHERE user_id = " $row_userinfo['user_id'];
 $profile = mysql_query($query_profile, $contacts) or die(mysql_error());
 $row_profile = mysql_fetch_assoc($profile);
 $totalRows_profile = mysql_num_rows($profile);
