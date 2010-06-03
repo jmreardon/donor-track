@@ -91,7 +91,7 @@ $back_track = array('title' => "Campaigns", 'url' => "campaigns.php");
           <th class="text">Donor</th>
           <th class="text">Status</th>
           <th class="currency">Value</th>
-          <th class="text">Type</th>
+          <th class="text centre-cell">Type</th>
           <th>Pledged</th>
           <th>Received</th>
         </tr>
@@ -125,17 +125,17 @@ $back_track = array('title' => "Campaigns", 'url' => "campaigns.php");
             <?php echo display_name($row_donations); ?>
           </a></td>
           <td><?php echo ucwords($row_donations['donation_status']) ?></td>
-          <td><?php printf("$%.2f", $row_donations['donation_value']); ?></td>
-          <td>
+          <td class="one-line"><?php printf("$%.2f", $row_donations['donation_value']); ?></td>
+          <td class="one-line centre-cell">
             <?php echo donation_kind_text($row_donations['donation_is_cash']); ?>
           </td>
-          <td>
+          <td class="one-line">
             <?php echo $row_donations['donation_pledge_date']
                          ? date("M j, Y", strtotime($row_donations['donation_pledge_date'])) 
                          : $na; 
             ?> 
           </td>
-          <td>
+          <td class="one-line">
             <?php echo $row_donations['donation_received_date'] 
                          ? date("M j, Y", strtotime($row_donations['donation_received_date'])) 
                          : $na; 

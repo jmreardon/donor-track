@@ -66,6 +66,11 @@ label {
 .sortdesc {
 	background-image: url(down.gif);
 }
+.centre-cell {
+	text-align: center;
+        padding-left: 9px;
+        padding-right: 9px;
+}
 .right-cell {
 	text-align: right;
         padding-right: 5px !important;
