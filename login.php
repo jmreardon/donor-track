@@ -77,7 +77,7 @@ header('Location: login.php'); die;
 
 <body>
 <div class="logincontainer">
-  <h1>Simple Customer </h1>
+  <h1>Donor Track</h1>
   <form id="form1" name="form1" method="post" action="">
 <span class="notices" style="display:<?php echo $dis; ?>">
     <?php display_msg(); ?>
