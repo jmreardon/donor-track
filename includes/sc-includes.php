@@ -54,6 +54,18 @@ $dis = block;
 }
 //
 
+function echo_campaign_options($selection = 0) {
+  $query_campaigns = "SELECT campaign_id, campaign_name FROM campaigns ORDER BY campaign_id DESC";
+  $campaigns = mysql_query($query_campaigns) or die(mysql_error());
+  $row_campaigns = mysql_fetch_assoc($campaigns);
+  $totalRows_campaigns = mysql_num_rows($campaigns);
+  do { ?>
+    <option <?php if($row_campaigns['campaign_id'] == $selection) { echo "selected='selected' "; } ?> value="<?php echo $row_campaigns['campaign_id']; ?>">
+      <?php echo $row_campaigns['campaign_name']; ?>
+    </option>
+  <?php } while($row_campaigns = mysql_fetch_assoc($campaigns));
+}
+
 function display_name($contact) {
   if($contact['contact_company'] && $contact['contact_last']) {
     return sprintf("%s (%s %s)", $contact['contact_company'], $contact['contact_first'], $contact['contact_last']); 

@@ -54,6 +54,24 @@ $donations = mysql_query($query_donations, $contacts) or die(mysql_error());
 $row_donations = mysql_fetch_assoc($donations);
 $totalRows_donations = mysql_num_rows($donations);
 
+$query_targets = "SELECT
+    contact_id,
+    contact_first,
+    contact_last,
+    contact_title,
+    contact_company
+  FROM targets
+  LEFT JOIN contacts using (contact_id)
+  WHERE campaign_id = " . $campaign['campaign_id'] ." AND
+        (SELECT COUNT(*) 
+         FROM donations 
+         WHERE campaign_id = " . $campaign['campaign_id'] ." AND 
+               donations.contact_id = targets.contact_id
+        ) = 0";
+$targets = mysql_query($query_targets, $contacts) or die(mysql_error());
+$row_targets = mysql_fetch_assoc($targets);
+$totalRows_targets = mysql_num_rows($targets);
+
 $stats = donation_stats($campaign['campaign_id']);
 $title_text = "Campaign - ". $campaign['campaign_name'];
 $back_track = array('title' => "Campaigns", 'url' => "campaigns.php");
@@ -131,6 +149,16 @@ $back_track = array('title' => "Campaigns", 'url' => "campaigns.php");
         </tbody>
       </table>
       <br />
+<?php if ($totalRows_targets > 0) { ?>
+      <h3>Other Targets</h3>
+      <ul>
+        <?php do { ?>
+          <li><a href="contact-details.php?id=<?php echo $row_targets['contact_id']; ?>">
+              <?php echo display_name($row_targets); ?>
+          </a></li>
+        <?php } while ($row_targets = mysql_fetch_assoc($targets)); ?>
+      </ul>
+<?php } ?>
   </div>
   <?php include('includes/right-column.php'); ?>
   <br clear="all" />

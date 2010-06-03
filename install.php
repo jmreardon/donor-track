@@ -116,11 +116,19 @@ mysql_query("CREATE TABLE `donations` (
   `campaign_id` int(11) default NULL,
   `donation_is_cash` BOOL NOT NULL,
   `donation_value` DECIMAL(10,2) NOT NULL,
-  `donation_status` ENUM('targeted', 'expected', 'pledged', 'received') default 'received',
+  `donation_status` ENUM('expected', 'pledged', 'received') default 'received',
   `donation_pledge_date` DATE default NULL,
   `donation_received_date` DATE default NULL,
   `donation_description` text,
   PRIMARY KEY (`donation_id`)
+)");
+
+mysql_query("CREATE TABLE `targets` (
+  `target_id` int(11) NOT NULL auto_increment,
+  `contact_id` int(11) NOT NULL,
+  `campaign_id` int(11) NOT NULL,
+  PRIMARY KEY (`contact_id`, `campaign_id`),
+  UNIQUE KEY (`target_id`)
 )");
 
 mysql_query("CREATE TABLE `campaigns` (

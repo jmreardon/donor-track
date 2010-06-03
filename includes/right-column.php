@@ -33,7 +33,7 @@ function MM_setTextOfTextfield(objName,x,newText) { //v3.0
 </script>
 <div class="rightcolumn">
     <?php if ($row_contact) { ?>
-    <h3>Contact Information</h3>
+    <h3>Contact information</h3>
       <?php if ($row_contact['contact_company']) { echo $row_contact['contact_company'] ."<br>"; } ?>
       <?php if ($row_contact['contact_street']) { echo $row_contact['contact_street']  ."<br>"; } ?>
     <?php if ($row_contact['contact_city']) { echo $row_contact['contact_city'] .","; } ?> <?php if ($row_contact['contact_state']) { echo $row_contact['contact_state']; } ?> <?php if ($row_contact['contact_zip']) { echo $row_contact['contact_zip']; } ?></p>
@@ -53,6 +53,27 @@ function MM_setTextOfTextfield(objName,x,newText) { //v3.0
 <?php if ($row_contact['contact_profile']) { ?>   
   <strong>Background</strong><br />
   <?php echo $row_contact['contact_profile']; ?>
+<?php }
+
+$query_targets = "SELECT
+    campaign_id,
+    campaign_name
+  FROM targets
+  LEFT JOIN campaigns using (campaign_id)
+  WHERE contact_id = " . $row_contact['contact_id'];
+$targets = mysql_query($query_targets, $contacts) or die(mysql_error());
+$row_targets = mysql_fetch_assoc($targets);
+$totalRows_targets = mysql_num_rows($targets);
+
+if($totalRows_targets > 0) { ?>
+  <strong>Campaigns Targeted</strong><br />
+  <ul class="blocklist">
+  <?php do { ?>
+    <li><a href="campaign-details.php?campaign=<?php echo $row_targets['campaign_id']; ?>">
+        <?php echo $row_targets['campaign_name']; ?>
+    </a></li>
+  <?php } while ($row_targets = mysql_fetch_assoc($targets)); ?>
+  </ul>
 <?php } ?>
 <hr />
 <?php } ?>

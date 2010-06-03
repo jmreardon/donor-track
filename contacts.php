@@ -46,16 +46,29 @@ if ($totalRows_contacts < 1) {
 header('Location: contact.php');
 }
 
-//delete multiple contacts
+//act on multiple contacts
 if (isset($_POST['d'])) {
-	foreach($_POST['d'] as $key => $value) {
-		if ($value) {
-			mysql_query("DELETE FROM contacts WHERE contact_id = ".$value."");
-		}
-		
-	}
-set_msg('Contacts Deleted');
-header('Location: contacts.php'); die;
+  foreach($_POST['d'] as $key => $value) {
+    if (is_numeric($value)) {
+      if($_POST['action'] == "Delete") {
+        mysql_query("DELETE FROM contacts WHERE contact_id = ".$value."");
+      }
+      if($_POST['action'] == "Target" && is_numeric($_POST['campaign'])) {
+        mysql_query("INSERT INTO targets (`contact_id`, `campaign_id`) VALUES ($value, " . $_POST['campaign'] . ")");
+      }
+      if($_POST['action'] == "Untarget" && is_numeric($_POST['campaign'])) {
+        mysql_query("DELETE FROM targets WHERE contact_id = $value AND campaign_id = " . $_POST['campaign']);
+      }
+    }
+  }
+  if($_POST['action'] == "Delete") {
+    set_msg('Contacts Deleted');
+  } else if($_POST['action'] == "Untarget") {
+    set_msg('Contacts Untargeted');
+  } else if($_POST['action'] == "Target") {
+    set_msg('Contacts Targeted');
+  }
+  header('Location: contacts.php'); die;
 }
 //
 ?>
@@ -76,20 +89,23 @@ header('Location: contacts.php'); die;
         Action
         <select id="action" name="action">
           <option>Delete</option>
-          <option>Tag</option>
+          <option>Target</option>
+          <option>Untarget</option>
         </select>
       </label>
-      <label id="tag_value_label" style="margin-bottom: 0px; display: none;" class="column unitx1">
+      <label id="target_value_label" style="margin-bottom: 0px; display: none;" class="column unitx1">
         Campaign
-        <input type="text" id="tag_value" name="tag_value" value="" />
+        <select id="campaign" name="campaign">
+          <?php echo_campaign_options(); ?>
+        </select>
       </label>
       <script type="text/javascript">
         Event.observe(window,'load',function( ) {
           Event.observe('action','change', function() {
-            if($("action").getValue() == "Tag") {
-              $("tag_value_label").show();
-            } else {
-              $("tag_value_label").hide();
+            if($("action").getValue() != "Delete") {
+              $("target_value_label").show();
+            } else if($("action").getValue() == "Delete") {
+              $("target_value_label").hide();
             }
           });
         });

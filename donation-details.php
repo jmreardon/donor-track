@@ -121,7 +121,6 @@ if(!($_GET['id'] && is_numeric($_GET['id']))) {
 $query_donation = "SELECT 
     donation_id, 
     campaign_id, 
-    contact_id, 
     donation_value, 
     donation_status, 
     donation_is_cash, 
@@ -129,15 +128,14 @@ $query_donation = "SELECT
     donation_received_date,
     donation_description,
     campaign_name, 
-    contact_company, 
-    contact_first, 
-    contact_last 
+    contacts.*
   FROM donations 
   LEFT JOIN contacts USING (contact_id) 
   LEFT JOIN campaigns USING (campaign_id)
   WHERE donation_id = ".$_GET['id']."";
 $donation = mysql_query($query_donation, $contacts) or die(mysql_error());
 $row_donation = mysql_fetch_assoc($donation);
+$row_contact = $row_donation;
 $totalRows_donation = mysql_num_rows($donation);
 
 $title_text = "Donation for Campaign " . $row_donation['campaign_name'];

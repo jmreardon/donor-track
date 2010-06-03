@@ -179,9 +179,7 @@ $back_track = array('title' => "Contacts", 'url' => "contacts.php");
           <label class="first unitx1">
             Campaign 
             <select id="campaign" name="campaign">
-            <?php do { ?>
-              <option value="<?php echo $row_campaigns['campaign_id']; ?>"><?php echo $row_campaigns['campaign_name']; ?></option>
-            <?php } while($row_campaigns = mysql_fetch_assoc($campaigns)); ?>
+              <?php echo_campaign_options(); ?>
             </select>
           </label>
           <label class="column unitx1">
