@@ -88,7 +88,7 @@ header('Location: password.php'); die;
 
 <body>
 <div class="logincontainer">
-  <h1>Simple Customer </h1>
+  <h1>Donor Track<h1>
  <span class="notices" style="display:<?php echo $dis; ?>">
     <?php display_msg(); ?>
   </span>  

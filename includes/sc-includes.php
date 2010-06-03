@@ -80,7 +80,7 @@ function display_name($contact) {
 function get_default_campaign() {
   $query_campaign = "SELECT * FROM campaigns ORDER BY campaign_id desc LIMIT 1";
   $campaign = mysql_query($query_campaign) or die(mysql_error());
-  return mysql_fetch_assoc($config);
+  return mysql_fetch_assoc($campaign);
 }
 
 function GetSQLValueString($theValue, $theType = "text", $theDefinedValue = "", $theNotDefinedValue = "") 

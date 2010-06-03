@@ -77,6 +77,7 @@ $totalRows_campaigns = mysql_num_rows($campaigns);
         </tr>
       </thead>
       <tbody>
+        <?php if($row_campaigns) { ?>
         <?php do { ?>
 	  <tr>
             <td>
@@ -90,6 +91,9 @@ $totalRows_campaigns = mysql_num_rows($campaigns);
             </td>
           </tr>
         <?php } while ($row_campaigns = mysql_fetch_assoc($campaigns)); ?>
+        <?php } else { ?>
+          <tr><td style="text-align: center;" colspan="5">No Campaigns</td></tr>
+        <?php } ?>
       </tbody>
       </table>
       <br />

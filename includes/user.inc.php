@@ -39,7 +39,7 @@ function update_profile($email, $password = NULL, $home = NULL) {
     $password_salt = $row_profile['user_salt'];
   }
 
-  $result= mysql_query("UPDATE users SET 
+  mysql_query("UPDATE users SET 
     user_email = '".mysql_real_escape_string(trim($email))."', 
     user_password = '".mysql_real_escape_string(trim($password))."', 
     user_salt = '".mysql_real_escape_string(trim($password_salt))."', 
@@ -48,7 +48,7 @@ function update_profile($email, $password = NULL, $home = NULL) {
   if(mysql_error()) {
     die(mysql_error());
   }
-  return mysql_num_rows($result);
+  return mysql_affected_rows();
 }
 
 function gen_password($len = 6)

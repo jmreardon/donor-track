@@ -31,9 +31,9 @@ $s = 1;
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Simple Customer:  Installation</title>
+<title>Donor Track:  Installation</title>
 <link href="includes/simplecustomer.css" rel="stylesheet" type="text/css" />
-</head><body><div class="logincontainer" id="installcontainer"><h1><span class="loginheading">Simple Customer Installation</span></h1>
+</head><body><div class="logincontainer" id="installcontainer"><h1><span class="loginheading">Donor Track Installation</span></h1>
 <?php if ($s!=1) { ?><form id="form1" name="form1" method="post" action="">
     <p>Your email address<br />
       <input name="email" type="text" id="email" size="35" />
