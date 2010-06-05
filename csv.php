@@ -23,7 +23,7 @@ $row_contacts = mysql_fetch_assoc($contacts);
 $totalRows_contacts = mysql_num_rows($contacts);
 
 
-$csv_output = '"id","First Name","Last Name","Title","Company","Street","City","State","Zip","Email","Phone","Fax","Website","Profile"';
+$csv_output = '"id","First Name","Last Name","Title","Organization","Street","City","State","Zip","Email","Phone","Fax","Website","Profile"';
 $csv_output .= "\n"; 
 
 $result = mysql_query("$query_contacts");

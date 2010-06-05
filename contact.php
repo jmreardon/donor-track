@@ -153,7 +153,7 @@ if ($update==0) {
       <input name="contact_title" type="text" id="contact_title" value="<?php echo $row_contact['contact_title']; ?>"  />
       </label>
       <label class="unitx2">
-      Company
+      Organization
       <input name="contact_company" type="text" id="contact_company" value="<?php echo $row_contact['contact_company']; ?>" />
       </label>
       <label class="first unitx4">

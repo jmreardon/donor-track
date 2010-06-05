@@ -19,11 +19,6 @@
 include('includes/sc-includes.php');
 $pagetitle = "ContactDetails";
 
-$update = 0;
-if (isset($_GET['note'])) {
-$update = 1;
-}
-
 mysql_select_db($database_contacts, $contacts);
 $query_contact = "SELECT * FROM contacts WHERE contact_id = ".$_GET['id']."";
 $contact = mysql_query($query_contact, $contacts) or die(mysql_error());
@@ -59,15 +54,7 @@ $notes = mysql_query($query_notes, $contacts) or die(mysql_error());
 $row_notes = mysql_fetch_assoc($notes);
 $totalRows_notes = mysql_num_rows($notes);
 
-if ($update==1) {
-$query_note = "SELECT * FROM notes WHERE note_id = ".$_GET['note']."";
-$note = mysql_query($query_note, $contacts) or die(mysql_error());
-$row_note = mysql_fetch_assoc($note);
-$totalRows_note = mysql_num_rows($note);
-}
-
 //INSERT NOTE FOR CONTACT
-if ($update==0) {
 if ($_POST['note_text']) {
 mysql_query("INSERT INTO notes (note_contact, note_text, note_date, note_status) VALUES 
 	(
@@ -82,21 +69,7 @@ $cid = $_GET['id'];
 $goto = "contact-details.php?id=$cid";
 header(sprintf('Location: %s', $goto)); die;
 }
-}
 //
-
-//UPDATE NOTE
-if ($update==1) {
-if ($_POST['note_text']) {
-mysql_query("UPDATE notes SET note_text = '".mysql_real_escape_string($_POST['note_text'])."' WHERE note_id = ".$_GET['note']."");
-$cid = $_GET['id'];
-$goto = "contact-details.php?id=$cid";
-set_msg('Note Updated');
-header(sprintf('Location: %s', $goto)); die;
-}
-}
-//
-
 
 //UPDATE HISTORY
 
@@ -151,16 +124,15 @@ $back_track = array('title' => "Contacts", 'url' => "contacts.php");
 
 
     <form id="form1" name="form1" method="post" action="">
-<?php if ($update==0) { echo "Add a new note <br>"; } ?>
+      Add a new note <br>
 <textarea name="note_text" style="width:95% "rows="3" id="note_text" class="required"><?php echo $row_note['note_text']; ?></textarea>
         <br />
-        <input type="submit" name="Submit2" value="<?php if ($update==1) { echo 'Update'; } else { echo 'Add'; } ?> note" />
-      <?php if ($update==1) { ?>  <a href="delete.php?note=<?php echo $row_note['note_id']; ?>&amp;id=<?php echo $row_note['note_contact']; ?>" onclick="javascript:return confirm('Are you sure you want to delete this note?')">Delete Note</a><?php } ?>
+        <input type="submit" name="Submit2" value="Add note" />
 <?php if ($totalRows_notes > 0) { ?>
         <hr />
         <?php do { ?>
 <div <?php if ($row_notes['note_date'] > time()-1) { ?>id="newnote"<?php } ?>>
-        <span class="datedisplay"><a href="?id=<?php echo $row_contact['contact_id']; ?>&note=<?php echo $row_notes['note_id']; ?>"><?php echo date('F d, Y g:mA', $row_notes['note_date']); ?></a></span><br />
+        <span class="datedisplay"><?php echo date('F d, Y g:mA', $row_notes['note_date']); ?></span><br />
           <?php echo $row_notes['note_text']; ?>
 </div>
           <hr />
