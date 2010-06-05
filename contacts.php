@@ -251,7 +251,7 @@ if (isset($_POST['d'])) {
                                   $row_contacts['contact_last']); ?>
           </td>
           <td class="one-line"><?php echo $row_contacts['contact_phone'] ? $row_contacts['contact_phone'] : $na; ?></td>
-          <td class="one-line"><?php echo $row_contacts['recent_targets'] ? $row_contacts['recent_targets'] . ", ..." : "Never"; ?></a></td>
+          <td class="one-line"><?php echo $row_contacts['recent_targets'] ? $row_contacts['recent_targets'] . ", ..." : $na; ?></a></td>
           <td class="one-line"><?php if($row_contacts['last_donation']) {
             echo date("M j, Y", strtotime($row_contacts['last_donation'])) ?>
           <?php } else { echo $na; } ?>
