@@ -86,6 +86,9 @@ $query_contacts = "SELECT
      WHERE targets.contact_id = contacts.contact_id
      ORDER BY campaign_id DESC
      LIMIT 1) as recent_targets,
+    (SELECT COUNT(*)
+     FROM targets 
+     WHERE targets.contact_id = contacts.contact_id) > 1 as targeted_multiple,
     (SELECT campaign_id 
      FROM campaigns 
      WHERE campaigns.campaign_id = (SELECT campaign_id FROM donations WHERE donations.contact_id = contacts.contact_id AND
@@ -251,7 +254,8 @@ if (isset($_POST['d'])) {
                                   $row_contacts['contact_last']); ?>
           </td>
           <td class="one-line"><?php echo $row_contacts['contact_phone'] ? $row_contacts['contact_phone'] : $na; ?></td>
-          <td class="one-line"><?php echo $row_contacts['recent_targets'] ? $row_contacts['recent_targets'] . ", ..." : $na; ?></a></td>
+          <td class="one-line"><?php echo $row_contacts['recent_targets'] ? $row_contacts['recent_targets'] . 
+                                     ($row_contacts['targeted_multiple'] ? ", ..." : "") : $na; ?></a></td>
           <td class="one-line"><?php if($row_contacts['last_donation']) {
             echo date("M j, Y", strtotime($row_contacts['last_donation'])) ?>
           <?php } else { echo $na; } ?>
