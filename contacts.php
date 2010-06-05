@@ -1,6 +1,7 @@
 <?php require_once('includes/config.php');
 
 //   Copyright 2008 johnboyproductions.com
+//   Copyright 2010 Justin Reardon
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -79,6 +80,12 @@ $query_contacts = "SELECT
     contact_email,
     contact_company IS NULL AS isnull,
     GROUP_CONCAT(donation_description) as donation_descriptions,
+    (SELECT campaign_name
+     FROM targets 
+     LEFT JOIN campaigns USING (campaign_id)
+     WHERE targets.contact_id = contacts.contact_id
+     ORDER BY campaign_id DESC
+     LIMIT 1) as recent_targets,
     (SELECT campaign_id 
      FROM campaigns 
      WHERE campaigns.campaign_id = (SELECT campaign_id FROM donations WHERE donations.contact_id = contacts.contact_id AND
@@ -224,7 +231,7 @@ if (isset($_POST['d'])) {
           <th>Organization</th>
           <th>Name</th>
           <th class="nosort">Phone</th>
-          <th class="nosort">Email</th>
+          <th>Targeted</th>
           <th class="date one-line">Last Gave</th>
           <th class="nosort" width="7%" style="text-align: center">Select</th>
         </tr>
@@ -244,7 +251,7 @@ if (isset($_POST['d'])) {
                                   $row_contacts['contact_last']); ?>
           </td>
           <td class="one-line"><?php echo $row_contacts['contact_phone'] ? $row_contacts['contact_phone'] : $na; ?></td>
-          <td class="one-line"><a href="mailto:<?php echo $row_contacts['contact_email']; ?>"><?php echo $row_contacts['contact_email']; ?></a></td>
+          <td class="one-line"><?php echo $row_contacts['recent_targets'] ? $row_contacts['recent_targets'] . ", ..." : "Never"; ?></a></td>
           <td class="one-line"><?php if($row_contacts['last_donation']) {
             echo date("M j, Y", strtotime($row_contacts['last_donation'])) ?>
           <?php } else { echo $na; } ?>
