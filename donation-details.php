@@ -224,7 +224,7 @@ $back_track = array('title' => "Campaign " . $row_donation['campaign_name'], 'ur
         <fieldset>
       </form>
     </div>
-    <a href="#" onclick="new Effect.toggle('update_description', 'slide'); return false;">+Update Description</a>
+    <a href="#" onclick="new Effect.toggle('update_description', 'slide', { afterFinish: function() { $('description').focus(); }}); return false;">+Update Description</a>
     <br />
     <div id="update_description" style="display:none">
       <form id="form4" name="form4" method="post" action="">

@@ -73,6 +73,11 @@ header('Location: login.php'); die;
 <script src="includes/validation.js" type="text/javascript"></script>
 <link href="includes/style.css" rel="stylesheet" type="text/css" />
 <link href="includes/simplecustomer.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+  Event.observe(window,'load',function( ) {
+    $("email").focus();
+  });
+</script>
 </head>
 
 <body>
@@ -82,7 +87,7 @@ header('Location: login.php'); die;
 <span class="notices" style="display:<?php echo $dis; ?>">
     <?php display_msg(); ?>
     </span></span>Email Address <br />
-    <input name="email" type="text" size="35" class="required validate-email" title="You must enter your email address." />
+    <input id="email" name="email" type="text" size="35" class="required validate-email" title="You must enter your email address." />
     <br />
     <br />
     Password<br />

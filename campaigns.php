@@ -97,7 +97,7 @@ $totalRows_campaigns = mysql_num_rows($campaigns);
       </tbody>
       </table>
       <br />
-      <a href="#" onclick="new Effect.toggle('add_campaign', 'slide'); return false;">+Add Campaign</a>
+      <a href="#" onclick="new Effect.toggle('add_campaign', 'slide', { afterFinish: function() { $('campaign_name').focus(); }}); return false;">+Add Campaign</a>
       <br />
       <div id="add_campaign" style="display:none">
         <form name="form1" id="form1" method="post" action="campaigns.php">

@@ -96,13 +96,14 @@ $title_text = display_name($row_contact);
 $back_track = array('title' => "Contacts", 'url' => "contacts.php");
 ?>
 <?php include('includes/header.php'); ?>
-<?php if ($row_notes['note_date'] > time()-1) { ?>
 <script type="text/javascript">
   Event.observe(window, 'load', function() {
+    $("note_text").focus();
     new Effect.Highlight('newnote'); 
     return false;
   });
 </script>
+<?php if ($row_notes['note_date'] > time()-1) { ?>
 <?php } ?>
 <div class="container">
   <div class="leftcolumn">
@@ -125,7 +126,7 @@ $back_track = array('title' => "Contacts", 'url' => "contacts.php");
 
     <form id="form1" name="form1" method="post" action="">
       Add a new note <br>
-<textarea name="note_text" style="width:95% "rows="3" id="note_text" class="required"><?php echo $row_note['note_text']; ?></textarea>
+<textarea id="note_text" name="note_text" style="width:95% "rows="3" class="required"><?php echo $row_note['note_text']; ?></textarea>
         <br />
         <input type="submit" name="Submit2" value="Add note" />
 <?php if ($totalRows_notes > 0) { ?>

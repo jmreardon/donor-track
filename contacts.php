@@ -147,7 +147,8 @@ if (isset($_POST['d'])) {
     <a href="csv.php"><strong>Export</strong></a><strong> | </strong>
     <a href="batch.php"><strong>Import</strong></a><strong> | </strong>
     <a href="contact.php"><strong>Create</strong></a>
-    <br class="first"/><br /><a href="#" onclick="new Effect.toggle('search_pane', 'slide'); return false;">+Search</a>
+    <br class="first"/><br /><a href="#" onclick="new Effect.toggle('search_pane', 'slide', { afterFinish: function() { $('name').focus(); }}); return false;">+Search</a>
+    
     <div id="search_pane" style="display:<?php echo $where ? "block" : "none"; ?>">
       <form id="search_form" name="search_form" method="get" action="">
       <fieldset class="width3">
@@ -255,7 +256,7 @@ if (isset($_POST['d'])) {
           </td>
           <td class="one-line"><?php echo $row_contacts['contact_phone'] ? $row_contacts['contact_phone'] : $na; ?></td>
           <td class="one-line"><?php echo $row_contacts['recent_targets'] ? $row_contacts['recent_targets'] . 
-                                     ($row_contacts['targeted_multiple'] ? ", ..." : "") : $na; ?></a></td>
+                                     ($row_contacts['targeted_multiple'] ? ", ..." : "") : $na; ?></td>
           <td class="one-line"><?php if($row_contacts['last_donation']) {
             echo date("M j, Y", strtotime($row_contacts['last_donation'])) ?>
           <?php } else { echo $na; } ?>
