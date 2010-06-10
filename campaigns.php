@@ -21,11 +21,25 @@ $pagetitle = "Campaigns";
 
 mysql_select_db($database_contacts, $contacts);
 if($_POST['campaign_name'] && is_numeric($_POST['campaign_target'])) {
-  $result = mysql_query("INSERT INTO campaigns (`campaign_name`, `campaign_target`) VALUES ('" .
+  $result = mysql_query(
+    "INSERT INTO campaigns (`campaign_name`, `campaign_target`) VALUES ('" .
     mysql_real_escape_string($_POST['campaign_name']) . "', '" .
     mysql_real_escape_string($_POST['campaign_target']) . "')");
   if(mysql_affected_rows() == 1) {
     set_msg("Campaign Added.");
+    if(is_numeric($_POST['expectation'])) {
+      $new_campaign_id = mysql_insert_id();
+      $copied_donations = mysql_query("INSERT INTO donations (campaign_id, contact_id, donation_is_cash, donation_value, donation_status, donation_description) 
+                                       SELECT $new_campaign_id, d.contact_id, d.donation_is_cash, d.donation_value, 'expected', d.donation_description 
+                                       FROM donations AS d 
+                                       WHERE d.campaign_id = " . $_POST['expectation'] . " AND d.donation_status = 'received'");
+      $copied = mysql_affected_rows();
+      set_msg("Campaign Added. $copied donation" . ($copied == 1 ? " is" : "s are") . " expected.");
+      $copied_targets = mysql_query("INSERT INTO targets (campaign_id, contact_id)
+                                       SELECT $new_campaign_id, t.contact_id
+                                       FROM targets AS t LEFT JOIN donations AS d USING (contact_id, campaign_id)
+                                       WHERE t.campaign_id = " . $_POST['expectation'] . " AND d.donation_status = 'received'");
+    }
   } else {
     set_msg("Failed to add campaign.");
   }
@@ -109,6 +123,13 @@ $totalRows_campaigns = mysql_num_rows($campaigns);
           <label class="unitx1">
             Target 
             <input name="campaign_target" id="campaign_target" class="validate-number" type="text" value="" />
+          </label>
+          <label class="unitx2">
+            Expectations From
+            <select id="expectation" name="expectation">
+              <?php echo_campaign_options(); ?>
+              <option>None</option>
+            </select>
           </label>
           <label class="unitx1 inlinebutton">
             <input name="submit" type="submit" value="Add Campaign" />
