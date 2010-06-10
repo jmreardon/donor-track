@@ -18,7 +18,7 @@
 
 include('includes/donation.inc.php');
 include('includes/sc-includes.php');
-$pagetitle = "Campaigns";
+$pagetitle = "Contact";
 
 mysql_select_db($database_contacts, $contacts);
 
@@ -59,11 +59,11 @@ if($_POST["action"] == "create" && is_numeric($_POST["campaign"])) {
 }
  
 if(is_numeric($_POST["donation"])) {
- if($_POST["action"] == "delete" && is_numeric($_POST["campaign"])) {
+ if($_POST["action"] == "delete" && is_numeric($_POST["contact"])) {
     mysql_query("DELETE FROM donations WHERE donation_id = " . $_POST["donation"], $contacts) or die(mysql_error());
     if(mysql_affected_rows($contacts) == 1) {
       set_msg('Donation Deleted.');
-      header("Location: campaign-details.php?campaign=" . $_POST["campaign"]); die;
+      header("Location: contact-details.php?id=" . $_POST["contact"]); die;
     } else {
       set_msg('Failed to delete donation.');
     }
@@ -141,7 +141,7 @@ $row_contact = $row_donation;
 $totalRows_donation = mysql_num_rows($donation);
 
 $title_text = "Donation for Campaign " . $row_donation['campaign_name'];
-$back_track = array('title' => "Campaign " . $row_donation['campaign_name'], 'url' => "campaign-details.php?campaign=" . $row_donation['campaign_id']);
+$back_track = array('title' =>  display_name($row_donation), 'url' => "contact-details.php?id=" . $row_donation['contact_id']);
 ?>
 <?php include('includes/header.php'); ?>
 <div class="container">
@@ -158,6 +158,12 @@ $back_track = array('title' => "Campaign " . $row_donation['campaign_name'], 'ur
       <dd>
         <a href="contact-details.php?id=<?php echo $row_donation['contact_id']; ?>">
           <?php echo display_name($row_donation); ?>
+        </a>
+      </dd>
+      <dt class="unitx1">Campaign</dt>
+      <dd>
+        <a href="campaign-details.php?campaign=<?php echo $row_donation['campaign_id']; ?>">
+          <?php echo $row_donation['campaign_name']; ?>
         </a>
       </dd>
       <dt class="unitx1">Status</dt>
@@ -244,7 +250,7 @@ $back_track = array('title' => "Campaign " . $row_donation['campaign_name'], 'ur
     <hr />
     <form class="width2" id="form2" name="form2" method="post" action="">
       <input type="hidden" name="donation" id="donation" value="<?php echo $row_donation['donation_id']; ?>" />
-      <input type="hidden" name="campaign" id="campaign" value="<?php echo $row_donation['campaign_id']; ?>" />
+      <input type="hidden" name="contact" id="contact" value="<?php echo $row_donation['contact_id']; ?>" />
       <input type="hidden" name="action" id="action" value="delete" />
       <fieldset class="width2">
         <label class="column first width1">

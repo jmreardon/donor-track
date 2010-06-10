@@ -1,6 +1,7 @@
 <?php require_once('includes/config.php');
 
 //   Copyright 2008 johnboyproductions.com
+//   Copyright 2010 Justin Reardon
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -47,8 +48,7 @@ $query_donations = "SELECT
     contact_company 
   FROM donations 
   LEFT JOIN contacts USING (`contact_id`) 
-  WHERE campaign_id = " . $campaign['campaign_id'] . "
-  ORDER BY contact_last, contact_first";
+  WHERE campaign_id = " . $campaign['campaign_id'];
 
 $donations = mysql_query($query_donations, $contacts) or die(mysql_error());
 $row_donations = mysql_fetch_assoc($donations);
@@ -88,7 +88,7 @@ $back_track = array('title' => "Campaigns", 'url' => "campaigns.php");
         <thead>
         <tr>
           <th class="nosort"></th>
-          <th class="text">Donor</th>
+          <th class="sortfirstasc text">Donor</th>
           <th class="text">Status</th>
           <th class="currency">Value</th>
           <th class="text centre-cell">Type</th>
