@@ -61,7 +61,7 @@ $query_targets = "SELECT
   FROM targets
   LEFT JOIN campaigns using (campaign_id)
   WHERE contact_id = " . $row_contact['contact_id'];
-$targets = mysql_query($query_targets, $contacts) or die(mysql_error());
+$targets = mysql_query($query_targets) or die(mysql_error());
 $row_targets = mysql_fetch_assoc($targets);
 $totalRows_targets = mysql_num_rows($targets);
 
@@ -106,6 +106,23 @@ if ($totalRows_history > 0) { ?>
   </li>
 <?php } while ($row_history = mysql_fetch_assoc($history)); ?>
 </ul>
-<?php } ?>
-
+<?php }
+$query_campaigns = "SELECT
+     campaign_id,
+     campaign_name
+   FROM campaigns";
+ $campaigns = mysql_query($query_campaigns) or die(mysql_error());
+ $row_campaigns = mysql_fetch_assoc($campaigns);
+ $totalRows_campaigns = mysql_num_rows($campaigns);
+ 
+ if($totalRows_campaigns > 0) { ?>
+   <h3>Campaigns</h3>
+   <ul class="blocklist">
+   <?php do { ?>
+     <li><a href="campaign-details.php?campaign=<?php echo $row_campaigns['campaign_id']; ?>">
+         <?php echo $row_campaigns['campaign_name']; ?>
+     </a></li> 
+   <?php } while ($row_campaigns = mysql_fetch_assoc($campaigns)); ?>
+   </ul> 
+ <?php } ?>
   </div>
