@@ -42,9 +42,9 @@ if($_POST["action"] == "create" && is_numeric($_POST["campaign"])) {
         'expected' 
       )";
     mysql_query($insert_query, $contacts);
+    $target = mysql_insert_id($contacts);
     mysql_query("INSERT INTO targets (contact_id, campaign_id) VALUES (" . $_POST['contact'] . ",
         " . $_POST['campaign'] . ")", $contacts);
-    $target = mysql_insert_id($contacts);
     if($target) {
       set_msg('Donation Created.');
       header("Location: donation-details.php?id=" . $target); die;

@@ -32,7 +32,8 @@ hr												{ border: none; background: #ddd; width: 100%; }
 ul, ol											{ margin-left: 1.5em; }
 ul												{ list-style: disc outside; }
 ol												{ list-style: decimal outside; }
-input, select, button							{ cursor: pointer; }
+label											{ cursor: pointer; }
+label *											{ cursor: auto; }
 table											{ font: inherit; width: 100%; }
 
 /* html 5 */

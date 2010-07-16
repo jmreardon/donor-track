@@ -117,12 +117,16 @@ if (isset($_POST['d'])) {
     if (is_numeric($value)) {
       if($_POST['action'] == "Delete") {
         mysql_query("DELETE FROM contacts WHERE contact_id = ".$value."");
+        mysql_query("DELETE FROM donations WHERE contact_id = ".$value."");
+        mysql_query("DELETE FROM targets WHERE contact_id = ".$value."");
       }
       if($_POST['action'] == "Target" && is_numeric($_POST['campaign'])) {
         mysql_query("INSERT INTO targets (`contact_id`, `campaign_id`) VALUES ($value, " . $_POST['campaign'] . ")");
       }
       if($_POST['action'] == "Untarget" && is_numeric($_POST['campaign'])) {
         mysql_query("DELETE FROM targets WHERE contact_id = $value AND campaign_id = " . $_POST['campaign']);
+      } else {
+        set_msg('You must select an action');
       }
     }
   }
@@ -198,6 +202,7 @@ if (isset($_POST['d'])) {
       <label style="margin-bottom: 0px" class="first column unitx1">
         Action
         <select id="action" name="action">
+          <option>Select action</option>
           <option>Delete</option>
           <option>Target</option>
           <option>Untarget</option>
@@ -212,9 +217,9 @@ if (isset($_POST['d'])) {
       <script type="text/javascript">
         Event.observe(window,'load',function( ) {
           Event.observe('action','change', function() {
-            if($("action").getValue() != "Delete") {
+            if($("action").getValue() == "Target" || $("action").getValue() == "Untarget") {
               $("target_value_label").show();
-            } else if($("action").getValue() == "Delete") {
+            } else {
               $("target_value_label").hide();
             }
           });
