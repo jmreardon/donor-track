@@ -104,7 +104,6 @@ $query_contacts = "SELECT
   GROUP BY contact_id
   ORDER BY isnull, contact_company, contact_first, contact_last";
 $contacts = mysql_query($query_contacts, $contacts) or die(mysql_error());
-$row_contacts = mysql_fetch_assoc($contacts);
 $totalRows_contacts = mysql_num_rows($contacts);
 
 if (!$where && $totalRows_contacts < 1) { 
@@ -139,7 +138,31 @@ if (isset($_POST['d'])) {
   }
   header('Location: contacts.php'); die;
 }
-//
+
+$display = isset($_GET['display']) ? $_GET['display'] : "html";
+if (!in_array($display, array("csv", "html"))) {
+  $display = "html";
+}
+
+switch ($display) {
+  case "csv":
+    $out = fopen('php://output', 'w');
+
+    header('Content-type: text/csv');
+    header('Content-Disposition: attachment; filename="contacts.csv"');
+    header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+    header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+
+    $fields = array();
+    while($field = mysql_fetch_field($contacts)) {
+	$fields []= $field->name;
+    }
+    fputcsv($out, $fields);
+    while ($row_contacts = mysql_fetch_row($contacts)) {
+      fputcsv($out, $row_contacts); 
+    }
+    break;
+  case "html":
 ?>
 <?php include('includes/header.php'); ?>
   <div class="container">
@@ -148,7 +171,7 @@ if (isset($_POST['d'])) {
     <span class="notices" id="notice" style="display:<?php echo $dis; ?>">
       <?php display_msg(); ?>
     </span>
-    <a href="csv.php"><strong>Export</strong></a><strong> | </strong>
+    <a href="<?php echo $_SERVER['REQUEST_URI'] . (isset($_GET['search']) ? "&" : "?") . "display=csv"; ?>"><strong>Export</strong></a><strong> | </strong>
     <a href="batch.php"><strong>Import</strong></a><strong> | </strong>
     <a href="contact.php"><strong>Create</strong></a>
     <br class="first"/><br /><a href="#" onclick="new Effect.toggle('search_pane', 'slide', { afterFinish: function() { $('name').focus(); }}); return false;">+Search</a>
@@ -247,7 +270,7 @@ if (isset($_POST['d'])) {
         </thead>
         <tbody>
 <?php if ($totalRows_contacts > 0) { ?>
-  <?php do { ?>
+        <?php while ($row_contacts = mysql_fetch_assoc($contacts)) { ?>
         <tr>
           <td style="padding-right: 10px"><a href="contact-details.php?id=<?php echo $row_contacts['contact_id']; ?>">
             Details
@@ -281,8 +304,8 @@ if (isset($_POST['d'])) {
             echo "Donation Matches: " . implode(", ", $matching);
           ?>
           </td></tr>
-        <?php } ?>
-        <?php } while ($row_contacts = mysql_fetch_assoc($contacts)); ?>
+        <?php }
+              } ?>
     <?php } else { ?>
         <tr><td style="text-align: center;" colspan="7">No Results</td></tr>
     <?php } ?>
@@ -301,3 +324,6 @@ if (isset($_POST['d'])) {
 
 </body>
 </html>
+<?php
+    break;
+}
