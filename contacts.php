@@ -71,13 +71,7 @@ $where = (count($where_clauses) > 0 ? "WHERE " . implode(" AND ", $where_clauses
 
 mysql_select_db($database_contacts, $contacts);
 $query_contacts = "SELECT 
-    contact_id,
-    contact_company,
-    contact_first,
-    contact_last,
-    contact_title,
-    contact_phone,
-    contact_email,
+    contacts.*,
     contact_company IS NULL AS isnull,
     GROUP_CONCAT(donation_description) as donation_descriptions,
     (SELECT campaign_name
@@ -152,14 +146,20 @@ switch ($display) {
     header('Content-Disposition: attachment; filename="contacts.csv"');
     header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
     header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
-
-    $fields = array();
-    while($field = mysql_fetch_field($contacts)) {
-	$fields []= $field->name;
-    }
+    $fields = array("first name", "last name", "title", "company", 
+                    "street", "city", "state/province", "postal code", 
+                    "phone", "cell", "fax", "email", "website", 
+                    "is individual", "last donation");
     fputcsv($out, $fields);
-    while ($row_contacts = mysql_fetch_row($contacts)) {
-      fputcsv($out, $row_contacts); 
+    while ($row_contacts = mysql_fetch_assoc($contacts)) {
+      fputcsv($out, array($row_contacts["contact_first"], $row_contacts["contact_last"],
+                          $row_contacts["contact_title"], $row_contacts["contact_company"],
+                          $row_contacts["contact_street"], $row_contacts["contact_city"],
+                          $row_contacts["contact_state"], $row_contacts["contact_zip"],
+                          $row_contacts["contact_phone"], $row_contacts["contact_cell"],
+                          $row_contacts["contact_fax"], $row_contacts["contact_email"],
+                          $row_contacts["contact_web"], $row_contacts["isnull"],
+                          $row_contacts["last_donation"]));
     }
     break;
   case "html":
