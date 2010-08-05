@@ -69,7 +69,7 @@ if(isset($_GET['search'])) {
 
 $where = (count($where_clauses) > 0 ? "WHERE " . implode(" AND ", $where_clauses) : "");
 
-mysql_select_db($database_contacts, $contacts);
+sql_select_db($database_contacts, $contacts);
 $query_contacts = "SELECT 
     contacts.*,
     contact_company IS NULL AS isnull,
@@ -159,7 +159,7 @@ switch ($display) {
                           $row_contacts["contact_phone"], $row_contacts["contact_cell"],
                           $row_contacts["contact_fax"], $row_contacts["contact_email"],
                           $row_contacts["contact_web"], $row_contacts["isnull"],
-                          $row_contacts["last_donation"], $row_contacts["recent_targets"]));
+                          $row_contacts["last_donation"], $row_contacts["last_donation_campaign"]));
     }
     break;
   case "html":
