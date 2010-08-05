@@ -149,7 +149,7 @@ switch ($display) {
     $fields = array("first name", "last name", "title", "company", 
                     "street", "city", "state/province", "postal code", 
                     "phone", "cell", "fax", "email", "website", 
-                    "is individual", "last donation");
+                    "is individual", "last donation", "last campaign");
     fputcsv($out, $fields);
     while ($row_contacts = mysql_fetch_assoc($contacts)) {
       fputcsv($out, array($row_contacts["contact_first"], $row_contacts["contact_last"],
@@ -159,7 +159,7 @@ switch ($display) {
                           $row_contacts["contact_phone"], $row_contacts["contact_cell"],
                           $row_contacts["contact_fax"], $row_contacts["contact_email"],
                           $row_contacts["contact_web"], $row_contacts["isnull"],
-                          $row_contacts["last_donation"]));
+                          $row_contacts["last_donation"], $row_contacts["recent_targets"]));
     }
     break;
   case "html":
