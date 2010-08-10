@@ -42,6 +42,9 @@
     <a href="index.php" class="menubuttons <?php if ($pagetitle=="Dashboard") { echo "menubuttonsactive"; } ?>">Dashboard</a>
     <a href="contacts.php" class="menubuttons <?php if ($pagetitle=="Contact" || $pagetitle=="ContactDetails") { echo "menubuttonsactive"; } ?>">Contacts</a>
     <a href="campaigns.php" class="menubuttons <?php if ($pagetitle=="Campaigns") { echo "menubuttonsactive"; } ?>">Campaigns</a>
+<?php if(isSuperUser($row_userinfo)) { ?>
+    <a href="users.php" class="menubuttons <?php if ($pagetitle=="Users") { echo "menubuttonsactive"; } ?>">Users</a>
+<?php } ?>
 
     <span class="headerright">Logged in as <?php echo $row_userinfo['user_email']; ?> | <a href="logout.php">Log Out</a> | <a href="profile.php">Update Profile</a> </span><br clear="all" />
   </div>

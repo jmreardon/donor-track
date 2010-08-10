@@ -51,6 +51,36 @@ function update_profile($email, $password = NULL, $home = NULL) {
   return mysql_affected_rows();
 }
 
+function send_password($email) {
+  $query_passwordcheck = "SELECT * FROM users WHERE user_email = '".$email."'";
+  $passwordcheck = mysql_query($query_passwordcheck) or die(mysql_error());
+  $row_passwordcheck = mysql_fetch_assoc($passwordcheck);
+  $totalRows_passwordcheck = mysql_num_rows($passwordcheck);
+
+  $new_password = gen_password(8);
+
+  update_profile($email, $new_password);
+
+  if ($totalRows_passwordcheck==1) { 
+    error_log("Sending password email to: " . $email);
+    //SEND EMAIL WITH PASSWORD
+    $password = $row_passwordcheck['user_password'];
+    $emailfrom = $row_passwordcheck['user_email'];
+    $name = "Donor Track";
+    $subject = "Your New Password";
+    $message = "Your password is $new_password.";
+    $emailto = $row_passwordcheck['user_email'];
+
+    return mail($emailto, $subject, $message, 
+      "From: $name <$emailfrom>\n" .
+      "MIME-Version: 1.0\n" .
+      "Content-type: text/html; charset=iso-8859-1");
+    //END SEND EMAIL
+  } else if ($totalRows_passwordcheck < 1) {
+    return false;
+  }
+}
+
 function gen_password($len = 6)
 {
   $r = '';

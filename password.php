@@ -37,40 +37,21 @@ $dis = block;
 
 
 if ($_POST['email']) {
-mysql_select_db($database_contacts, $contacts);
-$query_passwordcheck = "SELECT * FROM users WHERE user_email = '".$_POST['email']."'";
-$passwordcheck = mysql_query($query_passwordcheck, $contacts) or die(mysql_error());
-$row_passwordcheck = mysql_fetch_assoc($passwordcheck);
-$totalRows_passwordcheck = mysql_num_rows($passwordcheck);
+  mysql_select_db($database_contacts, $contacts);
+  $query_passwordcheck = "SELECT * FROM users WHERE user_email = '".$_POST['email']."'";
+  $passwordcheck = mysql_query($query_passwordcheck, $contacts) or die(mysql_error());
+  $row_passwordcheck = mysql_fetch_assoc($passwordcheck);
+  $totalRows_passwordcheck = mysql_num_rows($passwordcheck);
 
-$new_password = gen_password(8);
+  $new_password = gen_password(8);
 
-update_profile($_POST['email'], $new_password);
-
-if ($totalRows_passwordcheck==1) { 
-	$redirect = "login.php";
-	set_msg('A new password has been sent.');
-
-//SEND EMAIL WITH PASSWORD
-$password = $row_passwordcheck['user_password'];
-$emailfrom = $row_passwordcheck['user_email'];
-$name = "Donor Track";
-$subject = "Your New Password";
-$message = "Your password is $new_password.";
-$emailto = $row_passwordcheck['user_email'];
-
-$smail=mail($emailto, $subject, $message, 
-	"From: $name <$emailfrom>\n" .
-	"MIME-Version: 1.0\n" .
-	"Content-type: text/html; charset=iso-8859-1") .
-	header(sprintf('Location: %s', $redirect)); die;	
-//END SEND EMAIL
-}
-
-if ($totalRows_passwordcheck < 1) {
-set_msg('Could not send the password.');
-header('Location: password.php'); die;
-}
+  if(send_password($_POST["email"])) {
+    set_msg('A new password has been sent.');
+    header('Location: login.php')); die;	
+  } else {
+    set_msg('Could not send the password.');
+    header('Location: password.php'); die;
+  }
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

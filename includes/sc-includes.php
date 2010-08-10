@@ -54,6 +54,10 @@ $dis = block;
 }
 //
 
+function isSuperUser($user) {
+  return $user["user_level"] == 1;
+}
+
 function echo_campaign_options($selection = 0) {
   $query_campaigns = "SELECT campaign_id, campaign_name FROM campaigns ORDER BY campaign_id DESC";
   $campaigns = mysql_query($query_campaigns) or die(mysql_error());
