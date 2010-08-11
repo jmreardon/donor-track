@@ -21,7 +21,7 @@ require_once('includes/user.inc.php');
 $pagetitle = "Users";
 
 if(!isSuperUser($row_userinfo)) {
-  header("HTTP/1.0 403 Forbidden");
+  header("HTTP/1.0 403 Forbidden"); die;
 }
 
 
