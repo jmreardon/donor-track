@@ -49,7 +49,7 @@ if(isset($_POST["user_email"]) && isset($_POST["user_type"])) {
     } else {
       mysql_query("INSERT INTO users (`user_email`, `user_level`) VALUES ('" . 
         mysql_real_escape_string($email) . "', '" . mysql_real_escape_string($type) . "')");
-      if(send_password($_POST["email"])) {
+      if(send_password($email)) {
         set_msg("Account created");
       } else {
         set_msg("Account created but email failed to send.");
