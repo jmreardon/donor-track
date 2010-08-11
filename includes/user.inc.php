@@ -65,14 +65,13 @@ function send_password($email) {
     error_log("Sending password email to: " . $email);
     //SEND EMAIL WITH PASSWORD
     $password = $row_passwordcheck['user_password'];
-    $emailfrom = $row_passwordcheck['user_email'];
     $name = "Donor Track";
     $subject = "Your New Password";
     $message = "Your password is $new_password.";
     $emailto = $row_passwordcheck['user_email'];
 
     return mail($emailto, $subject, $message, 
-      "From: $name <$emailfrom>\n" .
+      "From: $name <$email_from_address>\n" .
       "MIME-Version: 1.0\n" .
       "Content-type: text/html; charset=iso-8859-1");
     //END SEND EMAIL
