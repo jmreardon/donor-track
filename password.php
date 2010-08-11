@@ -47,7 +47,7 @@ if ($_POST['email']) {
 
   if(send_password($_POST["email"])) {
     set_msg('A new password has been sent.');
-    header('Location: login.php')); die;	
+    header('Location: login.php'); die;	
   } else {
     set_msg('Could not send the password.');
     header('Location: password.php'); die;
