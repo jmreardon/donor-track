@@ -74,7 +74,7 @@ function send_password($email, $email_from_address, $website_address, $new_user 
     } else {
         $message = "A password reset request was submitted for your account. " . $message;
     }
-    $message .= "You can login at: $website_address/login.php";
+    $message .= " \nYou can login at: $website_address/login.php";
     error_log($message);
 
     return mail($emailto, $subject, $message, 
