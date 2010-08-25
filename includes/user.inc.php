@@ -51,7 +51,7 @@ function update_profile($email, $password = NULL, $home = NULL) {
   return mysql_affected_rows();
 }
 
-function send_password($email) {
+function send_password($email, $email_from_address, $website_address, $new_user = false) {
   $query_passwordcheck = "SELECT * FROM users WHERE user_email = '".$email."'";
   $passwordcheck = mysql_query($query_passwordcheck) or die(mysql_error());
   $row_passwordcheck = mysql_fetch_assoc($passwordcheck);
@@ -66,12 +66,19 @@ function send_password($email) {
     //SEND EMAIL WITH PASSWORD
     $password = $row_passwordcheck['user_password'];
     $name = "Donor Track";
-    $subject = "Your New Password";
+    $subject = $new_user ? "Welcome to Donor Track" : "Your New Password";
     $message = "Your password is $new_password.";
     $emailto = $row_passwordcheck['user_email'];
+    if($new_user) {
+	$message .= " Your username is $email.";
+    } else {
+        $message = "A password reset request was submitted for your account. " . $message;
+    }
+    $message .= "You can login at: $website_address/login.php";
+    error_log($message);
 
     return mail($emailto, $subject, $message, 
-      "From: $name <$email_from_address>\n" .
+      "From: $name <" . $email_from_address . ">\n" .
       "MIME-Version: 1.0\n" .
       "Content-type: text/html; charset=iso-8859-1");
     //END SEND EMAIL

@@ -29,14 +29,14 @@ function display_msg() {
 	unset($_SESSION['msg']);
 }
 
-$dis = none;
+$dis = 'none';
 if (isset($_SESSION['msg'])) {
 $dis = block;
 }
 //
 
 
-if ($_POST['email']) {
+if (isset($_POST['email'])) {
   mysql_select_db($database_contacts, $contacts);
   $query_passwordcheck = "SELECT * FROM users WHERE user_email = '".$_POST['email']."'";
   $passwordcheck = mysql_query($query_passwordcheck, $contacts) or die(mysql_error());
@@ -45,7 +45,7 @@ if ($_POST['email']) {
 
   $new_password = gen_password(8);
 
-  if(send_password($_POST["email"])) {
+  if(send_password($_POST["email"], $email_from_address, $website_address)) {
     set_msg('A new password has been sent.');
     header('Location: login.php'); die;	
   } else {

@@ -41,7 +41,7 @@ $dis = "block";
 //
 
 
-if ($_POST['email']  && $_POST['password']) {
+if (isset($_POST['email'])  && isset($_POST['password'])) {
 mysql_select_db($database_contacts, $contacts);
 $query_logincheck = "SELECT * FROM users WHERE user_email = '".mysql_real_escape_string($_POST['email'])."'";
 $logincheck = mysql_query($query_logincheck, $contacts) or die(mysql_error());
