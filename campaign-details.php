@@ -114,7 +114,7 @@ $targets = mysql_query($query_targets, $contacts) or die(mysql_error());
 $row_targets = mysql_fetch_assoc($targets);
 $totalRows_targets = mysql_num_rows($targets);
 
-$stats = donation_stats($campaign['campaign_id']);
+$stats = donation_stats($campaign['campaign_id'], $where);
 $title_text = "Campaign - ". $campaign['campaign_name'];
 $back_track = array('title' => "Campaigns", 'url' => "campaigns.php");
 ?>

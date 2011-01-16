@@ -14,26 +14,26 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-function donation_stats($campaign_id) {
+function donation_stats($campaign_id, $extra = "") {
   $stat_results = mysql_query("SELECT 
     ifnull((SELECT sum(donation_value) 
-         FROM donations 
-         WHERE campaign_id = $campaign_id 
+         FROM donations LEFT JOIN contacts using (contact_id)
+         WHERE campaign_id = $campaign_id $extra 
          GROUP BY campaign_id), 0)
       AS total,
     ifnull((SELECT sum(donation_value) 
-         FROM donations 
-         WHERE campaign_id = $campaign_id AND donation_status = 'expected'
+         FROM donations LEFT JOIN contacts using (contact_id)
+         WHERE campaign_id = $campaign_id AND donation_status = 'expected' $extra 
          GROUP BY campaign_id), 0)
      AS expected,
     ifnull((SELECT sum(donation_value) 
-         FROM donations 
-         WHERE campaign_id = $campaign_id AND donation_status = 'pledged'
+         FROM donations LEFT JOIN contacts using (contact_id)
+         WHERE campaign_id = $campaign_id AND donation_status = 'pledged' $extra 
          GROUP BY campaign_id), 0)
      AS pledged,
     ifnull((SELECT sum(donation_value) 
-         FROM donations 
-         WHERE campaign_id = $campaign_id AND donation_status = 'received'
+         FROM donations LEFT JOIN contacts using (contact_id)
+         WHERE campaign_id = $campaign_id AND donation_status = 'received' $extra 
          GROUP BY campaign_id), 0) 
      AS received"
   ) or die(mysql_error());
