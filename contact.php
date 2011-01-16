@@ -23,12 +23,7 @@ if (isset($_GET['id'])) {
 $update = 1;
 }
 
-$editFormAction = $_SERVER['PHP_SELF'];
-if (isset($_SERVER['QUERY_STRING'])) {
-  $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
-}
-
-
+$editFormAction = $_SERVER['REQUEST_URI'];
 
 //
 if ($update==1) {
