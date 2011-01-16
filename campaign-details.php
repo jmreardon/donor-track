@@ -34,13 +34,55 @@ if($campaign_row_count == 0) {
   header("Location: campaigns.php?"); die;
 }
 
+$where_clauses = array();
+$show_donations = false;
+
+if(isset($_GET['search'])) {
+  if(trim($_GET['name'])) {
+    $names = explode(",", $_GET['name']);
+    $clauses = array();
+    foreach($names as $name) { 
+      if(trim($name)) { 
+        $t = mysql_real_escape_string(trim($name)); 
+        $clauses[] = "(contact_first LIKE '%$t%' OR 
+                       contact_last LIKE '%$t%' OR 
+                       contact_company LIKE '%$t%' OR
+                       CONCAT(contact_first, ' ', contact_last) LIKE '%$t%')";
+      } 
+    }  
+    if(count($clauses) > 0) {
+      $where_clauses[] = "(" . implode(" OR ", $clauses) . ")";
+    }
+  }
+  if(trim($_GET['donation_desc'])) {
+    $terms = explode(",", $_GET['donation_desc']);
+    $clauses = array();
+    foreach($terms as $term) { 
+      if(trim($term)) { 
+        $t = mysql_real_escape_string(trim($term)); 
+        $clauses[] = "(donation_description LIKE '%$t%')";
+      } 
+    }  
+    if(count($clauses) > 0) {
+      $where_clauses[] = implode(" OR ", $clauses);
+      $show_donations = true;
+    }
+  }
+  if(in_array(trim($_GET['donation_status']), array("Expected", "Pledged", "Received"))) {
+    $where_clauses[] = "donation_status = '" . strtolower(trim($_GET['donation_status'])) . "'";
+  }
+}
+
+$where = (count($where_clauses) > 0 ? " AND " . implode(" AND ", $where_clauses) : "");
+
 $query_donations = "SELECT 
     donation_id, 
     donation_value, 
     donation_status, 
     donation_is_cash, 
     donation_pledge_date, 
-    donation_received_date, 
+    donation_received_date,
+    donation_description,
     contact_id, 
     contact_first, 
     contact_last, 
@@ -48,7 +90,7 @@ $query_donations = "SELECT
     contact_company 
   FROM donations 
   LEFT JOIN contacts USING (`contact_id`) 
-  WHERE campaign_id = " . $campaign['campaign_id'];
+  WHERE campaign_id = " . $campaign['campaign_id'] . $where;
 
 $donations = mysql_query($query_donations, $contacts) or die(mysql_error());
 $row_donations = mysql_fetch_assoc($donations);
@@ -84,30 +126,61 @@ $back_track = array('title' => "Campaigns", 'url' => "campaigns.php");
       <?php display_msg(); ?>
     </span>
     <h2>Campaign - <?php echo $campaign['campaign_name']; ?></h2>
-      <table class="sortable">
-        <thead>
-        <tr>
-          <th class="nosort"></th>
-          <th class="sortfirstasc text">Donor</th>
-          <th class="text">Status</th>
-          <th class="currency">Value</th>
-          <th class="text centre-cell">Type</th>
-          <th>Pledged</th>
-          <th>Received</th>
-        </tr>
-        </thead>
-        <tfoot>
-        <tr>
-          <td colspan="6" class="right-cell">Expected</td>
-          <td class="right-cell"><?php echo money_format("%n", $stats->expected); ?></td>
-        </tr>
-        <tr>
-          <td colspan="6" class="right-cell">Pledged</td>
-          <td class="right-cell"><?php echo money_format("%n", $stats->pledged); ?></td>
-        </tr>
-        <tr>
-          <td colspan="6" class="right-cell">Received</td>
-          <td class="right-cell"><?php echo money_format("%n", $stats->received); ?></td>
+    <br class="first"/><a href="#" onclick="new Effect.toggle('search_pane', 'slide', { afterFinish: function() { $('name').focus(); }}); return false;">+Search</a>
+    
+    <div id="search_pane" style="display:<?php echo isset($_GET['search']) ? "block" : "none"; ?>">
+      <form id="search_form" name="search_form" method="get" action="">
+      <fieldset class="width3">
+      <input type="hidden" name="campaign" id="campaign_id" value="<?php echo $campaign['campaign_id'] ?>" />
+      <input type="hidden" name="search" id="search" value="search" />
+      <label class="first column unitx2">
+      Name/Organization
+      <input type="text" id="name" name="name" value="<?php echo $_GET['name']; ?>"/>
+      </label>
+      <label class=" column unitx3">
+      Donation Description
+      <input type="text" id="donation_desc" name="donation_desc" value="<?php echo $_GET['donation_desc']; ?>"/>
+      </label>
+      <label class="column unitx1">
+      With Status
+      <select id="donation_status" name="donation_status">
+	<option <?php if ($_GET['donation_status'] == "Any") { echo "selected='selected'"; } ?>>Any</option>
+	<option <?php if ($_GET['donation_status'] == "Expected") { echo "selected='selected'"; } ?>>Expected</option>
+	<option <?php if ($_GET['donation_status'] == "Pledged") { echo "selected='selected'"; } ?>>Pledged</option>
+	<option <?php if ($_GET['donation_status'] == "Received") { echo "selected='selected'"; } ?>>Received</option>
+      </select>
+      </label>
+      <label class="first column unitx3">
+      <input type="submit" id="submit_search" name="submit_search" value="Search"/>
+      </label>
+      </fieldset>
+      </form>
+    </div>
+    
+    <table class="sortable" style="width: 100%;">
+      <thead>
+	<tr>
+	  <th class="nosort"></th>
+	  <th class="sortfirstasc text">Donor</th>
+	  <th class="text">Status</th>
+	  <th class="currency">Value</th>
+	  <th class="text centre-cell">Type</th>
+	  <th>Pledged</th>
+	  <th>Received</th>
+	</tr>
+      </thead>
+      <tfoot>
+      <tr>
+	<td colspan="6" class="right-cell">Expected</td>
+	<td class="right-cell"><?php echo money_format("%n", $stats->expected); ?></td>
+      </tr>
+      <tr>
+	<td colspan="6" class="right-cell">Pledged</td>
+	<td class="right-cell"><?php echo money_format("%n", $stats->pledged); ?></td>
+      </tr>
+      <tr>
+	<td colspan="6" class="right-cell">Received</td>
+	<td class="right-cell"><?php echo money_format("%n", $stats->received); ?></td>
         </tr>
         <tr>
           <td colspan="6" class="right-cell">Total</td>
@@ -119,7 +192,7 @@ $back_track = array('title' => "Campaigns", 'url' => "campaigns.php");
   <?php do { $row_count++; ?>
         <tr>
           <td style="padding-right: 10px">
-            <a href="donation-details.php?id=<?php echo $row_donations['donation_id']; ?>">Details</a>
+            <a href="donation-details.php?id=<?php echo $row_donations['donation_id']; ?>" title="<?php echo htmlspecialchars($row_donations['donation_description']) ?>">Details</a>
           </td>
           <td><a href="contact-details.php?id=<?php echo $row_donations['contact_id']; ?>">
             <?php echo display_name($row_donations); ?>
@@ -143,9 +216,13 @@ $back_track = array('title' => "Campaigns", 'url' => "campaigns.php");
           </td>
         </tr>
         <?php } while ($row_donations = mysql_fetch_assoc($donations)); ?>
-    <?php } else { ?>
+    <?php } else {
+	if(isset($_GET['search'])) {
+	?>
+        <tr><td style="text-align: center;" colspan="7">No Donations in <?php echo $campaign['campaign_name']; ?> match.</td></tr>
+	<?php } else { ?>
         <tr><td style="text-align: center;" colspan="7">No Donations for <?php echo $campaign['campaign_name']; ?></td></tr>
-    <?php } ?>
+    <?php } } ?>
         </tbody>
       </table>
       <br />
