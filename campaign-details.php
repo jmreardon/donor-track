@@ -83,14 +83,12 @@ $query_donations = "SELECT
     donation_pledge_date, 
     donation_received_date,
     donation_description,
-    contact_id, 
-    contact_first, 
-    contact_last, 
-    contact_title, 
-    contact_company 
+    contacts.*,
+    contact_company IS NULL AS isnull
   FROM donations 
   LEFT JOIN contacts USING (`contact_id`) 
-  WHERE campaign_id = " . $campaign['campaign_id'] . $where;
+  WHERE campaign_id = " . $campaign['campaign_id'] . $where .
+  " ORDER BY isnull, contact_company, contact_first, contact_last";
 
 $donations = mysql_query($query_donations, $contacts) or die(mysql_error());
 $row_donations = mysql_fetch_assoc($donations);
@@ -117,6 +115,42 @@ $totalRows_targets = mysql_num_rows($targets);
 $stats = donation_stats($campaign['campaign_id'], $where);
 $title_text = "Campaign - ". $campaign['campaign_name'];
 $back_track = array('title' => "Campaigns", 'url' => "campaigns.php");
+
+$display = isset($_GET['display']) ? $_GET['display'] : "html";
+if (!in_array($display, array("csv", "html"))) {
+  $display = "html";
+}
+
+switch ($display) {
+  case "csv":
+    $out = fopen('php://output', 'w');
+
+    header('Content-type: text/csv');
+    header('Content-Disposition: attachment; filename="contacts.csv"');
+    header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+    header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+    $fields = array("first name", "last name", "title", "company", 
+                    "street", "city", "state/province", "postal code", 
+                    "phone", "cell", "fax", "email", "website", 
+                    "is individual", "donation value", "donation description", "status", "received", "pledged");
+    fputcsv($out, $fields);
+    if(!$row_donations) {
+      break;
+    }
+    do {
+      fputcsv($out, array($row_donations["contact_first"], $row_donations["contact_last"],
+                          $row_donations["contact_title"], $row_donations["contact_company"],
+                          $row_donations["contact_street"], $row_donations["contact_city"],
+                          $row_donations["contact_state"], $row_donations["contact_zip"],
+                          $row_donations["contact_phone"], $row_donations["contact_cell"],
+                          $row_donations["contact_fax"], $row_donations["contact_email"],
+                          $row_donations["contact_web"], $row_donations["isnull"],
+                          $row_donations["donation_value"], $row_donations["donation_description"],
+                          $row_donations["donation_status"], $row_donations["donation_received_date"],
+                          $row_donations["donation_pledge_date"]));
+    } while ($row_donations = mysql_fetch_assoc($donations));
+    break;
+  case "html":
 ?>
 <?php include('includes/header.php'); ?>
   
@@ -126,7 +160,8 @@ $back_track = array('title' => "Campaigns", 'url' => "campaigns.php");
       <?php display_msg(); ?>
     </span>
     <h2>Campaign - <?php echo $campaign['campaign_name']; ?></h2>
-    <br class="first"/><a href="#" onclick="new Effect.toggle('search_pane', 'slide', { afterFinish: function() { $('name').focus(); }}); return false;">+Search</a>
+    <a href="<?php echo $_SERVER['REQUEST_URI'] . "&display=csv"; ?>"><strong>Export</strong></a>
+    <br class="first"/><br /><a href="#" onclick="new Effect.toggle('search_pane', 'slide', { afterFinish: function() { $('name').focus(); }}); return false;">+Search</a>
     
     <div id="search_pane" style="display:<?php echo isset($_GET['search']) ? "block" : "none"; ?>">
       <form id="search_form" name="search_form" method="get" action="">
@@ -245,3 +280,6 @@ $back_track = array('title' => "Campaigns", 'url' => "campaigns.php");
 
 </body>
 </html>
+<?php
+    break;
+}
