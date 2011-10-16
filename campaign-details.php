@@ -126,7 +126,7 @@ switch ($display) {
     $out = fopen('php://output', 'w');
 
     header('Content-type: text/csv');
-    header('Content-Disposition: attachment; filename="contacts.csv"');
+    header('Content-Disposition: attachment; filename="donations.csv"');
     header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
     header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
     $fields = array("first name", "last name", "title", "company", 

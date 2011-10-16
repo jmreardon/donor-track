@@ -262,7 +262,6 @@ switch ($display) {
           <th class="nosort"></th>
           <th>Organization</th>
           <th>Name</th>
-          <th class="nosort">Phone</th>
           <th>Targeted</th>
           <th class="date one-line">Last Gave</th>
           <th class="nosort" width="7%" style="text-align: center">Select</th>
@@ -282,7 +281,6 @@ switch ($display) {
             <?php printf("%s %s", $row_contacts['contact_first'] ? $row_contacts['contact_first'] : $row_contacts['contact_title'], 
                                   $row_contacts['contact_last']); ?>
           </td>
-          <td class="one-line"><?php echo $row_contacts['contact_phone'] ? $row_contacts['contact_phone'] : $na; ?></td>
           <td class="one-line"><?php echo $row_contacts['recent_targets'] ? $row_contacts['recent_targets'] . 
                                      ($row_contacts['targeted_multiple'] ? ", ..." : "") : $na; ?></td>
           <td class="one-line"><?php if($row_contacts['last_donation']) {
